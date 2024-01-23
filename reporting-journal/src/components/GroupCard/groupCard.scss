@@ -1,0 +1,40 @@
+.groupCard {
+  width: 360px;
+  height: 224px;
+  background-color: #FFFFFF;
+  border-radius: 22px;
+}
+
+.groupCard__header {
+
+  background-color: #5200FF;
+  height: 95px;
+  border-radius: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.groupCard__group {
+
+  font-size: 30px;
+  font-weight: bold;
+  color: #FFFFFF;
+
+}
+
+.groupCard__container {
+
+  position: relative;
+  width: 318px;
+  margin: 0 auto;
+  height: 110px;
+}
+
+.groupCard__add-btn {
+
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

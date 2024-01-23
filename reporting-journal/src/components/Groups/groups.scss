@@ -1,0 +1,20 @@
+.groups {
+
+  margin-top: 20px;
+  background-color: #E7E7FF;
+  border-radius: 33px;
+  width: 85vw;
+  height: 95vh;
+  overflow: hidden;
+  overflow-y: visible;
+}
+
+.groups__container {
+  margin: 0 auto;
+
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1%;
+  row-gap: 30px;
+}

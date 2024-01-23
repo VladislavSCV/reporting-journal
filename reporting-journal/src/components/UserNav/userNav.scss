@@ -1,0 +1,40 @@
+.userNav {
+  padding: 40px 0;
+}
+
+.userNav__text {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.userNav__navigation {
+  margin: 0 auto;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userNav__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userNav__user-container {}
+
+.userNav__user-name {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.userNav__user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: black
+}
+
+.userNav__user-role {
+  color: #5200FF;
+}
