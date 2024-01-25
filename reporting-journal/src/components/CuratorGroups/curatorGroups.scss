@@ -1,0 +1,20 @@
+.curatorGroups {
+  padding-bottom: 10px;
+  margin-top: 20px;
+  background-color: #E7E7FF;
+  border-radius: 33px;
+  width: 85vw;
+  height: 95vh;
+  overflow: hidden;
+  overflow-y: visible;
+}
+
+.curatorGroups__container {
+  margin: 0 auto;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 95%;
+  display: flex;
+  gap: 30px;
+  row-gap: 30px;
+}

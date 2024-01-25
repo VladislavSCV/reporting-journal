@@ -1,93 +1,111 @@
 
 const objectStudentsList = [
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Староста"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Зам. старосты"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Зав. уборкой"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   {
-    name: "Роман",
-    surname:"Гилоян",
+    surname:"Иванов",
+    name: "Иван",
+    patronymic:"Иванович",
     role: "Студент"
   },
   

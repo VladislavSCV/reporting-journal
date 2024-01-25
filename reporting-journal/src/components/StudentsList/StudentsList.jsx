@@ -10,19 +10,23 @@ const StudentsList = () => {
   return (
     <div className="studentsList">
       <UserNav />
-      <div className="studentsList__container">
+      <div className="studentsList__container" id="studentList">
         {objectStudentsList.map((obj, index) => {
           return (
             <StudentCard
-              name={obj.name}
               surname={obj.surname}
+              name={obj.name}
+              patronymic={obj.patronymic}
               role={obj.role}
               key={index}
             />
           );
         })}
-        <div className="studentsList__add" >
-          <div className="studentsList__add-container" data-modal="ModalStudentAdd">
+        <div className="studentsList__add">
+          <div
+            className="studentsList__add-container"
+            data-modal="ModalStudentAdd"
+          >
             <img src={add} alt="" className="studentsList__add-img" />
           </div>
         </div>

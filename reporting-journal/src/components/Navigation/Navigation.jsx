@@ -28,8 +28,8 @@ const Navigation = () => {
           <ul className="navigation__list">
             <p className="navigation__list-title">Кураторство</p>
             <li >
-            <Link to="/studentsList" className="navigation__list-element">
-              <img src={group} alt="" /> Ваша группа
+            <Link to="/curatorgroups/*" className="navigation__list-element">
+              <img src={group} alt="" /> Ваши группы
               </Link>
             </li>
             <li >

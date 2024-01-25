@@ -8,7 +8,7 @@ const StudentCard = (obj) => {
       <div className="studentCard__color-block"></div>
       <div className="studentCard__container">
         <p className="studentCard__student">
-          {obj.name} {obj.surname}
+        {obj.surname} {obj.name} {obj.patronymic}
         </p>
         <p className="studentCard__student-role">Роль: {obj.role}</p>
         <div className="studentCard__buttons">
