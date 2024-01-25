@@ -13,12 +13,15 @@
   margin: 0 auto;
   width: 95%;
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
+  justify-content: flex-start;
   column-gap: 15px;
   row-gap: 15px;
 }
 
 .studentsList__add {
+  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  background: #e4e4f0;
   cursor: pointer;
   width: 355px;
   height: 100px;

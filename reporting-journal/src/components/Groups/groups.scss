@@ -11,10 +11,10 @@
 
 .groups__container {
   margin: 0 auto;
-
+  flex-flow: row wrap;
+  justify-content: center;
   width: 95%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1%;
+  gap: 30px;
   row-gap: 30px;
 }

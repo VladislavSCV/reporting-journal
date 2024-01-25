@@ -20,7 +20,7 @@ const StudentCard = (obj) => {
               className="studentCard__settings-btn"
               data-modal="ModalStudentSettings"/>
    
-          <img src={deleteUser} alt="" className="studentCard__delete-btn" />
+          <img src={deleteUser} alt="" data-modal="ModalStudentDelete" className="studentCard__delete-btn" />
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ const Schedule = () => {
         <div className="schedule__day">
           <h1 className="schedule__day-title">Понедельник</h1>
           <div className="schedule__add">
-            <div className="schedule__add-container">
+            <div className="schedule__add-container" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
@@ -18,7 +18,7 @@ const Schedule = () => {
         <div className="schedule__day">
           <h1 className="schedule__day-title">Вторник</h1>
           <div className="schedule__add">
-            <div className="schedule__add-container">
+            <div className="schedule__add-container" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
@@ -26,7 +26,7 @@ const Schedule = () => {
         <div className="schedule__day">
           <h1 className="schedule__day-title">Среда</h1>
           <div className="schedule__add">
-            <div className="schedule__add-container">
+            <div className="schedule__add-container" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
@@ -34,7 +34,7 @@ const Schedule = () => {
         <div className="schedule__day">
           <h1 className="schedule__day-title">Четверг</h1>
           <div className="schedule__add">
-            <div className="schedule__add-container">
+            <div className="schedule__add-container" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
@@ -42,7 +42,7 @@ const Schedule = () => {
         <div className="schedule__day">
           <h1 className="schedule__day-title">Пятница</h1>
           <div className="schedule__add">
-            <div className="schedule__add-container">
+            <div className="schedule__add-container" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>

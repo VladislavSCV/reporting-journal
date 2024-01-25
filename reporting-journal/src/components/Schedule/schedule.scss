@@ -11,14 +11,15 @@
 
 .schedule__container {
   margin: 0 auto;
-
   width: 95%;
+  gap: 60px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 .schedule__day {
+  
   width: 250px;
   text-align: center;
 }
@@ -30,6 +31,8 @@
 
 
 .schedule__add {
+  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  background: #e4e4f0;
   cursor: pointer;
   width: 100%;
   height: 70px;
