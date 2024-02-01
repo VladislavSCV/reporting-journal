@@ -1,16 +1,15 @@
-import UserNav from "../UserNav/UserNav";
-import './curatorGroups.scss'
-import GroupCard from '../GroupCard/GroupCard'
-
-import {objectCuratorGroupCard} from "./../../helpers/objectCuratorGroupCard"
-
+import "./curatorGroups.scss";
+import GroupCard from "../GroupCard/GroupCard";
+import { Route, Routes, Link, Outlet} from "react-router-dom";
+import { objectCuratorGroupCard } from "./../../helpers/objectCuratorGroupCard";
+import StudentsList from "./../StudentsList/StudentsList";
 const CuratorGroups = () => {
   return (
     <div className="curatorGroups">
-      <UserNav />
       <div className="curatorGroups__container">
-      {objectCuratorGroupCard.map((obj, index)=>{
-        return <GroupCard group={obj.group} key={index}/>})}
+        {objectCuratorGroupCard.map((obj, index) => {
+          return <GroupCard link={obj.link} group={obj.group} key={index} />;
+        })}
       </div>
     </div>
   );

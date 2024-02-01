@@ -1,0 +1,33 @@
+.modal__label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modal__input {
+  width: 300px;
+  height: 30px;
+  border-radius: 10px;
+  padding: 0 10px;
+  border: 1px solid #646464;
+  margin-bottom: 30px;
+}
+
+.modal__button {
+  cursor: pointer;
+  display: block;
+  width: 300px;
+  height: 50px;
+  border-radius: 20px;
+  background: #5200ff;
+  color: rgb(255, 255, 255);
+
+  &:hover {
+    background: #5200ff;
+  }
+
+  &:active {
+    background: #5200ff;
+  }
+}
+
+

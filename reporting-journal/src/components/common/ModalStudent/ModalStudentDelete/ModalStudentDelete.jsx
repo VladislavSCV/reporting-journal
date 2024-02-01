@@ -1,5 +1,5 @@
 import React from 'react';
-import "./modalStudentDelete.scss";
+import styles from './ModalStudentDelete.module.scss'
 import Modal from '../../modal/Modal';
 
 const ModalStudentDelete = ({ closeFn = () => null, open = false }) => {
@@ -14,8 +14,8 @@ const ModalStudentDelete = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <p className='modal__text'>Вы точно хотите удалить студента?</p>
-            <button className="modal__button-delete">Удалить</button>
+            <p className={styles.modal__text}>Вы точно хотите удалить студента?</p>
+            <button className={styles.modal__buttonDelete}>Удалить</button>
           </div>
         </div>
       </div>

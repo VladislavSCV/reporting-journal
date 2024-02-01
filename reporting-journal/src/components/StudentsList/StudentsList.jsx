@@ -1,5 +1,4 @@
 import React from "react";
-import UserNav from "../UserNav/UserNav";
 import { objectStudentsList } from "../../helpers/objectStudentsList";
 import StudentCard from "../StudentCard/StudentCard";
 import add from "./../../img/StudentsList/Add.svg";
@@ -9,7 +8,6 @@ import "./studentList.scss";
 const StudentsList = () => {
   return (
     <div className="studentsList">
-      <UserNav />
       <div className="studentsList__container" id="studentList">
         {objectStudentsList.map((obj, index) => {
           return (

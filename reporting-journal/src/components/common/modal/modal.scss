@@ -31,20 +31,6 @@
   font-size: 20px;
 }
 
-.modal__label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.modal__input {
-  width: 300px;
-  height: 30px;
-  border-radius: 10px;
-  padding: 0 10px;
-  border: 1px solid #646464;
-  margin-bottom: 30px;
-}
-
 .modal__close {
   cursor: pointer;
   background-color: #5200ff;
@@ -61,26 +47,3 @@
     background: #4100cc;
   }
 }
-.modal__text{
-  margin-bottom: 30px;
-  font-size: 15px;
-}
-.modal__button-delete {
-  cursor: pointer;
-  display: block;
-  width: 300px;
-  height: 50px;
-  border-radius: 20px;
-  background: #ff5757;
-  color: rgb(255, 255, 255);
-
-  &:hover {
-    background: #ff4747;
-  }
-
-  &:active {
-    background: #ff3939;
-  }
-}
-
-

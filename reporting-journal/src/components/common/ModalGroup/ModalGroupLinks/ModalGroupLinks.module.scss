@@ -1,0 +1,28 @@
+.modal__links{
+  padding: 0 30px 0 30px ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__linkBtn{
+    width: 250px;
+    height: 70px;
+    background: #5200FF;
+    border-radius: 22px;
+    display: block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    
+    &:hover
+  {
+    background: #4600dd;
+  }
+
+  &:active{
+    background: #3e00c4;
+  }
+}

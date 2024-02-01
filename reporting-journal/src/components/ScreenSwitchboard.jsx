@@ -10,13 +10,9 @@ const ScreenSwitchboard = () => {
   return (
     <Routes>
       <Route path="groups" element={<Groups />} />
-
       <Route path="/curatorgroups/*" element={<CuratorGroup />} />
-    
       <Route path="/studentsList" element={<StudentsList />} />
-
-      <Route path="schedule" element={<Schedule />} />
-
+      <Route path="/schedule" element={<Schedule />} />
       <Route path="/" element={<Groups />} />
     </Routes>
   );

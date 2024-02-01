@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Navigation from "./components/Navigation/Navigation";
-import Groups from "./components/Groups/Groups";
-import StudentsList from "./components/StudentsList/StudentsList";
-import Schedule from "./components/Schedule/Schedule";
 import ScreenSwitchboard from "./components/ScreenSwitchboard";
 import ModalManager from "./components/ModalManager";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 function App() {
   const [modalOpen, setModal] = useState(false);
 

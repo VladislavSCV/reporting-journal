@@ -9,9 +9,11 @@ const Navigation = () => {
   return (
     <aside className="navigation">
       <div className="navigation__container">
-        <img src={logo} alt="" className="navigation__logo" />
+        
         <nav className="navigation__lists">
+        <img src={logo} alt="" className="navigation__logo" />
           <ul className="navigation__list">
+      
             <p className="navigation__list-title">Меню</p>
             <li>
               <Link to="/" className="navigation__list-element">
@@ -27,18 +29,25 @@ const Navigation = () => {
           </ul>
           <ul className="navigation__list">
             <p className="navigation__list-title">Кураторство</p>
-            <li >
-            <Link to="/curatorgroups/*" className="navigation__list-element">
-              <img src={group} alt="" /> Ваши группы
+            <li>
+              <Link to="/curatorgroups/*" className="navigation__list-element">
+                <img src={group} alt="" /> Ваши группы
               </Link>
             </li>
-            <li >
+            {/* <li >
             <Link to="/schedule" className="navigation__list-element">
               <img src={check} alt="" /> Посещаемость
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
+        <div className="navigation__user">
+          <div className="navigation__user-avatar"></div>
+          <div className="navigation__user-container">
+            <div className="navigation__user-name">Гилоян Роман</div>
+            <div className="navigation__user-role">Преподаватель</div>
+          </div>
+        </div>
       </div>
     </aside>
   );

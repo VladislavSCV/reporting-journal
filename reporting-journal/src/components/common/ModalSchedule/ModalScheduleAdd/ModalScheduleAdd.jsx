@@ -1,7 +1,7 @@
 import React from "react";
-import "./modalScheduleAdd.scss";
+import styles from './ModalScheduleAdd.module.scss'
 import Modal from "../../modal/Modal";
-
+import addLesson from "../../../../js/addLesson";
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
   return (
     <Modal open={open}>
@@ -14,35 +14,35 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <label htmlFor="lesson" className="modal__label">
+            <label htmlFor="lesson" className={styles.modal__label}>
               Выберите предмет:
             </label>
-            <div className="custom-select">
-              <select className="custom-select1">
+            <div className={styles.modal__customSelect}>
+              <select  id="chooseLesson">
                 <option value="0">Выберите предмет</option>
-                <option value="1">sfdfsd</option>
-                <option value="2">fsdf</option>
-                <option value="3">fdsfds</option>
-                <option value="4">sdfsdf</option>
-                <option value="5">fdsffd</option>
-                <option value="6">fsdf</option>
+                <option value="1">Граф. дизайн</option>
+                <option value="2">Программирование</option>
+                <option value="3">Тестирование</option>
+                <option value="4">Веб-разработка</option>
+                <option value="5">???</option>
+                <option value="6">хз</option>
               </select>
             </div>
-            <label htmlFor="lessonTeacher" className="modal__label">
+            <label htmlFor="lessonTeacher" className={styles.modal__label}>
               Выберите имя преподавателя:
             </label>
-            <div className="custom-select">
-              <select className="custom-select1">
+            <div className={styles.modal__customSelect}>
+              <select  id="chooseTeacher">
                 <option value="0">Выберите преподавателя</option>
-                <option value="1">sfdfsd</option>
-                <option value="2">fsdf</option>
-                <option value="3">fdsfds</option>
-                <option value="4">sdfsdf</option>
-                <option value="5">fdsffd</option>
-                <option value="6">fsdf</option>
+                <option value="1">Ньютон</option>
+                <option value="2">Стэтхем</option>
+                <option value="3">Дуейн Джонсон</option>
+                <option value="4">Сэм Сулек</option>
+                <option value="5">???</option>
+                <option value="6">хз</option>
               </select>
             </div>
-            <button className="modal__button">Добавить</button>
+            <button className={styles.modal__button} onClick={addLesson}>Добавить</button>
           </div>
         </div>
       </div>

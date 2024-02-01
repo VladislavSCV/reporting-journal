@@ -28,10 +28,15 @@
   height: 110px;
 }
 
-.groupCard__add-btn {
+.groupCard__buttons{
   position: absolute;
   right: 0;
   bottom: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.groupCard__add-btn {
   cursor: pointer;
   transition: 0.1s;
   &:hover {

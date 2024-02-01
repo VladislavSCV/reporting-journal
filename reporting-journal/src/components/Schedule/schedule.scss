@@ -11,6 +11,7 @@
 
 .schedule__container {
   margin: 0 auto;
+  margin-top: 70px;
   width: 95%;
   gap: 60px;
   display: flex;
@@ -19,7 +20,6 @@
 }
 
 .schedule__day {
-  
   width: 250px;
   text-align: center;
 }
@@ -29,26 +29,28 @@
   font-weight: bold;
 }
 
+.schedule__add-img{
+  width: 30px;
+  height: 30px;
+}
 
 .schedule__add {
-  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  box-shadow: 1px 1px 5px rgb(184, 184, 184);
   background: #e4e4f0;
   cursor: pointer;
   width: 100%;
   height: 70px;
   margin-top: 10px;
   border-radius: 20px;
-  border: #656565 dashed;
+  border: #989898 dashed 3px;
   display: flex;
   justify-content: center;
   align-items: center;
 
   &:hover {
-
     .schedule__add-img {
       transform: scale(1.2);
     }
-
   }
 }
 
@@ -62,32 +64,19 @@
   transition: 0.5s;
 }
 
-.studentList__modal{
-  padding: 20px;
+.schedule__lesson {
+  margin-top: 10px;
+  padding: 1px;
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  border-radius: 20px;
 }
 
-.studentList__modal-input{
-  display: block;
-  width: 300px;
-  height: 50px;
-  border: 1px solid #656565;
-  padding: 0 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-
+.schedule__lessonName {
+  margin-top: 10px;
 }
-
-.studentList__modal-button{
-  cursor: pointer;
-  width: 300px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #5200FF;
-  color: #e7e7ff;
-  &:hover{
-    background-color: #4700e0;
-  }
-  &:active{
-    background-color: #3b00b9; 
-  }
+.schedule__lessonTeacher {
+  margin-top: 10px;
 }

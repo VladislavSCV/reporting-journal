@@ -1,5 +1,5 @@
 import React from 'react';
-import "./modalStudentSettings.scss";
+import styles from './ModalStudentSettings.module.scss'
 import Modal from '../../modal/Modal';
 
 const ModalStudentSetting = ({ closeFn = () => null, open = false }) => {
@@ -14,11 +14,11 @@ const ModalStudentSetting = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <label htmlFor="studentname" className="modal__label">Введите новое ФИО студента:</label>
-            <input type="text" className="modal__input" placeholder="Иванов Иван Иванович" id="studentname"/>
-            <label htmlFor="studentrole" className="modal__label">Введите новую роль студента:</label>
-            <input type="text" className="modal__input" placeholder="Староста" id="studentrole"/>
-            <button className="modal__button">Изменить</button>
+            <label htmlFor="studentname" className={styles.modal__label}>Введите новое ФИО студента:</label>
+            <input type="text" className={styles.modal__input} placeholder="Иванов Иван Иванович" id="studentname"/>
+            <label htmlFor="studentrole" className={styles.modal__label}>Введите новую роль студента:</label>
+            <input type="text" className={styles.modal__input} placeholder="Староста" id="studentrole"/>
+            <button className={styles.modal__button}>Изменить</button>
           </div>
         </div>
       </div>
