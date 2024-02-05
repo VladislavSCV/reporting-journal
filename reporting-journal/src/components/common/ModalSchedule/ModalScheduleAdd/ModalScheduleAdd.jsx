@@ -18,7 +18,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               Выберите предмет:
             </label>
             <div className={styles.modal__customSelect}>
-              <select  id="chooseLesson">
+              <select  id="chooseLesson" className={styles.modal__select}>
                 <option value="0">Выберите предмет</option>
                 <option value="1">Граф. дизайн</option>
                 <option value="2">Программирование</option>
@@ -32,7 +32,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               Выберите имя преподавателя:
             </label>
             <div className={styles.modal__customSelect}>
-              <select  id="chooseTeacher">
+              <select  id="chooseTeacher" className={styles.modal__select}>
                 <option value="0">Выберите преподавателя</option>
                 <option value="1">Ньютон</option>
                 <option value="2">Стэтхем</option>

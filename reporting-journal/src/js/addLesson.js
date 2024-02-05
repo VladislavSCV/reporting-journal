@@ -1,29 +1,18 @@
-
-
+import { monday } from "../helpers/Schedule/monday";
 
 function addLesson() {
   let lesson = document.getElementById("chooseLesson");
   let lessonOption = lesson.options[lesson.selectedIndex];
-  let lesonText = lessonOption.text
-
+  let lessonText = lessonOption.text;
 
   let teacher = document.getElementById("chooseTeacher");
   let teacherOption = teacher.options[teacher.selectedIndex];
-  let teacherText = teacherOption.text
+  let teacherText = teacherOption.text;
 
+  const newLesson = { lesson: `${lessonText}`, teacher: `${teacherText}` };
 
-  const day = document.getElementById("monday");
+  monday.push(newLesson);
 
-  
-  const newLesson = `<div class="schedule__lesson">
-  <p class="schedule__lessonName">${lesonText}</p>
-  <p class="schedule__lessonTeacher">${teacherText}</p>
-</div>`
-
-  
-  day.insertAdjacentHTML('afterbegin', newLesson)
-
-  
 }
 
 export default addLesson;

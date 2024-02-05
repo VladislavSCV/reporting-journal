@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navigation from "./components/Navigation/Navigation";
+import Navigation from "./components/screens/Navigation/Navigation";
 import ScreenSwitchboard from "./components/ScreenSwitchboard";
 import ModalManager from "./components/ModalManager";
 import { BrowserRouter} from "react-router-dom";
