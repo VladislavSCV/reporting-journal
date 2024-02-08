@@ -1,0 +1,36 @@
+.notesCard {
+  width: 90%;
+  padding: 5px 0;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 1px 1px 5px rgb(184, 184, 184);
+  display: flex;
+}
+
+.notesCard__container {
+  width: 95%;
+  margin: 0 auto;
+  padding: 10px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notesCard__noteName {
+}
+
+.notesCard__noteDescription {
+  margin-top: 10px;
+}
+
+.notesCard__control {
+  gap: 10px;
+  display: flex;
+}
+.notesCard__btn {
+  user-select: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}

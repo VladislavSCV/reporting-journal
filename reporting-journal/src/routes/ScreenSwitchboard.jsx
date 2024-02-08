@@ -7,6 +7,7 @@ import Schedule from "../screens/Schedule/Schedule";
 import CuratorGroups from "../screens/CuratorGroups/CuratorGroups";
 import MainPage from "../screens/MainPage/MainPage";
 import StudentAttendance from '../screens/StudentAttendance/StudentAttendance'
+import Notes from "../screens/Notes/Notes";
 const ScreenSwitchboard = () => {
   return (
     <Routes>
@@ -17,6 +18,7 @@ const ScreenSwitchboard = () => {
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/mainPage" element={<MainPage />} />
       <Route path="/studentAttendance" element={<StudentAttendance/>} />
+      <Route path="/notes" element={<Notes/>} />
     </Routes>
   );
 };

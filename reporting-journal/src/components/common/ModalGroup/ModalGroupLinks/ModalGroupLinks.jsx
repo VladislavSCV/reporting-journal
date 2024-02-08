@@ -19,7 +19,9 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
                   <Link to="/schedule">
                     <button className={styles.modal__linkBtn}>Расписание</button>
                   </Link>
+                  <Link to="/notes">
                   <button className={styles.modal__linkBtn}>Вложения</button>
+                  </Link>
                   <Link to="/studentsList">
                     <button className={styles.modal__linkBtn}>Студенты</button>
                   </Link>
