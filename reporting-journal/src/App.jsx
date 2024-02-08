@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Navigation from "./components/screens/Navigation/Navigation";
-import ScreenSwitchboard from "./components/ScreenSwitchboard";
-import ModalManager from "./components/ModalManager";
+import Navigation from "./screens/Navigation/Navigation";
+import ScreenSwitchboard from "./routes/ScreenSwitchboard";
+import ModalManager from "./routes/ModalManager";
 import { BrowserRouter} from "react-router-dom";
 function App() {
   const [modalOpen, setModal] = useState(false);

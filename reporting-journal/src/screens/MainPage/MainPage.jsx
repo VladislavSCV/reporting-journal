@@ -1,5 +1,5 @@
 import React from "react";
-import welcome from "./../../../img/Welcome.svg";
+import welcome from "./../../assets/Welcome.svg";
 import "./mainPage.scss";
 const MainPage = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
-import settingsUser from "./../../img/StudentCard/settings.svg";
-import deleteUser from "./../../img/StudentCard/delete.svg";
+import settingsUser from "./../../assets/StudentCard/settings.svg";
+import deleteUser from "./../../assets/StudentCard/delete.svg";
 import "./studentCard.scss";
 const StudentCard = (obj) => {
   return (

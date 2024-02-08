@@ -1,12 +1,12 @@
 import React from "react";
 import "./schedule.scss";
-import { monday } from "../../../helpers/Schedule/monday";
-import { tuesday } from "../../../helpers/Schedule/tuesday";
-import { wednesday } from "../../../helpers/Schedule/wednesday";
-import { thursday } from "../../../helpers/Schedule/thursday";
-import { friday } from "../../../helpers/Schedule/friday";
-import LessonCard from "../../LessonCard/LessonCard";
-import add from "./../../../img/GroupCard/Add.svg";
+import { monday } from "../../helpers/Schedule/monday";
+import { tuesday } from "../../helpers/Schedule/tuesday";
+import { wednesday } from "../../helpers/Schedule/wednesday";
+import { thursday } from "../../helpers/Schedule/thursday";
+import { friday } from "../../helpers/Schedule/friday";
+import LessonCard from "../../components/LessonCard/LessonCard";
+import add from "./../../assets/GroupCard/Add.svg";
 const Schedule = () => {
   return (
     <div className="schedule">

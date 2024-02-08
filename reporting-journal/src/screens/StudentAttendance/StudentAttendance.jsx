@@ -1,6 +1,6 @@
 import React from "react";
-import { objectStudentsList } from "../../../helpers/objectStudentsList";
-import StudentAttendanceCard from "../../StudentAttendanceCard/StudentAttendanceCard";
+import { objectStudentsList } from "../../helpers/objectStudentsList";
+import StudentAttendanceCard from "../../components/StudentAttendanceCard/StudentAttendanceCard";
 
 import "./studentAttendance.scss"
 

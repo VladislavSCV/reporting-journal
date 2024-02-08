@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import "./navigation.scss";
-import logo from "./../../../img/nav/Logo.svg";
-import group from "./../../../img/nav/group.svg";
-import calendar from "./../../../img/nav/calnedar.svg";
+import logo from "./../../assets/Logo.svg";
+import group from "./../../assets/nav/group.svg";
+import calendar from "./../../assets/nav/calnedar.svg";
 
 const Navigation = () => {
   return (

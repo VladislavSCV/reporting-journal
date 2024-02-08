@@ -1,6 +1,6 @@
 import "./groupCard.scss";
-import add from "./../../img/GroupCard/Add.svg";
-import settings from "./../../img/GroupCard/settings.svg";
+import add from "./../../assets/GroupCard/Add.svg";
+import settings from "./../../assets/GroupCard/settings.svg";
 
 
 const GroupCard = (obj) => {

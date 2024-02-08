@@ -1,7 +1,7 @@
 import "./curatorGroups.scss";
-import GroupCard from "../../GroupCard/GroupCard";
-import { objectCuratorGroupCard } from "../../../helpers/objectCuratorGroupCard";
-import add from "./../../../img/Groups/Add.svg";
+import GroupCard from "../../components/GroupCard/GroupCard";
+import { objectCuratorGroupCard } from "../../helpers/objectCuratorGroupCard";
+import add from "./../../assets/Groups/Add.svg";
 const CuratorGroups = () => {
   return (
     <div className="curatorGroups">

@@ -1,7 +1,7 @@
 import React from "react";
-import { objectStudentsList } from "../../../helpers/objectStudentsList";
-import StudentCard from "./../../StudentCard/StudentCard";
-import add from "./../../../img/StudentsList/Add.svg";
+import { objectStudentsList } from "../../helpers/objectStudentsList";
+import StudentCard from "../../components/StudentCard/StudentCard";
+import add from "./../../assets/StudentsList/Add.svg";
 
 import "./studentList.scss";
 
