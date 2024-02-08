@@ -10,9 +10,7 @@ const CuratorGroups = () => {
           return <GroupCard link={obj.link} group={obj.group} key={index} />;
         })}
         <div className="groups__add" data-modal="modalCuratorGroupAdd">
-          <div className="groups__add-container">
-            <img src={add} alt="" className="groups__add-img" />
-          </div>
+          <img src={add} alt="" className="groups__add-img" />
         </div>
       </div>
     </div>

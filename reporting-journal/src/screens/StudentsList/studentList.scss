@@ -1,7 +1,7 @@
 .studentsList {
   padding-bottom: 10px;
   margin-top: 20px;
-  background-color: #E7E7FF;
+  background-color: #e7e7ff;
   border-radius: 33px;
   width: 85vw;
   height: 95vh;
@@ -21,7 +21,7 @@
 }
 
 .studentsList__add {
-  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  box-shadow: 1px 1px 5px rgb(184, 184, 184);
   background: #e4e4f0;
   cursor: pointer;
   width: 355px;
@@ -33,23 +33,16 @@
   align-items: center;
 
   &:hover {
-
     .studentsList__add-img {
       transform: scale(1.2);
     }
-
   }
-}
-
-.studentsList__add-container {
-  width: 90%;
 }
 
 .studentsList__add-img {
   display: block;
-  margin-left: auto;
+  margin: 0 auto;
   transition: 0.5s;
   width: 50px;
   height: 50px;
-
 }

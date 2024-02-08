@@ -23,20 +23,15 @@ const Schedule = () => {
                 />
               );
             })}
-            <div className="schedule__add">
-              <div
-                className="schedule__add-container"
-                data-modal="ModalScheduleAdd"
-              >
-                <img src={add} alt="" className="schedule__add-img" />
-              </div>
+            <div className="schedule__add" data-modal="ModalScheduleAdd">
+              <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
         </div>
         <div className="schedule__day">
           <h1 className="schedule__day-title">Вторник</h1>
           <div className="schedule__day-container">
-          {tuesday.map((obj, index) => {
+            {tuesday.map((obj, index) => {
               return (
                 <LessonCard
                   lesson={obj.lesson}
@@ -45,20 +40,15 @@ const Schedule = () => {
                 />
               );
             })}
-            <div className="schedule__add">
-              <div
-                className="schedule__add-container"
-                data-modal="ModalScheduleAdd"
-              >
-                <img src={add} alt="" className="schedule__add-img" />
-              </div>
+            <div className="schedule__add" data-modal="ModalScheduleAdd">
+              <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
         </div>
         <div className="schedule__day">
           <h1 className="schedule__day-title">Среда</h1>
           <div className="schedule__day-container">
-          {wednesday.map((obj, index) => {
+            {wednesday.map((obj, index) => {
               return (
                 <LessonCard
                   lesson={obj.lesson}
@@ -67,20 +57,15 @@ const Schedule = () => {
                 />
               );
             })}
-            <div className="schedule__add">
-              <div
-                className="schedule__add-container"
-                data-modal="ModalScheduleAdd"
-              >
-                <img src={add} alt="" className="schedule__add-img" />
-              </div>
+            <div className="schedule__add" data-modal="ModalScheduleAdd">
+              <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
         </div>
         <div className="schedule__day">
           <h1 className="schedule__day-title">Четверг</h1>
           <div className="schedule__day-container">
-          {thursday.map((obj, index) => {
+            {thursday.map((obj, index) => {
               return (
                 <LessonCard
                   lesson={obj.lesson}
@@ -89,20 +74,15 @@ const Schedule = () => {
                 />
               );
             })}
-            <div className="schedule__add">
-              <div
-                className="schedule__add-container"
-                data-modal="ModalScheduleAdd"
-              >
-                <img src={add} alt="" className="schedule__add-img" />
-              </div>
+            <div className="schedule__add" data-modal="ModalScheduleAdd">
+              <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
         </div>
         <div className="schedule__day">
           <h1 className="schedule__day-title">Пятница</h1>
           <div className="schedule__day-container">
-          {friday.map((obj, index) => {
+            {friday.map((obj, index) => {
               return (
                 <LessonCard
                   lesson={obj.lesson}
@@ -111,13 +91,8 @@ const Schedule = () => {
                 />
               );
             })}
-            <div className="schedule__add">
-              <div
-                className="schedule__add-container"
-                data-modal="ModalScheduleAdd"
-              >
-                <img src={add} alt="" className="schedule__add-img" />
-              </div>
+            <div className="schedule__add" data-modal="ModalScheduleAdd">
+              <img src={add} alt="" className="schedule__add-img" />
             </div>
           </div>
         </div>

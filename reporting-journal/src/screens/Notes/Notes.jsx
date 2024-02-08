@@ -17,10 +17,8 @@ const Notes = () => {
           );
         })}
 
-        <div className="notes__add">
-          <div className="notes__add-container" data-modal="modalNotesAdd">
-            <img src={add} alt="" className="notes__add-img" />
-          </div>
+        <div className="notes__add" data-modal="modalNotesAdd">
+          <img src={add} alt="" className="notes__add-img" />
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@
   font-weight: bold;
 }
 
-.schedule__add-img{
+.schedule__add-img {
   width: 30px;
   height: 30px;
 }
@@ -54,12 +54,8 @@
   }
 }
 
-.schedule__add-container {
-  width: 90%;
-}
-
 .schedule__add-img {
   display: block;
-  margin-left: auto;
+  margin: 0 auto;
   transition: 0.5s;
 }

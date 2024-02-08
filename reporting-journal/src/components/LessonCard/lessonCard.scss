@@ -6,13 +6,13 @@
   width: 100%;
   height: 70px;
   background-color: rgb(255, 255, 255);
-  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  box-shadow: 1px 1px 5px rgb(184, 184, 184);
   border-radius: 20px;
-  &:hover{
+  &:hover {
     background-color: rgb(247, 247, 247);
   }
 
-  &:active{
+  &:active {
     background-color: rgb(238, 238, 238);
   }
 }

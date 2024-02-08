@@ -5,7 +5,7 @@
   height: 100px;
   border-radius: 30px;
   align-items: center;
-  box-shadow: 3px 3px 10px rgb(184, 184, 184);
+  box-shadow: 1px 1px 5px rgb(184, 184, 184);
 }
 .studentCard__color-block {
   background-color: #5200ff;
@@ -28,13 +28,13 @@
   margin-top: 10px;
 }
 
-.studentCard__attendanceBlock{
+.studentCard__attendanceBlock {
   display: flex;
   align-items: center;
 }
 
 .studentCard__attendance {
-  width: 125Px;
+  width: 125px;
   height: 25px;
   margin: 5px 0 0 10px;
   font-size: 15px;
@@ -44,5 +44,4 @@
   border-radius: 10px;
   color: #000;
   cursor: pointer;
-  
 }

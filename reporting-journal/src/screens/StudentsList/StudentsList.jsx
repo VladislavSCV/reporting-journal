@@ -20,13 +20,8 @@ const StudentsList = () => {
             />
           );
         })}
-        <div className="studentsList__add">
-          <div
-            className="studentsList__add-container"
-            data-modal="ModalStudentAdd"
-          >
-            <img src={add} alt="" className="studentsList__add-img" />
-          </div>
+        <div className="studentsList__add" data-modal="ModalStudentAdd">
+          <img src={add} alt="" className="studentsList__add-img" />
         </div>
       </div>
     </div>

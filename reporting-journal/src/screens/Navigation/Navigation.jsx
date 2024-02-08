@@ -10,10 +10,10 @@ const Navigation = () => {
     <aside className="navigation">
       <div className="navigation__container">
         <nav className="navigation__lists">
-          <Link to="/mainPage">
+          <Link to="/main">
             <img src={logo} alt="" className="navigation__logo" />
           </Link>
-            <p className="navigation__list-title">Меню</p>
+          <p className="navigation__list-title">Меню</p>
           <ul className="navigation__list">
             <li>
               <Link to="/groups" className="navigation__list-element">
@@ -27,7 +27,7 @@ const Navigation = () => {
               </Link>
             </li>
           </ul>
-            <p className="navigation__list-title">Кураторство</p>
+          <p className="navigation__list-title">Кураторство</p>
           <ul className="navigation__list">
             <li>
               <Link to="/curatorgroups/*" className="navigation__list-element">
