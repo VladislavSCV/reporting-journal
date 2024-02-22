@@ -1,14 +1,15 @@
 .footer {
-  background: #cecedf;
-  height: 200px;
+  background: #e7e7ff;
+  height: 100%;
   display: flex;
   align-items: center;
+  padding: 20px 0;
 
   &__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 100px;
+    height: 100%;
     width: 95vw;
     margin: 0 auto;
   }

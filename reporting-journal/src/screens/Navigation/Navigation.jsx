@@ -28,7 +28,7 @@ const Navigation = () => {
   return (
     <div className={isActiveBurger ? " navigation_on" : ""}>
       <img
-        src={isActiveBurger ? menu2 : menu}
+        src={ menu}
         alt=""
         className="navigation__burger"
         onClick={burger}

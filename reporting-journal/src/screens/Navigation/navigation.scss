@@ -149,9 +149,10 @@
 
 .navigation_on {
   .navigation {
-    position: absolute;
+    position: fixed;
     display: block;
     z-index: 10;
+
     width: 100%;
   }
 }
