@@ -6,37 +6,42 @@
   border-radius: 30px;
   align-items: center;
   box-shadow: 1px 1px 5px rgb(184, 184, 184);
-}
-.studentCard__color-block {
-  background-color: #5200ff;
-  border-radius: 30px 0 0 30px;
-  width: 25px;
-  height: 100px;
-}
-.studentCard__container {
-  width: 270px;
-  margin: 0 auto;
-  height: 80px;
-}
-.studentCard__student {
-  font-size: 20px;
-  font-weight: bold;
-}
 
-.studentCard__student-role {
-  font-weight: 500;
-  margin-top: 10px;
-}
-.studentCard__buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: end;
-}
+  &__color-block {
+    background-color: #5200ff;
+    border-radius: 30px 0 0 30px;
+    width: 25px;
+    height: 100px;
+  }
 
-.studentCard__settings-btn {
-  cursor: pointer;
-}
+  &__container {
+    width: 270px;
+    margin: 0 auto;
+    height: 80px;
+  }
 
-.studentCard__delete-btn {
-  cursor: pointer;
+  &__student {
+    &-name {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    &-role {
+      font-size: var(--font-size-small);
+      margin-top: 10px;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+
+    &-settings {
+      cursor: pointer;
+    }
+
+    &-delete {
+      cursor: pointer;
+    }
+  }
 }

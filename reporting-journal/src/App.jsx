@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Navigation from "./screens/Navigation/Navigation";
 import ScreenSwitchboard from "./routes/ScreenSwitchboard";
 import ModalManager from "./routes/ModalManager";
-import { BrowserRouter} from "react-router-dom";
+import Footer from "./screens/Footer/Footer";
+import { BrowserRouter } from "react-router-dom";
 function App() {
   const [modalOpen, setModal] = useState(false);
 
@@ -22,14 +23,14 @@ function App() {
 
   return (
     <>
- 
-        <BrowserRouter>
-          <div className="container" onClick={openModal}>
-            <Navigation />
-            <ScreenSwitchboard />
-            <ModalManager closeFn={closeModal} modal={modalOpen} />
-          </div>
-        </BrowserRouter>
+      <BrowserRouter>
+        <div className="container" onClick={openModal}>
+          <Navigation />
+          <ScreenSwitchboard />
+          <ModalManager closeFn={closeModal} modal={modalOpen} />
+        </div>
+        <Footer />
+      </BrowserRouter>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import styles from './ModalGroupLinks.module.scss'
+import styles from "./ModalGroupLinks.module.scss";
 import Modal from "../../modal/Modal";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
   return (
@@ -15,16 +15,16 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-                <div className={styles.modal__links}>
-                  <Link to="/schedule">
-                    <button className={styles.modal__linkBtn}>Расписание</button>
-                  </Link>
-                  <Link to="/notes">
-                  <button className={styles.modal__linkBtn}>Вложения</button>
-                  </Link>
-                  <Link to="/studentsList">
-                    <button className={styles.modal__linkBtn}>Студенты</button>
-                  </Link>
+            <div className={styles.modal__links}>
+              <Link to="/schedule" className={styles.modal__linkBtn}>
+                <button className={styles.modal__linkBtn}>Расписание</button>
+              </Link>
+              <Link to="/notes" className={styles.modal__linkBtn}>
+                <button className={styles.modal__linkBtn}>Вложения</button>
+              </Link>
+              <Link to="/studentsList" className={styles.modal__linkBtn}>
+                <button className={styles.modal__linkBtn}>Студенты</button>
+              </Link>
             </div>
           </div>
         </div>

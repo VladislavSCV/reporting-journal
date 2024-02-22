@@ -6,6 +6,8 @@ import { wednesday } from "../../helpers/Schedule/wednesday";
 import { thursday } from "../../helpers/Schedule/thursday";
 import { friday } from "../../helpers/Schedule/friday";
 import LessonCard from "../../components/LessonCard/LessonCard";
+import left from "../../assets/Schedule/left.svg";
+import right from "../../assets/Schedule/right.svg";
 import add from "./../../assets/GroupCard/Add.svg";
 const Schedule = () => {
   return (
@@ -94,6 +96,18 @@ const Schedule = () => {
             <div className="schedule__add" data-modal="ModalScheduleAdd">
               <img src={add} alt="" className="schedule__add-img" />
             </div>
+          </div>
+        </div>
+        <div className="schedule__swipe">
+          <div className="schedule__swipe-block">
+            <img src={left} alt="" className="schedule__swipe-block-button" />
+            <p className="schedule__swipe-block-button-text">Прошлая неделя</p>
+          </div>
+          <div className="schedule__swipe-block">
+            <p className="schedule__swipe-block-button-text">
+              Следующая неделя
+            </p>
+            <img src={right} alt="" className="schedule__swipe-block-button" />
           </div>
         </div>
       </div>

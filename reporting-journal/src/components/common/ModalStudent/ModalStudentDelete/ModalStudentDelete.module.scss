@@ -1,4 +1,4 @@
-.modal__text{
+.modal__text {
   margin-bottom: 30px;
 }
 
@@ -7,7 +7,7 @@
   display: block;
   width: 100%;
   height: 50px;
-  border-radius: 20px;
+  border-radius: var(--button-border-radius);
   background: #ff4961;
   color: rgb(255, 255, 255);
 
@@ -19,5 +19,3 @@
     background: #ff3c56;
   }
 }
-
-

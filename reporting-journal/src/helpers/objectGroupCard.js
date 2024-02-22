@@ -1,6 +1,6 @@
-
 const objectGroupCard = [
   {
+    id: 121,
     group: "21ИC3-4Д",
   },
   {
@@ -12,7 +12,7 @@ const objectGroupCard = [
   {
     group: "21ИCА3-1Д",
   },
-  { 
+  {
     group: "21ИC3-5Д",
   },
   {
@@ -20,20 +20,7 @@ const objectGroupCard = [
   },
   {
     group: "23ИСП1-1",
-    
   },
-  {
-    group: "23ИСП1-1",
-    
-  },
-  {
-    group: "23ИСП1-1",
-    
-  },
-  {
-    group: "23ИСП1-1",
-    
-  },
-]
+];
 
-export  {objectGroupCard}
+export { objectGroupCard };

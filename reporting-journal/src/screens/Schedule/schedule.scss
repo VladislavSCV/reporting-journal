@@ -1,61 +1,96 @@
 .schedule {
-  padding-bottom: 10px;
-  margin-top: 20px;
-  background-color: #e7e7ff;
-  border-radius: 33px;
-  width: 85vw;
-  height: 95vh;
+  width: 100%;
+  background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-}
+  height: 100vh;
+  padding-bottom: 20px;
+  // padding-bottom: 10px;
+  // margin-top: 20px;
+  // background-color: #e7e7ff;
+  // border-radius: 33px;
+  // width: 85vw;
+  // height: 95vh;
+  // overflow: hidden;
+  // overflow-y: visible;
 
-.schedule__container {
-  margin: 0 auto;
-  margin-top: 70px;
-  width: 95%;
-  gap: 60px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-}
+  &__container {
+    margin: 0 auto;
+    margin-top: 70px;
+    width: 95%;
+    gap: 30px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
 
-.schedule__day {
-  width: 250px;
-  text-align: center;
-}
+  &__day {
+    width: 250px;
+    text-align: center;
 
-.schedule__day-title {
-  font-size: 30px;
-  font-weight: bold;
-}
+    &-title {
+      font-size: 30px;
+      font-weight: bold;
+    }
 
-.schedule__add-img {
-  width: 30px;
-  height: 30px;
-}
-
-.schedule__add {
-  box-shadow: 1px 1px 5px rgb(184, 184, 184);
-  background: #e4e4f0;
-  cursor: pointer;
-  width: 100%;
-  height: 70px;
-  margin-top: 10px;
-  border-radius: 20px;
-  border: #989898 dashed 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    .schedule__add-img {
-      transform: scale(1.2);
+    &-img {
+      width: 30px;
+      height: 30px;
     }
   }
-}
 
-.schedule__add-img {
-  display: block;
-  margin: 0 auto;
-  transition: 0.5s;
+  &__add {
+    // box-shadow: 1px 1px 5px rgb(184, 184, 184);
+    background: var(--block-add-button-bg);
+    cursor: pointer;
+    width: 100%;
+    height: 70px;
+    margin-top: 10px;
+    border-radius: 20px;
+    border: #989898 dashed 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      .schedule__add-img {
+        transform: scale(1.2);
+      }
+    }
+
+    &-img {
+      display: block;
+      width: 30px;
+      height: 30px;
+      margin: 0 auto;
+      transition: 0.5s;
+    }
+  }
+
+  &__swipe {
+    margin-top: 200px;
+    width: 95%;
+
+    display: flex;
+    justify-content: space-between;
+
+    &-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 300ms;
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &-button {
+        &-text {
+          font-weight: 400;
+          color: #989898;
+        }
+      }
+    }
+  }
 }

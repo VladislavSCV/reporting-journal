@@ -2,12 +2,12 @@ import React from "react";
 import { objectStudentsList } from "../../helpers/objectStudentsList";
 import StudentAttendanceCard from "../../components/StudentAttendanceCard/StudentAttendanceCard";
 
-import "./studentAttendance.scss"
+import "./studentAttendance.scss";
 
 const StudentAttendance = () => {
   return (
-    <div className="studentsList">
-      <div className="studentsList__container" id="studentList">
+    <div className="studentAttendance">
+      <div className="studentAttendance__container" id="studentList">
         {objectStudentsList.map((obj, index) => {
           return (
             <StudentAttendanceCard
@@ -19,7 +19,6 @@ const StudentAttendance = () => {
             />
           );
         })}
-       
       </div>
     </div>
   );

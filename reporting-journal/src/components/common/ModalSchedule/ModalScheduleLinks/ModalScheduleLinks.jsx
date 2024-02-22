@@ -16,7 +16,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
           </header>
           <div className="modal__body">
             <div className={styles.modal__links}>
-              <Link to='/studentAttendance'>
+              <Link to="/studentAttendance" className={styles.modal__linkBtn}>
                 <button className={styles.modal__linkBtn}>
                   Отметить отсутствующих
                 </button>

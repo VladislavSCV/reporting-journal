@@ -9,7 +9,7 @@ const main = () => {
           <div className="main__about">
             <h1 className="main__title">Что такое Reporting Journal?</h1>
             <p className="main__text">
-                <span className="main__text-bold"> Reporting Journal</span> - это
+              <span className="main__text-bold"> Reporting Journal</span> - это
               web-приложение, которое упростит работу преподавателя и куратора,
               позволив в одном месте прикреплять для себя темы занятий и
               задания, а также отмечать отсутствующих с дальнейшим экспортом в

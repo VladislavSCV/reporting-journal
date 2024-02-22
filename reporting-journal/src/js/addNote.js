@@ -4,7 +4,11 @@ function addStudent() {
   let noteName = document.getElementById("noteName").value;
   let noteDescription = document.getElementById("noteDescription").value;
 
-  const newObject = { name: `${noteName}`, description: `${noteDescription}` };
+  const newObject = {
+    id: Math.random(),
+    name: `${noteName}`,
+    description: `${noteDescription}`,
+  };
 
   objectNotes.push(newObject);
 }

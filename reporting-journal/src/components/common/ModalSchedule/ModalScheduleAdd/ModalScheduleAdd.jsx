@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './ModalScheduleAdd.module.scss'
+import styles from "./ModalScheduleAdd.module.scss";
 import Modal from "../../modal/Modal";
 import addLesson from "../../../../js/addLesson";
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
@@ -8,7 +8,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
       <div className="modal__mask">
         <div className="modal__window">
           <header className="modal__header">
-            <h1 className="modal__title">Добавление студента</h1>
+            <h1 className="modal__title">Добавить предмет</h1>
             <button className="modal__close" type="button" onClick={closeFn}>
               X
             </button>
@@ -18,7 +18,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               Выберите предмет:
             </label>
             <div className={styles.modal__customSelect}>
-              <select  id="chooseLesson" className={styles.modal__select}>
+              <select id="chooseLesson" className={styles.modal__select}>
                 <option value="0">Выберите предмет</option>
                 <option value="1">Граф. дизайн</option>
                 <option value="2">Программирование</option>
@@ -32,7 +32,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               Выберите имя преподавателя:
             </label>
             <div className={styles.modal__customSelect}>
-              <select  id="chooseTeacher" className={styles.modal__select}>
+              <select id="chooseTeacher" className={styles.modal__select}>
                 <option value="0">Выберите преподавателя</option>
                 <option value="1">Ньютон</option>
                 <option value="2">Стэтхем</option>
@@ -42,7 +42,9 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
                 <option value="6">хз</option>
               </select>
             </div>
-            <button className={styles.modal__button} onClick={addLesson}>Добавить</button>
+            <button className={styles.modal__button} onClick={addLesson}>
+              Добавить
+            </button>
           </div>
         </div>
       </div>

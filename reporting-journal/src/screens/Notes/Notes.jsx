@@ -7,12 +7,12 @@ const Notes = () => {
   return (
     <div className="notes">
       <div className="notes__container">
-        {objectNotes.map((obj, index) => {
+        {objectNotes.map((obj) => {
           return (
             <NotesCard
               name={obj.name}
               description={obj.description}
-              key={index}
+              key={obj.id}
             />
           );
         })}

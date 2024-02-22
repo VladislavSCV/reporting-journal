@@ -1,0 +1,238 @@
+@media (max-width: 1000px) {
+  .navigation__burger {
+    z-index: 100;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: fixed;
+  }
+
+  .main__container {
+    flex-direction: column;
+  }
+
+  .navigation__collapse {
+    display: none;
+  }
+  .navigation {
+    display: none;
+  }
+}
+
+@media (max-width: 790px) {
+  // .groupCard {
+  //   width: 260px;
+  //   height: 155px;
+  //   &__header {
+  //     height: 60px;
+  //   }
+  //   &__group {
+  //     font-size: 20px;
+  //   }
+
+  //   &__container {
+  //     position: relative;
+  //     width: 220px;
+  //     height: 85px;
+  //   }
+  // }
+
+  // .groups__add {
+  //   width: 260px;
+  //   height: 155px;
+
+  //   &-img {
+  //     width: 50px;
+  //     height: 50px;
+  //   }
+  // }
+}
+
+@media (max-width: 600px) {
+  .main__loginBlock-container {
+    width: 300px;
+  }
+  // .groupCard {
+  //   width: 170px;
+  //   height: 120px;
+  //   border-radius: 15px;
+  //   &__header {
+  //     height: 45px;
+  //     border-radius: 15px;
+  //   }
+  //   &__group {
+  //     font-size: 15px;
+  //   }
+
+  //   &__container {
+  //     position: relative;
+  //     width: 150px;
+  //     height: 65px;
+  //   }
+
+  //   &__buttons {
+  //     gap: 5px;
+
+  //     &-links {
+  //       width: 15px;
+  //     }
+  //     &-settings {
+  //       width: 15px;
+  //     }
+  //   }
+  // }
+
+  // .groups__add {
+  //   border-radius: 15px;
+  //   width: 170px;
+  //   height: 120px;
+
+  //   &-img {
+  //     width: 30px;
+  //     height: 30px;
+  //   }
+  // }
+
+  // .groups__container {
+  //   gap: 10px;
+  // }
+
+  // .schedule {
+  //   &__container {
+  //     gap: 20px;
+  //   }
+  //   &__day {
+  //     width: 180px;
+  //     text-align: center;
+  //     &-title {
+  //       font-size: 20px;
+  //     }
+  //   }
+  //   &__lesson {
+  //     &-name {
+  //     }
+
+  //     &-teacher {
+  //     }
+  //   }
+  // }
+}
+
+@media (max-width: 400px) {
+  .main__loginBlock-container {
+    width: 250px;
+  }
+
+  // .groups {
+  //   &__container {
+  //     gap: 10px;
+  //     row-gap: 30px;
+  //   }
+  // }
+  // .groupCard {
+  //   width: 155px;
+  //   height: 100px;
+  //   border-radius: 10px;
+  //   &__header {
+  //     height: 40px;
+  //     border-radius: 10px;
+  //   }
+  //   &__group {
+  //     font-size: 15px;
+  //   }
+
+  //   &__container {
+  //     position: relative;
+  //     width: 145px;
+  //     height: 50px;
+  //   }
+
+  //   &__buttons {
+  //     gap: 5px;
+
+  //     &-links {
+  //       width: 15px;
+  //     }
+  //     &-settings {
+  //       width: 15px;
+  //     }
+  //   }
+  // }
+
+  // .groups__add {
+  //   border-radius: 10px;
+  //   width: 125px;
+  //   height: 85px;
+
+  //   &-img {
+  //     width: 30px;
+  //     height: 30px;
+  //   }
+  // }
+
+  .schedule {
+    &__container {
+      gap: 10px;
+    }
+    &__day {
+      width: 170px;
+      text-align: center;
+      &-title {
+        font-size: 20px;
+      }
+    }
+    &__lesson {
+      &-name {
+        font-size: 15px;
+      }
+
+      &-teacher {
+        font-size: 15px;
+      }
+    }
+  }
+
+  // .studentCard {
+  //   width: 150px;
+  //   height: 70px;
+  //   border-radius: 15px;
+
+  //   &__color-block {
+  //     border-radius: 15px 0 0 15px;
+  //     width: 15px;
+  //     height: 70px;
+  //   }
+
+  //   &__container {
+  //     width: 120px;
+  //     height: 50px;
+  //   }
+
+  //   &__student {
+  //     &-name {
+  //       font-size: 10px;
+  //       font-weight: 600;
+  //     }
+  //     &-role {
+  //       font-size: 10px;
+  //       margin-top: 5px;
+  //     }
+  //   }
+
+  //   &__buttons {
+  //     gap: 10px;
+
+  //     &-settings {
+  //       width: 15px;
+  //       height: 15px;
+  //     }
+
+  //     &-delete {
+  //       width: 15px;
+  //       height: 15px;
+  //     }
+  //   }
+  // }
+}

@@ -16,7 +16,8 @@
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
   padding: 20px;
-
+  box-sizing: content-box;
+  max-width: 500px;
   border-radius: 25px;
 }
 
@@ -27,23 +28,29 @@
   margin-bottom: 30px;
 }
 
-.modal__title{
-  font-size: 30px;
+.modal__title {
+  font-size: 25px;
+  font-weight: 600;
 }
 
 .modal__close {
   cursor: pointer;
-  background-color: #5200ff;
+  background-color: var(--button-color);
   width: 25px;
   height: 25px;
+  font-size: var(--font-size-small);
   border-radius: 5px;
   color: #ffffff;
   margin-left: 30px;
   &:hover {
-    background: #4700e0;
+    background: var(--button-color-hover);
   }
 
   &:active {
-    background: #4100cc;
+    background: var(--button-color-active);
   }
+}
+
+::placeholder {
+  font-size: 15px;
 }

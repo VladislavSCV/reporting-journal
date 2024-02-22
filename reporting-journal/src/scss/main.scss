@@ -1,20 +1,40 @@
-*{
-  font-family: 'Inter', sans-serif;
+@import "./roots";
+@import "./fonts";
+@import "./_reset";
+@import "./media";
+* {
+  font-family: "Inter", sans-serif;
   padding: 0;
   margin: 0;
+  font-weight: 400;
   text-decoration: none;
   box-sizing: border-box;
   color: black;
-  font-size: 15px;
+  font-size: 20px;
   list-style: none;
   outline: none;
   border: 0;
 }
 
-body{
+body {
   background-color: #1d1d1d;
+  // background-color: #e7e7ff;
 }
 
-.container{
+*::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #cdcdec;
+  padding: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #5100ff;
+  border-radius: 100px;
+}
+
+.container {
   display: flex;
 }

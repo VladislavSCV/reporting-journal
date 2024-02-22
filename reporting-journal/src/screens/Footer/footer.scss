@@ -1,0 +1,49 @@
+.footer {
+  background: #cecedf;
+  height: 200px;
+  display: flex;
+  align-items: center;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    width: 95vw;
+    margin: 0 auto;
+  }
+  &__logo {
+    height: 60px;
+    width: 300px;
+  }
+
+  &__contacts {
+    &-title {
+      font-weight: 500;
+    }
+    &-list {
+      li {
+        font-size: var(--font-size-small);
+      }
+      &-links {
+        font-size: var(--font-size-small);
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__other {
+    &-list {
+      li {
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__company {
+    p {
+      font-weight: 300;
+    }
+  }
+}

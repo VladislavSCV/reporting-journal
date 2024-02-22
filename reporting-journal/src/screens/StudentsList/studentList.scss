@@ -1,48 +1,54 @@
 .studentsList {
-  padding-bottom: 10px;
-  margin-top: 20px;
-  background-color: #e7e7ff;
-  border-radius: 33px;
-  width: 85vw;
-  height: 95vh;
+  width: 100%;
+  background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-}
+  height: 100vh;
+  padding-bottom: 20px;
+  // padding-bottom: 10px;
+  // margin-top: 20px;
+  // background-color: #e7e7ff;
+  // border-radius: 33px;
+  // width: 85vw;
+  // height: 95vh;
+  // overflow: hidden;
+  // overflow-y: visible;
 
-.studentsList__container {
-  margin: 0 auto;
-  margin-top: 70px;
-  width: 95%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  column-gap: 15px;
-  row-gap: 15px;
-}
+  &__container {
+    margin: 0 auto;
+    margin-top: 70px;
+    width: 95%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    column-gap: 15px;
+    row-gap: 15px;
+    justify-content: center;
+  }
 
-.studentsList__add {
-  box-shadow: 1px 1px 5px rgb(184, 184, 184);
-  background: #e4e4f0;
-  cursor: pointer;
-  width: 355px;
-  height: 100px;
-  border-radius: 30px;
-  border: #989898 dashed 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &__add {
+    box-shadow: 1px 1px 5px rgb(184, 184, 184);
+    background: #e4e4f0;
+    cursor: pointer;
+    width: 355px;
+    height: 100px;
+    border-radius: 30px;
+    border: #989898 dashed 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &:hover {
-    .studentsList__add-img {
-      transform: scale(1.2);
+    &:hover {
+      .studentsList__add-img {
+        transform: scale(1.2);
+      }
+    }
+    &-img {
+      display: block;
+      margin: 0 auto;
+      transition: 0.5s;
+      width: 50px;
+      height: 50px;
     }
   }
-}
-
-.studentsList__add-img {
-  display: block;
-  margin: 0 auto;
-  transition: 0.5s;
-  width: 50px;
-  height: 50px;
 }
