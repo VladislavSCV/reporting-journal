@@ -4,14 +4,15 @@ import { Outlet, Link } from "react-router-dom";
 import "./navigation.scss";
 import row from "./../../assets/Navigation/left.svg";
 import row2 from "./../../assets/Navigation/right.svg";
-import logo from "./../../assets/Navigation/Logo.svg";
-import logo_text from "./../../assets/Navigation/Logo_text.svg";
 import group from "./../../assets/Navigation/groups.svg";
 import curatorGroup from "./../../assets/Navigation/curator_group.svg";
 import calendar from "./../../assets/Navigation/Schedule.svg";
 import menu from "./../../assets/Navigation/menu.svg";
 import menu2 from "./../../assets/Navigation/menu2.svg";
 import tables from "./../../assets/Navigation/tables.svg";
+import schedule2 from "./../../assets/Navigation/schedule1.svg";
+import notes from "./../../assets/Navigation/notes.svg";
+import studentsLits from "./../../assets/Navigation/studentsList.svg";
 const Navigation = () => {
   const [isActive, setIsActive] = useState(false);
 
@@ -69,7 +70,33 @@ const Navigation = () => {
                 </Link>
               </li>
             </ul>
-            <p className="navigation__list-title">Кураторство</p>
+            <p className="navigation__list-title">Преподавателю</p>
+            <ul className="navigation__list">
+              <li>
+                <Link
+                  to="/groupsStudentsList"
+                  className="navigation__list-element"
+                >
+                  <img src={studentsLits} alt="" />
+                  <p className="navigation__list-element-text">
+                    Список студентов
+                  </p>
+                </Link>
+              </li>
+              <li>
+                <Link to="/GroupsSchedule" className="navigation__list-element">
+                  <img src={schedule2} alt="" />
+                  <p className="navigation__list-element-text">Расписание</p>
+                </Link>
+              </li>
+              <li>
+                <Link to="/GroupsNotes" className="navigation__list-element">
+                  <img src={notes} alt="" />
+                  <p className="navigation__list-element-text">Вложения</p>
+                </Link>
+              </li>
+            </ul>
+            <p className="navigation__list-title">Куратору</p>
             <ul className="navigation__list">
               <li>
                 <Link

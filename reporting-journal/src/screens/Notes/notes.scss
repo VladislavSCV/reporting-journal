@@ -3,7 +3,7 @@
   background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-  height: 100vh;
+  min-height: 100vh;
   padding-bottom: 20px;
   // padding-bottom: 10px;
   // margin-top: 20px;
@@ -33,7 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 1px 1px 5px rgb(184, 184, 184);
+
     cursor: pointer;
     &:hover {
       .notes__add-img {

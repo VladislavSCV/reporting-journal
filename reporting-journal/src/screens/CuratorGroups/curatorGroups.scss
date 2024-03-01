@@ -3,7 +3,7 @@
   background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-  height: 100vh;
+  min-height: 100vh;
   padding-bottom: 20px;
   &__container {
     margin: 0 auto;

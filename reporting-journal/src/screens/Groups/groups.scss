@@ -19,9 +19,20 @@
   &__container {
     margin: 0 auto;
     margin-top: 70px;
+    width: 95%;
+  }
+
+  &__title {
+    margin-bottom: 30px;
+    font-size: 30px;
+    font-weight: 500;
+    display: block;
+  }
+
+  &__list {
+    display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    width: 95%;
     display: flex;
     gap: 30px;
     row-gap: 30px;

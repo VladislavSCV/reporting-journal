@@ -3,7 +3,7 @@
   background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-  height: 100vh;
+  min-height: 100vh;
   padding-bottom: 20px;
   // padding-bottom: 10px;
   // margin-top: 20px;
@@ -27,8 +27,7 @@
   }
 
   &__add {
-    box-shadow: 1px 1px 5px rgb(184, 184, 184);
-    background: #e4e4f0;
+    background: transparent;
     cursor: pointer;
     width: 355px;
     height: 100px;

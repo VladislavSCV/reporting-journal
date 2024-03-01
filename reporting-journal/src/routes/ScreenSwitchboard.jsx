@@ -8,6 +8,9 @@ import CuratorGroups from "../screens/CuratorGroups/CuratorGroups";
 import Main from "../screens/Main/Main";
 import StudentAttendance from "../screens/StudentAttendance/StudentAttendance";
 import Notes from "../screens/Notes/Notes";
+import GroupsNote from "../screens/GroupsNotes/GroupsNotes";
+import GroupsSchedule from "../screens/GroupsSchedule/GroupsSchedule";
+import GroupsStudentsList from "../screens/GroupsStudentsList/GroupsStudentsList";
 const ScreenSwitchboard = () => {
   return (
     <Routes>
@@ -19,6 +22,9 @@ const ScreenSwitchboard = () => {
       <Route path="/main" element={<Main />} />
       <Route path="/studentAttendance" element={<StudentAttendance />} />
       <Route path="/notes" element={<Notes />} />
+      <Route path="/GroupsNotes" element={<GroupsNote />} />
+      <Route path="/GroupsSchedule" element={<GroupsSchedule />} />
+      <Route path="/GroupsStudentsList" element={<GroupsStudentsList />} />
     </Routes>
   );
 };
