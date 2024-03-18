@@ -1,20 +1,19 @@
-import React from "react";
-import "./groupsSchedule.scss";
+import "./curatorGroupsSchedule.scss";
 import GroupCardLinks from "../../components/GroupCardLinks/GroupCardLinks";
-import { objectGroupCard } from "../../helpers/objectGroupCard";
+import { objectCuratorGroupCard } from "../../helpers/objectCuratorGroupCard";
 import add from "./../../assets/Groups/Add.svg";
-const GroupsSchedule = () => {
+const CuratorGroupsSchedule = () => {
   return (
-    <div className="groups">
-      <div className="groups__container">
+    <div className="curatorGroups">
+      <div className="curatorGroups__container">
         <h1 className="groups__title">Расписание группы:</h1>
         <div className="groups__list">
-          {objectGroupCard.map((obj, index) => {
+          {objectCuratorGroupCard.map((obj, index) => {
             return (
               <GroupCardLinks
+                link={obj.schedule}
                 group={obj.group}
                 key={index}
-                link={obj.schedule}
               />
             );
           })}
@@ -24,4 +23,4 @@ const GroupsSchedule = () => {
   );
 };
 
-export default GroupsSchedule;
+export default CuratorGroupsSchedule;

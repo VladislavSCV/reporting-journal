@@ -11,6 +11,9 @@ import Notes from "../screens/Notes/Notes";
 import GroupsNote from "../screens/GroupsNotes/GroupsNotes";
 import GroupsSchedule from "../screens/GroupsSchedule/GroupsSchedule";
 import GroupsStudentsList from "../screens/GroupsStudentsList/GroupsStudentsList";
+import CuratorGroupsNotes from "../screens/CuratorGroupsNotes/CuratorGroupsNotes";
+import CuratorGroupsSchedule from "../screens/CuratorGroupsSchedule/CuratorGroupsSchedule";
+import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/CuratorGroupsStudentsList";
 const ScreenSwitchboard = () => {
   return (
     <Routes>
@@ -25,6 +28,15 @@ const ScreenSwitchboard = () => {
       <Route path="/GroupsNotes" element={<GroupsNote />} />
       <Route path="/GroupsSchedule" element={<GroupsSchedule />} />
       <Route path="/GroupsStudentsList" element={<GroupsStudentsList />} />
+      <Route path="/CuratorGroupsNotes" element={<CuratorGroupsNotes />} />
+      <Route
+        path="/CuratorGroupsSchedule"
+        element={<CuratorGroupsSchedule />}
+      />
+      <Route
+        path="/CuratorGroupsStudentsList"
+        element={<CuratorGroupsStudentsList />}
+      />
     </Routes>
   );
 };

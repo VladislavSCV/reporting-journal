@@ -1,20 +1,19 @@
-import React from "react";
-import "./groupsStudentsList.scss";
+import "./curatorGroupsStudentsList.scss";
 import GroupCardLinks from "../../components/GroupCardLinks/GroupCardLinks";
-import { objectGroupCard } from "../../helpers/objectGroupCard";
+import { objectCuratorGroupCard } from "../../helpers/objectCuratorGroupCard";
 import add from "./../../assets/Groups/Add.svg";
-const GroupsStudentsList = () => {
+const CuratorGroupsStudentsList = () => {
   return (
-    <div className="groups">
-      <div className="groups__container">
+    <div className="curatorGroups">
+      <div className="curatorGroups__container">
         <h1 className="groups__title">Список студентов группы:</h1>
         <div className="groups__list">
-          {objectGroupCard.map((obj, index) => {
+          {objectCuratorGroupCard.map((obj, index) => {
             return (
               <GroupCardLinks
+                link={obj.studentsList}
                 group={obj.group}
                 key={index}
-                link={obj.studentsList}
               />
             );
           })}
@@ -24,4 +23,4 @@ const GroupsStudentsList = () => {
   );
 };
 
-export default GroupsStudentsList;
+export default CuratorGroupsStudentsList;

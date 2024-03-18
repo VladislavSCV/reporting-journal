@@ -8,14 +8,17 @@
   &__container {
     margin: 0 auto;
     margin-top: 70px;
+    width: 95%;
+  }
+
+  &__list {
+    display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    width: 95%;
     display: flex;
     gap: 30px;
     row-gap: 30px;
   }
-
   &__add {
     width: 360px;
     height: 225px;

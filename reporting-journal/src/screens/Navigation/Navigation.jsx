@@ -28,12 +28,7 @@ const Navigation = () => {
 
   return (
     <div className={isActiveBurger ? " navigation_on" : ""}>
-      <img
-        src={ menu}
-        alt=""
-        className="navigation__burger"
-        onClick={burger}
-      />
+      <img src={menu} alt="" className="navigation__burger" onClick={burger} />
       <aside className={`navigation${isActive ? " invisible" : ""}`}>
         <div className="navigation__container">
           <nav className="navigation__lists">
@@ -105,6 +100,36 @@ const Navigation = () => {
                 >
                   <img src={curatorGroup} alt="" />
                   <p className="navigation__list-element-text">Ваши группы</p>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/CuratorGroupsNotes"
+                  className="navigation__list-element"
+                >
+                  <img src={studentsLits} alt="" />
+                  <p className="navigation__list-element-text">
+                    Список студентов
+                  </p>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/CuratorGroupsSchedule"
+                  className="navigation__list-element"
+                >
+                  <img src={schedule2} alt="" />
+                  <p className="navigation__list-element-text">Расписание</p>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/CuratorGroupsStudentsList"
+                  className="navigation__list-element"
+                >
+                  <img src={notes} alt="" />
+                  <p className="navigation__list-element-text">Вложения</p>
                 </Link>
               </li>
               <li>

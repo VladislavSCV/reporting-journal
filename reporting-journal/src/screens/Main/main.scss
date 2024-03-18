@@ -3,7 +3,7 @@
   background-color: var(--layout-bg);
   overflow: hidden;
   overflow-y: visible;
-  height: 100%;
+  min-height: 100vh;
   padding-bottom: 20px;
   // padding-bottom: 10px;
   // margin-top: 20px;
@@ -50,7 +50,7 @@
 
   &__loginBlock {
     // box-shadow: 1px 1px 5px rgb(184, 184, 184);
-    border: var( --border-block);
+    border: var(--border-block);
     background: #ffffff;
     padding: 30px 50px;
     border-radius: 30px;
