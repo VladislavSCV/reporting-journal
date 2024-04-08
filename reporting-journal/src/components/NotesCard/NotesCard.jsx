@@ -2,23 +2,31 @@ import React from "react";
 import "./notesCard.scss";
 import del from "../../assets/NotesCard/delete.svg";
 import settings from "../../assets/NotesCard/settings.svg";
-import deleteNotes from "../../js/deleteNotes";
 import { objectNotes } from "../../helpers/objectNotes";
+import axios from "axios";
 const NotesCard = (obj) => {
+  const deleteNote = async (key) => {
+    try {
+      await axios.delete(`http://localhost:5001/api/notes/${key}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="notesCard" key={obj.id}>
       <div className="notesCard__container">
         <div className="notesCard__info">
-          <h1 className="notesCard__noteName">{obj.name}</h1>
-          <p className="notesCard__noteDescription">{obj.description}</p>
+          <h1 className="notesCard__noteName">{obj.title}</h1>
+          <p className="notesCard__noteDescription">{obj.body}</p>
         </div>
         <div className="notesCard__buttons">
           <img
             src={del}
             alt=""
             className="notesCard__buttons-delete"
-            // onClick={deleteNotes(objectNotes, objectNotes.id)}
-            data-modal="modalNotesDelete"
+            // data-modal="modalNotesDelete"
+            onClick={() => deleteNote(obj.id)}
           />
           <img
             src={settings}
