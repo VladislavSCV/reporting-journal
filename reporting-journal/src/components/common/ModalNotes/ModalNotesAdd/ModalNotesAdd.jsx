@@ -27,7 +27,7 @@ const ModalNotesAdd = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <form onChange={addNote}>
+            <form>
               <label htmlFor="noteName" className={styles.modal__label}>
                 Введите название заметки:
               </label>
@@ -49,9 +49,9 @@ const ModalNotesAdd = ({ closeFn = () => null, open = false }) => {
                 id="noteDescription"
               />
               <button
-                type="button"
+                onClick={addNote}
+                type="submit"
                 className={styles.modal__button}
-                onClick={console.log(1)}
               >
                 Добавить
               </button>

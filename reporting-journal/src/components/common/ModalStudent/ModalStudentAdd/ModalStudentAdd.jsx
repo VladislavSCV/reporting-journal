@@ -1,8 +1,19 @@
-import React from "react";
-import styles from './ModalStudentAdd.module.scss'
+import React, { useState } from "react";
+import styles from "./ModalStudentAdd.module.scss";
 import Modal from "../../modal/Modal";
-import addStudent from '../../../../js/addStudent'
+import axios from "axios";
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+
+  const addStudent = async () => {
+    try {
+      await axios.post("http://localhost:5001/api/students", { name, role });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Modal open={open}>
       <div className="modal__mask">
@@ -14,17 +25,32 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <label htmlFor="studentsurename" className={styles.modal__label}>Введите фамилию студента:</label>
-            <input type="text" className={styles.modal__input} placeholder="Иванов" id="studentsurename"/>
-            <label htmlFor="studentname" className={styles.modal__label}>Введите имя студента:</label>
-            <input type="text" className={styles.modal__input} placeholder="Иван" id="studentname"/>
-            <label htmlFor="studentpatronymic" className={styles.modal__label}>Введите отчество студента:</label>
-            <input type="text" className={styles.modal__input} placeholder="Иванович" id="studentpatronymic"/>
-            <label htmlFor="studentrole" className={styles.modal__label}>Введите роль студента:</label>
-            <input type="text" className={styles.modal__input} placeholder="Староста" id="studentrole"/>
-            <button className={styles.modal__button} onClick={addStudent} id="studentAddBtn">Добавить</button>
+            <form action="">
+              <label htmlFor="studentname" className={styles.modal__label}>
+                Введите ФИО студента:
+              </label>
+              <input
+                type="text"
+                className={styles.modal__input}
+                placeholder="Иванов Иван Иванович"
+                onChange={(e) => setName(e.target.value)}
+                id="studentname"
+              />
+              <label htmlFor="studentrole" className={styles.modal__label}>
+                Введите роль студента:
+              </label>
+              <input
+                type="text"
+                className={styles.modal__input}
+                placeholder="Староста"
+                id="studentrole"
+                onChange={(e) => setRole(e.target.value)}
+              />
+              <button className={styles.modal__button} onClick={addStudent}>
+                Добавить
+              </button>
+            </form>
           </div>
-    
         </div>
       </div>
     </Modal>

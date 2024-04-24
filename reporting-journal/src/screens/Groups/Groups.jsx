@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./groups.scss";
 import GroupCard from "../../components/GroupCard/GroupCard";
 import { objectGroupCard } from "../../helpers/objectGroupCard";
 import add from "./../../assets/Groups/Add.svg";
+import axios from "axios";
 const Groups = () => {
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/groups");
+        setGroups(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroups();
+  }, []);
   return (
     <div className="groups">
       <div className="groups__container">
         <div className="groups__list">
-          {objectGroupCard.map((obj, index) => {
-            return <GroupCard group={obj.group} key={index} />;
+          {groups.map((obj) => {
+            return <GroupCard name={obj.name} key={obj.id} id={obj.id} />;
           })}
 
           <div className="groups__add" data-modal="modalGroupAdd">

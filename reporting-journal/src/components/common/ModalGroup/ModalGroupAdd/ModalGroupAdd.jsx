@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ModalGroupAdd.module.scss";
 import Modal from "../../modal/Modal";
-import addGroup from "../../../../js/addGroup";
+import axios from "axios";
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
+  const [name, setName] = useState("");
+
+  const addGroup = async () => {
+    try {
+      await axios.post("http://localhost:5001/api/groups", { name });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Modal open={open}>
       <div className="modal__mask">
@@ -14,23 +24,22 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-            <label htmlFor="groupName" className={styles.modal__label}>
-              Введите название группы:
-            </label>
-            <input
-              type="text"
-              className={styles.modal__input}
-              placeholder="21ИС3-4Д"
-              id="groupName"
-            />
+            <form>
+              <label htmlFor="groupName" className={styles.modal__label}>
+                Введите название группы:
+              </label>
+              <input
+                type="text"
+                className={styles.modal__input}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="21ИС3-4Д"
+                id="groupName"
+              />
 
-            <button
-              className={styles.modal__button}
-              onClick={addGroup}
-              id="studentAddBtn"
-            >
-              Добавить
-            </button>
+              <button onClick={addGroup} className={styles.modal__button}>
+                Добавить
+              </button>
+            </form>
           </div>
         </div>
       </div>

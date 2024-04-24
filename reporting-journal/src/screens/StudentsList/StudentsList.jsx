@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { objectStudentsList } from "../../helpers/objectStudentsList";
 import StudentCard from "../../components/StudentCard/StudentCard";
 import add from "./../../assets/StudentsList/Add.svg";
-
+import axios from "axios";
 import "./studentList.scss";
 
 const StudentsList = () => {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/students");
+        setStudents(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStudents();
+  }, []);
   return (
     <div className="studentsList">
       <div className="studentsList__container" id="studentList">
-        {objectStudentsList.map((obj, index) => {
+        {students.map((stundet) => {
           return (
             <StudentCard
-              surname={obj.surname}
-              name={obj.name}
-              patronymic={obj.patronymic}
-              role={obj.role}
-              key={index}
+              name={stundet.name}
+              role={stundet.role}
+              key={stundet.id}
+              id={stundet.id}
             />
           );
         })}
