@@ -124,10 +124,7 @@ const Navigation = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/CuratorGroupsStudentsList"
-                  className="navigation__list-element"
-                >
+                <Link to="/GroupsNotes" className="navigation__list-element">
                   <img src={notes} alt="" />
                   <p className="navigation__list-element-text">Вложения</p>
                 </Link>

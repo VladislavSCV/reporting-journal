@@ -1,5 +1,4 @@
-const { Group } = require("../models/group");
-const { Note } = require("../models/note");
+const { Group } = require("../models/models");
 
 class GroupController {
   async addGroup(req, res) {
