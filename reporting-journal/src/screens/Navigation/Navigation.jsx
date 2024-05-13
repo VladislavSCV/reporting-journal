@@ -46,7 +46,7 @@ const Navigation = () => {
               </div>
             </div>
             <img
-              src={isActive ? row : row2}
+              src={isActive ? row2 : row}
               onClick={inv}
               className="navigation__collapse"
             />

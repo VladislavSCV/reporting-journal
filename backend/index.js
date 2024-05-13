@@ -4,7 +4,7 @@ const sequelize = require("./db");
 const bodyParser = require("body-parser");
 
 const cors = require("cors");
-
+const coockieParser = require("cookie-parser");
 const router = require("./routes/index");
 
 const PORT = process.env.PORT || 5002;
@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 app.use(express.json());
+app.use(coockieParser());
 app.use("/api", router);
 
 const start = async () => {

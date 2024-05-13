@@ -8,7 +8,7 @@ const ModalStudentDelete = ({ closeFn = () => null, open = false }) => {
       <div className="modal__mask">
         <div className="modal__window">
           <header className="modal__header">
-            <h1 className="modal__title">Как поулчить доступ?</h1>
+            <h1 className="modal__title">Как получить доступ?</h1>
             <button className="modal__close" type="button" onClick={closeFn}>
               X
             </button>

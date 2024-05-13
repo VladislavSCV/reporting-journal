@@ -13,6 +13,8 @@ const Schedule = () => {
   return (
     <div className="schedule">
       <div className="schedule__container">
+        <div className="schedule__date"></div>
+
         <div className="schedule__day">
           <h1 className="schedule__day-title">Понедельник</h1>
           <div className="schedule__day-container">
