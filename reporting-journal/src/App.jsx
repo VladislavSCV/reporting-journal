@@ -4,7 +4,12 @@ import ScreenSwitchboard from "./routes/ScreenSwitchboard";
 import ModalManager from "./routes/ModalManager";
 import Footer from "./screens/Footer/Footer";
 import { BrowserRouter } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 function App() {
+
+  const dispatch = useDispatch();
+
+  const isAuth = useSelector((state) => state.user.isAuth);
   const [modalOpen, setModal] = useState(false);
 
   const openModal = (event) => {
@@ -25,7 +30,7 @@ function App() {
     <>
       <BrowserRouter>
         <div className="container" onClick={openModal}>
-          <Navigation />
+          {isAuth && <Navigation />}
           <ScreenSwitchboard />
           <ModalManager closeFn={closeModal} modal={modalOpen} />
         </div>

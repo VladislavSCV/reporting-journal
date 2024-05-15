@@ -66,8 +66,13 @@ class authController {
   }
   async getUsers(req, res) {
     try {
-      const users = await User.findAll();
-      res.json(users);
+      const adminRole = new Role({ value: "admin" });
+
+     
+      await adminRole.save();
+      res.json({ adminRole });
+      // const users = await User.findAll();
+      // res.json(users);
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "Произошла ошибка при создании роли" });
