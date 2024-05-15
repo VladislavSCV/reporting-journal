@@ -1,19 +1,19 @@
 import React from "react";
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
-import "./navigation.scss";
-import row from "./../../assets/Navigation/left.svg";
-import row2 from "./../../assets/Navigation/right.svg";
-import group from "./../../assets/Navigation/groups.svg";
-import curatorGroup from "./../../assets/Navigation/curator_group.svg";
-import calendar from "./../../assets/Navigation/Schedule.svg";
-import menu from "./../../assets/Navigation/menu.svg";
-import menu2 from "./../../assets/Navigation/menu2.svg";
-import tables from "./../../assets/Navigation/tables.svg";
-import schedule2 from "./../../assets/Navigation/schedule1.svg";
-import notes from "./../../assets/Navigation/notes.svg";
-import studentsLits from "./../../assets/Navigation/studentsList.svg";
-const Navigation = () => {
+import "./userNavigation.scss";
+import row from "./../../../assets/Navigation/left.svg";
+import row2 from "./../../../assets/Navigation/right.svg";
+import group from "./../../../assets/Navigation/groups.svg";
+import curatorGroup from "./../../../assets/Navigation/curator_group.svg";
+import calendar from "./../../../assets/Navigation/Schedule.svg";
+import menu from "./../../../assets/Navigation/menu.svg";
+import menu2 from "./../../../assets/Navigation/menu2.svg";
+import tables from "./../../../assets/Navigation/tables.svg";
+import schedule2 from "./../../../assets/Navigation/schedule1.svg";
+import notes from "./../../../assets/Navigation/notes.svg";
+import studentsLits from "./../../../assets/Navigation/studentsList.svg";
+const UserNavigation = () => {
   const [isActive, setIsActive] = useState(false);
 
   const inv = () => {
@@ -152,4 +152,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default UserNavigation;

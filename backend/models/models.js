@@ -6,7 +6,7 @@ const User = sequelize.define("user", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING },
   role: { type: DataTypes.STRING },
-  groupId: { type: DataTypes.INTEGER },
+  // groupId: { type: DataTypes.INTEGER },
   login: { type: DataTypes.STRING },
   password: { type: DataTypes.STRING },
 });

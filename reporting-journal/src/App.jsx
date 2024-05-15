@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import Navigation from "./screens/Navigation/Navigation";
+import AdminNavigation from "./screens/Navigation/AdminNavigation/AdminNavigation";
+import TeacherNavigation from "./screens/Navigation/TeacherNavigation/TeacherNavigation";
+import HeadmanNavigation from "./screens/Navigation/HeadmanNavigation/HeadmanNavigation";
+import UserNavigation from "./screens/Navigation/UserNavigation/UserNavigation";
 import ScreenSwitchboard from "./routes/ScreenSwitchboard";
 import ModalManager from "./routes/ModalManager";
 import Footer from "./screens/Footer/Footer";
 import { BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 function App() {
-
   const dispatch = useDispatch();
-
+  const test = async () => {
+    try {
+      await axios.get(`http://localhost:5001/api/auth/user`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  test();
   const isAuth = useSelector((state) => state.user.isAuth);
   const [modalOpen, setModal] = useState(false);
 
@@ -30,7 +40,7 @@ function App() {
     <>
       <BrowserRouter>
         <div className="container" onClick={openModal}>
-          {isAuth && <Navigation />}
+          {isAuth && <UserNavigation />}
           <ScreenSwitchboard />
           <ModalManager closeFn={closeModal} modal={modalOpen} />
         </div>
