@@ -66,12 +66,8 @@ class authController {
   }
   async getUsers(req, res) {
     try {
-      const adminRole = new Role({ value: "admin" });
-
-      await adminRole.save();
-      res.json({ adminRole });
-      // const users = await User.findAll();
-      // res.json(users);
+      const users = await User.findAll();
+      res.json(users);
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "Произошла ошибка при создании роли" });
@@ -81,6 +77,16 @@ class authController {
     try {
       const user = await User.findOne({ where: { id: req.params.id } });
       res.json(user);
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ error: "1" });
+    }
+  }
+  async postUserRole(req, res) {
+    try {
+      const adminRole = new Role({ value: "admin" });
+      await adminRole.save();
+      res.json({ adminRole });
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "1" });

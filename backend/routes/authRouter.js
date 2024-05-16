@@ -25,5 +25,10 @@ router.get(
 
   authController.getUser
 );
+router.get(
+  "/role",
+
+  authController.postUserRole
+);
 
 module.exports = router;
