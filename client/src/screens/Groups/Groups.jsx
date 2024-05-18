@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./groups.scss";
 import GroupCard from "../../components/GroupCard/GroupCard";
-import { objectGroupCard } from "../../helpers/objectGroupCard";
 import add from "./../../assets/Groups/Add.svg";
 import axios from "axios";
 const Groups = () => {

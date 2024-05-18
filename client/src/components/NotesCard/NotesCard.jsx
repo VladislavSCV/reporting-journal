@@ -2,7 +2,6 @@ import React from "react";
 import "./notesCard.scss";
 import del from "../../assets/NotesCard/delete.svg";
 import settings from "../../assets/NotesCard/settings.svg";
-import { objectNotes } from "../../helpers/objectNotes";
 import axios from "axios";
 const NotesCard = (obj) => {
   const deleteNote = async (key) => {
