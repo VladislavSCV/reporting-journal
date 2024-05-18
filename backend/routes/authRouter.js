@@ -31,4 +31,6 @@ router.get(
   authController.postUserRole
 );
 
+router.get("/auth", authMiddleware, authController.auth);
+
 module.exports = router;

@@ -6,7 +6,7 @@ const User = sequelize.define("user", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING },
   role: { type: DataTypes.STRING },
-  // groupId: { type: DataTypes.INTEGER },
+  groupId: { type: DataTypes.INTEGER },
   login: { type: DataTypes.STRING },
   password: { type: DataTypes.STRING },
 });
@@ -58,12 +58,21 @@ const Schedule = sequelize.define("schedule", {
   },
 });
 
+const Student = sequelize.define("student", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING },
+  groupId: { type: DataTypes.INTEGER },
+  role: { type: DataTypes.STRING },
+});
+
 User.belongsTo(Group, { foreignKey: "groupId" });
 User.hasOne(Role, { through: "UserRoles", as: "roles" });
 Role.belongsToMany(User, { through: "UserRoles", as: "users" });
 Note.belongsTo(Group, { foreignKey: "groupId" });
 Schedule.belongsTo(Group, { foreignKey: "groupId" });
+Student.belongsTo(Group, { foreignKey: "groupId" });
 Group.hasMany(Note, { foreignKey: "groupId" });
 Group.hasMany(User, { foreignKey: "groupId" });
 Group.hasMany(Schedule, { foreignKey: "groupId" });
-module.exports = { User, Role, Note, Group, Schedule };
+Group.hasMany(Student, { foreignKey: "groupId" });
+module.exports = { User, Role, Note, Group, Schedule, Student };

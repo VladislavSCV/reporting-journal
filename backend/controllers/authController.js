@@ -5,10 +5,9 @@ const jwt = require("jsonwebtoken");
 
 const { SECRET_KEY } = process.env;
 
-const generateAccessToken = (id, role) => {
+const generateAccessToken = (id) => {
   const payload = {
     id,
-    role,
   };
 
   return jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
@@ -30,14 +29,13 @@ class authController {
           .json({ message: "Такой пользователь уже существует" });
       }
       const hashPassword = bcrypt.hashSync(password, 7);
-      const userRole = await Role.findOne({ where: { value: "user" } });
+      const userRole = await Role.findOne({ where: { value: "admin" } });
 
       const user = await User.create({
         name: "Гилоян Роман",
         login,
         password: hashPassword,
         role: userRole.value,
-        group: "21ис3-4д",
       });
 
       await user.save();
@@ -60,8 +58,18 @@ class authController {
       if (!validPassword) {
         return res.status(400).json({ message: "Неверный пароль" });
       }
-      const token = generateAccessToken(user.id, user.role);
-      return res.json({ token });
+      const token = generateAccessToken(user.id);
+      return res.json({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          login: user.login,
+          password: user.password,
+          role: user.role,
+          groupId: user.groupId,
+        },
+      });
     } catch (e) {}
   }
   async getUsers(req, res) {
@@ -84,12 +92,33 @@ class authController {
   }
   async postUserRole(req, res) {
     try {
-      const adminRole = new Role({ value: "admin" });
+      const adminRole = new Role({ value: "user" });
       await adminRole.save();
       res.json({ adminRole });
     } catch (e) {
       console.error(e);
       res.status(500).json({ error: "1" });
+    }
+  }
+
+  async auth(req, res) {
+    try {
+      const user = await User.findOne({ where: { id: req.user.id } });
+      const token = generateAccessToken(user.id);
+      return res.json({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          login: user.login,
+          password: user.password,
+          role: user.role,
+          groupId: user.groupId,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      res.send({ message: "Server error" });
     }
   }
 }
