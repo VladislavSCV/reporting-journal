@@ -39,15 +39,25 @@ const TeacherNavigation = () => {
         <div className="navigation__container">
           <nav className="navigation__lists">
            
-            <div className="navigation__user">
-              <div className="navigation__user-avatar"></div>
+          <div className="navigation__user">
               <div className="navigation__user-container">
-                <p className="navigation__user-name">
-                  {store.getState().user.currentUser.name}
-                </p>
-                <p className="navigation__user-role">
-                  {store.getState().user.currentUser.role}
-                </p>
+                <div className="navigation__user-avatar"></div>
+                <div className="navigation__user-info">
+                  <p className="navigation__user-name">
+                    {store.getState().user.currentUser.name}
+                  </p>
+                  <p className="navigation__user-role">
+                    {store.getState().user.currentUser.role}
+                  </p>
+                  {/* <div className="navigation__user-buttons">
+                  <img
+                    className="navigation__user-button-exit"
+                    src={exit}
+                    alt=""
+                    onClick={() => dispatch(logout())}
+                  />
+                </div> */}
+                </div>
               </div>
               <div className="navigation__user-buttons">
                 <img
