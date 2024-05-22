@@ -16,6 +16,8 @@ const GroupCard = (obj) => {
             alt=""
             className="groupCard__buttons-links"
             data-modal="modalGroupSettings"
+            data-id={obj.id}
+            onClick={() => console.log(obj.id)}
           />
           {/* <img
               src={add}

@@ -92,7 +92,7 @@ class authController {
   }
   async postUserRole(req, res) {
     try {
-      const adminRole = new Role({ value: "user" });
+      const adminRole = new Role({ value: "admin" });
       await adminRole.save();
       res.json({ adminRole });
     } catch (e) {

@@ -19,6 +19,16 @@ class StudentController {
     });
     return res.json(student);
   }
+
+  async putStudent(req, res) {
+    const student = Student.update(
+      {
+        name: req.body.name,
+        role: req.body.role,
+      },
+      { where: { id: req.params.id } }
+    );
+  }
 }
 
 module.exports = new StudentController();

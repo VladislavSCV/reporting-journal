@@ -19,7 +19,7 @@ import ModalNotesAdd from "../components/common/ModalNotes/ModalNotesAdd/ModalNo
 import ModalNotesDelete from "../components/common/ModalNotes/ModalNotesDelete/ModalNotesDelete";
 import ModalNotesSettings from "../components/common/ModalNotes/ModalNotesSettings/ModalNotesSettings";
 
-const ModalManager = ({ closeFn, modal = "" }) => {
+const ModalManager = ({ closeFn, modal = "", id }) => {
   return (
     <>
       <ModalMainInfo closeFn={closeFn} open={modal === "modalMainInfo"} />
@@ -45,6 +45,7 @@ const ModalManager = ({ closeFn, modal = "" }) => {
       <ModalGroupSettings
         closeFn={closeFn}
         open={modal === "modalGroupSettings"}
+        id={id}
       />
 
       <ModalCuratorGroupAdd

@@ -19,6 +19,16 @@ class NoteController {
     });
     return res.json(note);
   }
+
+  async putNote(req, res) {
+    const note = Student.update(
+      {
+        title: req.body.title,
+        body: req.body.body,
+      },
+      { where: { id: req.params.id } }
+    );
+  }
 }
 
 module.exports = new NoteController();

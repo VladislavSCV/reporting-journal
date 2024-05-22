@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ModalGroupSettings.module.scss";
 import Modal from "../../modal/Modal";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-const ModalGroupSettings = ({ closeFn = () => null, open = false }) => {
+const ModalGroupSettings = ({ closeFn = () => null, open = false, id }) => {
+  const [name, setName] = useState("");
+
+  const putGroup = async (key) => {
+    try {
+      await axios.put(`http://localhost:5001/api/groups/${key}`, {
+        name,
+      });
+      setName("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Modal open={open}>
       <div className="modal__mask">
@@ -15,11 +29,24 @@ const ModalGroupSettings = ({ closeFn = () => null, open = false }) => {
             </button>
           </header>
           <div className="modal__body">
-                
-                <label htmlFor="studentsurename" className={styles.modal__label}>Введите новое название:</label>
-                <input type="text" className={styles.modal__input} placeholder="21ИС3-4Д" id="studentsurename"/>
-                <button className={styles.modal__button}> Изменить </button>
-
+            <form action="">
+              <label htmlFor="studentsurename" className={styles.modal__label}>
+                Введите новое название:
+              </label>
+              <input
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                className={styles.modal__input}
+                placeholder="21ИС3-4Д"
+                id="studentsurename"
+              />
+              <button
+                className={styles.modal__button}
+                onClick={() => putGroup(id)}
+              >
+                Изменить
+              </button>
+            </form>
           </div>
         </div>
       </div>

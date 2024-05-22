@@ -19,6 +19,15 @@ class GroupController {
     });
     return res.json(group);
   }
+
+  async putGroup(req, res) {
+    const posts = Group.update(
+      {
+        name: req.body.name,
+      },
+      { where: { id: req.params.id } }
+    );
+  }
 }
 
 module.exports = new GroupController();
