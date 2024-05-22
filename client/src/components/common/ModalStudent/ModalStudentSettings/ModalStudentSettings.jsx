@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ModalStudentSettings.module.scss";
 import Modal from "../../modal/Modal";
+import axios from "axios";
 
-const ModalStudentSetting = ({ closeFn = () => null, open = false }) => {
+const ModalStudentSetting = ({ closeFn = () => null, open = false, id }) => {
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const putStudent = async (key) => {
+    try {
+      await axios.put(`http://localhost:5001/api/students/${key}`, {
+        name,
+        role,
+      });
+      setName("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Modal open={open}>
       <div className="modal__mask">
@@ -19,6 +34,7 @@ const ModalStudentSetting = ({ closeFn = () => null, open = false }) => {
             </label>
             <input
               type="text"
+              onChange={(e) => setName(e.target.value)}
               className={styles.modal__input}
               placeholder="Иванов Иван Иванович"
               id="studentname"
@@ -28,11 +44,17 @@ const ModalStudentSetting = ({ closeFn = () => null, open = false }) => {
             </label>
             <input
               type="text"
+              onChange={(e) => setRole(e.target.value)}
               className={styles.modal__input}
               placeholder="Староста"
               id="studentrole"
             />
-            <button className={styles.modal__button}>Изменить</button>
+            <button
+              className={styles.modal__button}
+              onClick={() => putStudent(id)}
+            >
+              Изменить
+            </button>
           </div>
         </div>
       </div>

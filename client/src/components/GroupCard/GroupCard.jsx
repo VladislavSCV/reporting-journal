@@ -1,9 +1,16 @@
 import "./groupCard.scss";
-import add from "./../../assets/GroupCard/Add.svg";
 import settings from "./../../assets/GroupCard/settings.svg";
-import { Link } from "react-router-dom";
+import del from "../../assets/GroupCard/delete.svg";
+import axios from "axios";
 
 const GroupCard = (obj) => {
+  const deleteGroup = async (key) => {
+    try {
+      await axios.delete(`http://localhost:5001/api/groups/${key}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="groupCard" key={obj.id}>
       <div className="groupCard__header">
@@ -17,14 +24,14 @@ const GroupCard = (obj) => {
             className="groupCard__buttons-links"
             data-modal="modalGroupSettings"
             data-id={obj.id}
-            onClick={() => console.log(obj.id)}
           />
-          {/* <img
-              src={add}
-              alt=""
-              className="groupCard__buttons-settings"
-              data-modal="modalGroupLinks"
-            /> */}
+          <img
+            src={del}
+            alt=""
+            className="groupCard__buttons-settings"
+            onClick={() => deleteGroup(obj.id)}
+            // data-modal="modalGroupDelete"
+          />
         </div>
       </div>
     </div>

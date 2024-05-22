@@ -13,6 +13,7 @@ import { store } from "./reducers";
 import { auth } from "./actions/users";
 function App() {
   const [modalOpen, setModal] = useState(false);
+  const [id, setId] = useState(false);
   const isAuth = useSelector((state) => state.user.isAuth);
   const dispatch = useDispatch();
 
@@ -27,9 +28,13 @@ function App() {
     const {
       target: {
         dataset: { modal },
+        dataset: { id },
       },
     } = event;
-    if (modal) setModal(modal);
+    if (modal) {
+      setModal(modal);
+      setId(id);
+    }
   };
 
   const closeModal = () => {
@@ -56,7 +61,7 @@ function App() {
           {isAuth && getRole()}
           {console.log(store.getState())}
           <ScreenSwitchboard />
-          <ModalManager closeFn={closeModal} modal={modalOpen} />
+          <ModalManager closeFn={closeModal} modal={modalOpen} id={id} />
         </div>
         <Footer />
       </BrowserRouter>

@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import styles from "./ModalNotesAdd.module.scss";
 import Modal from "../../modal/Modal";
 import axios from "axios";
-import addNote from "../../../../js/addNote";
 
-const ModalNotesAdd = ({ closeFn = () => null, open = false }) => {
+const ModalNotesAdd = ({ closeFn = () => null, open = false, id }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const addNote = async () => {
     try {
-      await axios.post("http://localhost:5001/api/notes", { title, body });
+      await axios.post("http://localhost:5001/api/notes", {
+        title,
+        body,
+        groupId: id,
+      });
     } catch (error) {
       console.error(error);
     }

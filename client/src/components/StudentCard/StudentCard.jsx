@@ -25,6 +25,7 @@ const StudentCard = (obj) => {
             alt=""
             className="studentCard__buttons-settings"
             data-modal="ModalStudentSettings"
+            data-id={obj.id}
           />
 
           <img

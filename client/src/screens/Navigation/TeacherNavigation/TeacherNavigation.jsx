@@ -38,8 +38,7 @@ const TeacherNavigation = () => {
       <aside className={`navigation${isActive ? " invisible" : ""}`}>
         <div className="navigation__container">
           <nav className="navigation__lists">
-           
-          <div className="navigation__user">
+            <div className="navigation__user">
               <div className="navigation__user-container">
                 <div className="navigation__user-avatar"></div>
                 <div className="navigation__user-info">
@@ -129,7 +128,7 @@ const TeacherNavigation = () => {
 
               <li>
                 <Link
-                  to="/CuratorGroupsNotes"
+                  to="/CuratorGroupsStudentsList"
                   className="navigation__list-element"
                 >
                   <img src={studentsLits} alt="" />
@@ -148,7 +147,10 @@ const TeacherNavigation = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/GroupsNotes" className="navigation__list-element">
+                <Link
+                  to="/CuratorGroupsNotes"
+                  className="navigation__list-element"
+                >
                   <img src={notes} alt="" />
                   <p className="navigation__list-element-text">Вложения</p>
                 </Link>

@@ -12,6 +12,7 @@ import ModalScheduleLinks from "../components/common/ModalSchedule/ModalSchedule
 import ModalGroupAdd from "../components/common/ModalGroup/ModalGroupAdd/ModalGroupAdd";
 import ModalGroupLinks from "../components/common/ModalGroup/ModalGroupLinks/ModalGroupLinks";
 import ModalGroupSettings from "../components/common/ModalGroup/ModalGroupSettings/ModalGroupSettings";
+import ModalGroupDelete from "../components/common/ModalGroup/ModalGroupDelete/ModalGroupDelete";
 
 import ModalCuratorGroupAdd from "../components/common/ModalCuratorGroup/ModalCuratorGroupAdd/ModalCuratorGroupAdd";
 
@@ -24,7 +25,11 @@ const ModalManager = ({ closeFn, modal = "", id }) => {
     <>
       <ModalMainInfo closeFn={closeFn} open={modal === "modalMainInfo"} />
 
-      <ModalStudentAdd closeFn={closeFn} open={modal === "ModalStudentAdd"} />
+      <ModalStudentAdd
+        closeFn={closeFn}
+        open={modal === "ModalStudentAdd"}
+        id={id}
+      />
       <ModalStudentDelete
         closeFn={closeFn}
         open={modal === "ModalStudentDelete"}
@@ -32,6 +37,7 @@ const ModalManager = ({ closeFn, modal = "", id }) => {
       <ModalStudentSettings
         closeFn={closeFn}
         open={modal === "ModalStudentSettings"}
+        id={id}
       />
 
       <ModalScheduleAdd closeFn={closeFn} open={modal === "ModalScheduleAdd"} />
@@ -47,17 +53,27 @@ const ModalManager = ({ closeFn, modal = "", id }) => {
         open={modal === "modalGroupSettings"}
         id={id}
       />
+      <ModalGroupDelete
+        closeFn={closeFn}
+        open={modal === "modalGroupDelete"}
+        id={id}
+      />
 
       <ModalCuratorGroupAdd
         closeFn={closeFn}
         open={modal === "modalCuratorGroupAdd"}
       />
 
-      <ModalNotesAdd closeFn={closeFn} open={modal === "modalNotesAdd"} />
+      <ModalNotesAdd
+        closeFn={closeFn}
+        open={modal === "modalNotesAdd"}
+        id={id}
+      />
       <ModalNotesDelete closeFn={closeFn} open={modal === "modalNotesDelete"} />
       <ModalNotesSettings
         closeFn={closeFn}
         open={modal === "modalNotesSettings"}
+        id={id}
       />
     </>
   );

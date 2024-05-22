@@ -25,7 +25,11 @@ class GroupController {
       {
         name: req.body.name,
       },
-      { where: { id: req.params.id } }
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
     );
   }
 }

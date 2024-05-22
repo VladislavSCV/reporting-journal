@@ -12,7 +12,6 @@ function addLesson() {
   const newLesson = { lesson: `${lessonText}`, teacher: `${teacherText}` };
 
   monday.push(newLesson);
-
 }
 
 export default addLesson;

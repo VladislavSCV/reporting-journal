@@ -32,6 +32,7 @@ const NotesCard = (obj) => {
             alt=""
             className="notesCard__buttons-settings"
             data-modal="modalNotesSettings"
+            data-id={obj.id}
           />
         </div>
       </div>

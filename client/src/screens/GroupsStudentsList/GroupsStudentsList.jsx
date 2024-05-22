@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./groupsStudentsList.scss";
 import GroupCardLinks from "../../components/GroupCardLinks/GroupCardLinks";
-import { objectGroupCard } from "../../helpers/objectGroupCard";
-import add from "./../../assets/Groups/Add.svg";
+import axios from "axios";
 const GroupsStudentsList = () => {
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/groups");
+        setGroups(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
   return (
     <div className="groups">
       <div className="groups__container">
         <h1 className="groups__title">Список студентов группы:</h1>
         <div className="groups__list">
-          {objectGroupCard.map((obj, index) => {
+          {groups.map((obj) => {
             return (
               <GroupCardLinks
-                group={obj.group}
-                key={index}
-                link={obj.studentsList}
+                group={obj.name}
+                key={obj.id}
+                id={obj.id}
+                link={"/studentsList?id=" + obj.id}
               />
             );
           })}

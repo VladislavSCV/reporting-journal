@@ -1,114 +1,112 @@
-
 const objectStudentsList = [
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Староста"
+    patronymic: "Иванович",
+    role: "Староста",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Зам. старосты"
+    patronymic: "Иванович",
+    role: "Зам. старосты",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Зав. уборкой"
+    patronymic: "Иванович",
+    role: "Зав. уборкой",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "студент"
+    patronymic: "Иванович",
+    role: "студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
   {
-    surname:"Иванов",
+    surname: "Иванов",
     name: "Иван",
-    patronymic:"Иванович",
-    role: "Студент"
+    patronymic: "Иванович",
+    role: "Студент",
   },
-  
-]
+];
 
-export {objectStudentsList}
+export { objectStudentsList };

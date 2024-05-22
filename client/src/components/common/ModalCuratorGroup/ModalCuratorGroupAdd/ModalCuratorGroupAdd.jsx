@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./ModalCuratorGroupAdd.module.scss";
 import Modal from "../../modal/Modal";
-import addCuratorGroup from "../../../../js/addCuratorGroup";
 const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
   return (
     <Modal open={open}>
@@ -24,9 +23,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               id="curatorGroupName"
             />
 
-            <button className={styles.modal__button} onClick={addCuratorGroup}>
-              Добавить
-            </button>
+            <button className={styles.modal__button}>Добавить</button>
           </div>
         </div>
       </div>

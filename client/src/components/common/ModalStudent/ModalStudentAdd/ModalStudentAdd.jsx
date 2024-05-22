@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import styles from "./ModalStudentAdd.module.scss";
 import Modal from "../../modal/Modal";
 import axios from "axios";
-const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
+const ModalStudentAdd = ({ closeFn = () => null, open = false, id }) => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
 
   const addStudent = async () => {
     try {
-      await axios.post("http://localhost:5001/api/students", { name, role });
+      await axios.post("http://localhost:5001/api/students", {
+        name,
+        role,
+        groupId: id,
+      });
+
       closeFn();
     } catch (error) {
       console.error(error);

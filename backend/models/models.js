@@ -71,7 +71,11 @@ Role.belongsToMany(User, { through: "UserRoles", as: "users" });
 Note.belongsTo(Group, { foreignKey: "groupId" });
 Schedule.belongsTo(Group, { foreignKey: "groupId" });
 Student.belongsTo(Group, { foreignKey: "groupId" });
-Group.hasMany(Note, { foreignKey: "groupId" });
+Group.hasMany(Note, {
+  foreignKey: "groupId",
+  onDelete: "cascade",
+  hooks: true,
+});
 Group.hasMany(User, { foreignKey: "groupId" });
 Group.hasMany(Schedule, { foreignKey: "groupId" });
 Group.hasMany(Student, { foreignKey: "groupId" });

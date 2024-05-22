@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./groupsSchedule.scss";
 import GroupCardLinks from "../../components/GroupCardLinks/GroupCardLinks";
-import { objectGroupCard } from "../../helpers/objectGroupCard";
-import add from "./../../assets/Groups/Add.svg";
+import axios from "axios";
 const GroupsSchedule = () => {
+  const [groups, setGroups] = useState([]);
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/groups");
+        setGroups(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
   return (
     <div className="groups">
       <div className="groups__container">
         <h1 className="groups__title">Расписание группы:</h1>
         <div className="groups__list">
-          {objectGroupCard.map((obj, index) => {
+          {groups.map((obj) => {
             return (
               <GroupCardLinks
-                group={obj.group}
-                key={index}
-                link={obj.schedule}
+                group={obj.name}
+                key={obj.id}
+                id={obj.id}
+                link={"/schedule?id=" + obj.id}
               />
             );
           })}

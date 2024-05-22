@@ -6,7 +6,7 @@ import "./studentList.scss";
 
 const StudentsList = () => {
   const [students, setStudents] = useState([]);
-
+  let groupId = Number(window.location.search.substring(1).split("=")[1]);
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -24,16 +24,22 @@ const StudentsList = () => {
     <div className="studentsList">
       <div className="studentsList__container" id="studentList">
         {students.map((stundet) => {
-          return (
-            <StudentCard
-              name={stundet.name}
-              role={stundet.role}
-              key={stundet.id}
-              id={stundet.id}
-            />
-          );
+          if (stundet.groupId === groupId) {
+            return (
+              <StudentCard
+                name={stundet.name}
+                role={stundet.role}
+                key={stundet.id}
+                id={stundet.id}
+              />
+            );
+          }
         })}
-        <div className="studentsList__add" data-modal="ModalStudentAdd">
+        <div
+          className="studentsList__add"
+          data-modal="ModalStudentAdd"
+          data-id={groupId}
+        >
           <img src={add} alt="" className="studentsList__add-img" />
         </div>
       </div>

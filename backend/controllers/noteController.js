@@ -2,8 +2,8 @@ const { Note } = require("../models/models");
 
 class NoteController {
   async addNote(req, res) {
-    const { title, body } = req.body;
-    const note = await Note.create({ title, body });
+    const { title, body, groupId } = req.body;
+    const note = await Note.create({ title, body, groupId });
     return res.json(note);
   }
 
@@ -21,7 +21,7 @@ class NoteController {
   }
 
   async putNote(req, res) {
-    const note = Student.update(
+    const note = Note.update(
       {
         title: req.body.title,
         body: req.body.body,

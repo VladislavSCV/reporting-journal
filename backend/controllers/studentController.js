@@ -2,8 +2,8 @@ const { Student } = require("../models/models");
 
 class StudentController {
   async addStudent(req, res) {
-    const { name, role } = req.body;
-    const student = await Student.create({ name, role });
+    const { name, role, groupId } = req.body;
+    const student = await Student.create({ name, role, groupId });
     return res.json(student);
   }
 

@@ -1,18 +1,28 @@
+import React, { useEffect, useState } from "react";
 import "./curatorGroups.scss";
 import GroupCard from "../../components/GroupCard/GroupCard";
-
-import add from "./../../assets/Groups/Add.svg";
+import axios from "axios";
 const CuratorGroups = () => {
+  const [groups, setGroups] = useState([]);
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/groups");
+        setGroups(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
   return (
     <div className="curatorGroups">
       <div className="curatorGroups__container">
         <div className="groups__list">
-          {objectCuratorGroupCard.map((obj, index) => {
-            return <GroupCard link={obj.link} group={obj.group} key={index} />;
+          {groups.map((obj) => {
+            return <GroupCard name={obj.name} key={obj.id} id={obj.id} />;
           })}
-          <div className="groups__add" data-modal="modalCuratorGroupAdd">
-            <img src={add} alt="" className="groups__add-img" />
-          </div>
         </div>
       </div>
     </div>
