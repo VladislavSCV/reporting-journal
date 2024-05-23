@@ -15,22 +15,14 @@ router.post(
   authController.registration
 );
 router.post("/login", authController.login);
-router.get(
-  "/users",
-
-  authController.getUsers
-);
-router.get(
-  "/user",
-
-  authController.getUser
-);
-router.get(
-  "/role",
-
-  authController.postUserRole
-);
-
 router.get("/auth", authMiddleware, authController.auth);
+
+router.get("/user", authController.getUsers);
+router.get("/user", authController.getUser);
+router.delete("/user/:id", authController.deleteUser);
+
+router.post("/role", authController.postRole);
+router.get("/role", authController.getRoles);
+router.delete("/role/:id", authController.deleteRole);
 
 module.exports = router;

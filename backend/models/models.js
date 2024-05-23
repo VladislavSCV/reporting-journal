@@ -12,11 +12,11 @@ const User = sequelize.define("user", {
 });
 
 const Role = sequelize.define("role", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   value: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
-    defaultValue: "user",
   },
 });
 

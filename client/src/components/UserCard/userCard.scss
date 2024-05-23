@@ -1,0 +1,38 @@
+.userCard {
+  border-bottom: 1px solid #b1b1b1;
+
+  &__container {
+  }
+  &__info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 0 20px;
+  }
+  &__name {
+    grid-column: 1;
+  }
+  &__password {
+    border-left: 1px solid #b1b1b1;
+    border-right: 1px solid #b1b1b1;
+    text-align: center;
+    grid-column: 2;
+  }
+  &__role {
+    text-align: center;
+    grid-column: 3;
+  }
+  &__buttons {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #b1b1b1;
+    justify-content: end;
+    grid-column: 4;
+    &-delete {
+      width: 25px;
+      height: 25px;
+      display: block;
+      grid-column: 4;
+      cursor: pointer;
+    }
+  }
+}
