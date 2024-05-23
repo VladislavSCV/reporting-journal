@@ -14,6 +14,7 @@ import schedule2 from "./../../../assets/Navigation/schedule1.svg";
 import notes from "./../../../assets/Navigation/notes.svg";
 import studentsLits from "./../../../assets/Navigation/studentsList.svg";
 import exit from "./../../../assets/Navigation/exit.svg";
+import console from "./../../../assets/Navigation/console.svg"
 import { useDispatch, useSelector } from "react-redux";
 import { store } from "../../../reducers";
 import { logout } from "../../../reducers/userReducer";
@@ -162,6 +163,20 @@ const AdminNavigation = () => {
                   </p>
                 </Link>
               </li>
+            </ul>
+            <p className="navigation__list-title">Админу</p>
+            <ul className="navigation__list">
+              <li>
+                <Link
+                  to="/AdminPanel"
+                  className="navigation__list-element"
+                >
+                  <img src={console} alt="" />
+                  <p className="navigation__list-element-text">Панель</p>
+                </Link>
+              </li>
+
+             
             </ul>
           </nav>
           {/* <div className="navigation__user">

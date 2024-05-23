@@ -14,6 +14,7 @@ import GroupsStudentsList from "../screens/GroupsStudentsList/GroupsStudentsList
 import CuratorGroupsNotes from "../screens/CuratorGroupsNotes/CuratorGroupsNotes";
 import CuratorGroupsSchedule from "../screens/CuratorGroupsSchedule/CuratorGroupsSchedule";
 import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/CuratorGroupsStudentsList";
+import AdminPanel from "../screens/AdminPanel/AdminPanel";
 import { useDispatch, useSelector } from "react-redux";
 
 const ScreenSwitchboard = () => {
@@ -46,6 +47,10 @@ const ScreenSwitchboard = () => {
           <Route
             path="/CuratorGroupsStudentsList"
             element={<CuratorGroupsStudentsList />}
+          />
+          <Route
+            path="/AdminPanel"
+            element={<AdminPanel />}
           />
         </Routes>
       )}

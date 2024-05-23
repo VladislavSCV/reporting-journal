@@ -1,4 +1,4 @@
-const { Group } = require("../models/models");
+const { Group, Student, Note } = require("../models/models");
 
 class GroupController {
   async addGroup(req, res) {
@@ -12,6 +12,8 @@ class GroupController {
     return res.json(group);
   }
   async deleteGroup(req, res) {
+    await Student.destroy({ where: { groupId: req.params.id } });
+    await Note.destroy({ where: { groupId: req.params.id } });
     const group = await Group.destroy({
       where: {
         id: req.params.id,

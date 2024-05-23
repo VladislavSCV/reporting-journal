@@ -29,7 +29,7 @@ class authController {
           .json({ message: "Такой пользователь уже существует" });
       }
       const hashPassword = bcrypt.hashSync(password, 7);
-      const userRole = await Role.findOne({ where: { value: "admin" } });
+      const userRole = await Role.findOne({ where: { value: "Админ" } });
 
       const user = await User.create({
         name: "Гилоян Роман",
