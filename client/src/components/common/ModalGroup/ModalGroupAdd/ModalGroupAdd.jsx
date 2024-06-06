@@ -29,6 +29,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
                 Введите название группы:
               </label>
               <input
+                required
                 type="text"
                 className={styles.modal__input}
                 onChange={(e) => setName(e.target.value)}

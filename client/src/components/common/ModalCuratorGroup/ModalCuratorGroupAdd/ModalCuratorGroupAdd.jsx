@@ -17,6 +17,7 @@ const ModalStudentAdd = ({ closeFn = () => null, open = false }) => {
               Введите название группы:
             </label>
             <input
+            
               type="text"
               className={styles.modal__input}
               placeholder="21ИС3-4Д"

@@ -1,23 +1,18 @@
 .schedule__lesson {
   padding: 10px;
   user-select: none;
-  cursor: pointer;
   margin-top: 10px;
   width: 100%;
   background-color: rgb(255, 255, 255);
-  // box-shadow: 1px 1px 5px rgb(184, 184, 184);
   position: relative;
   border: var(--border-block);
   border-radius: var(--button-border-radius);
   font-size: 15px;
-  &:hover {
-    background-color: rgb(247, 247, 247);
-  }
 
-  &:active {
-    background-color: rgb(238, 238, 238);
+  &-container {
+    display: flex;
+    justify-content: space-between;
   }
-
   &-name {
     font-size: var(--font-size-small);
   }
@@ -32,9 +27,27 @@
     width: 100%;
     height: 100%;
   }
-}
+  &-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
-.block1 {
-  width: 100%;
-  height: 100%;
+    &-settings {
+      width: 20px;
+      cursor: pointer;
+    }
+
+    &-delete {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
 }

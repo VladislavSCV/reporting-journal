@@ -49,6 +49,9 @@ class authController {
     try {
       const { login, password } = req.body;
       const user = await User.findOne({ where: { login } });
+      if (user == "" || password == "") {
+        return res.status(400).json({ message: "Заполните все поля" });
+      }
       if (!user) {
         return res
           .status(400)
@@ -58,6 +61,10 @@ class authController {
       // if (!validPassword) {
       //   return res.status(400).json({ message: "Неверный пароль" });
       // }
+
+      if (password !== user.password) {
+        return res.status(400).json({ message: "Неверный пароль" });
+      }
       const token = generateAccessToken(user.id);
       return res.json({
         token,
@@ -72,6 +79,7 @@ class authController {
       });
     } catch (e) {}
   }
+
   async getUsers(req, res) {
     try {
       const users = await User.findAll();

@@ -9,8 +9,8 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 router.post(
   "/registration",
   [
-    check("login").isLength({ min: 3, max: 10 }),
-    check("password").isLength({ min: 3, max: 15 }),
+    check("login").isLength({ min: 3, max: 25 }),
+    check("password").isLength({ min: 3, max: 25 }),
   ],
   authController.registration
 );

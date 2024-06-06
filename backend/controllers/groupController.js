@@ -3,6 +3,9 @@ const { Group, Student, Note } = require("../models/models");
 class GroupController {
   async addGroup(req, res) {
     const { name } = req.body;
+    if (name == "") {
+      return res.status(400).json({ message: "Заполните все поля" });
+    }
     const group = await Group.create({ name });
     return res.json(group);
   }

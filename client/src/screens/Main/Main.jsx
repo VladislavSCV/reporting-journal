@@ -38,6 +38,7 @@ const main = () => {
                   Логин:
                 </label>
                 <input
+                  required
                   onChange={(e) => setUserLogin(e.target.value)}
                   type="text"
                   className="main__loginBlock-input"
@@ -47,6 +48,7 @@ const main = () => {
                   Пароль:
                 </label>
                 <input
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   className="main__loginBlock-input"

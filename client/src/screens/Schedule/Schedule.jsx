@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./schedule.scss";
 import { monday } from "../../helpers/Schedule/monday";
 import { tuesday } from "../../helpers/Schedule/tuesday";
@@ -9,109 +9,65 @@ import LessonCard from "../../components/LessonCard/LessonCard";
 import left from "../../assets/Schedule/left.svg";
 import right from "../../assets/Schedule/right.svg";
 import add from "./../../assets/GroupCard/Add.svg";
+import axios from "axios";
 const Schedule = () => {
+  const [schedule, setSchedule] = useState([]);
+  let groupId = Number(window.location.search.substring(1).split("=")[1]);
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/schedule");
+        setSchedule(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchGroups();
+  }, []);
+
+  const daysOfWeek = [
+    { name: "Понедельник", key: "Monday" },
+    { name: "Вторник", key: "Tuesday" },
+    { name: "Среда", key: "Wednesday" },
+    { name: "Четверг", key: "Thursday" },
+    { name: "Пятница", key: "Friday" },
+  ];
   return (
     <div className="schedule">
       <div className="schedule__container">
-        <div className="schedule__date"></div>
-
-        <div className="schedule__day">
-          <h1 className="schedule__day-title">Понедельник</h1>
-          <div className="schedule__day-container">
-            {monday.map((obj, index) => {
-              return (
-                <LessonCard
-                  lesson={obj.lesson}
-                  teacher={obj.teacher}
-                  key={index}
-                />
-              );
-            })}
-            <div className="schedule__add" data-modal="ModalScheduleAdd">
-              <img src={add} alt="" className="schedule__add-img" />
+        {daysOfWeek.map((day) => {
+          const daySchedule = schedule.filter(
+            (lesson) =>
+              lesson.dayOfWeek === day.key && lesson.groupId === groupId
+          );
+          return (
+            <div className="schedule__day" key={day.key}>
+              <h1 className="schedule__day-title">{day.name}</h1>
+              <div className="schedule__day-container">
+                {daySchedule.length > 0 ? (
+                  daySchedule.map((obj) => (
+                    <LessonCard
+                      key={obj.id}
+                      id={obj.id}
+                      lesson={obj.subject}
+                      teacher={obj.teacher}
+                    />
+                  ))
+                ) : (
+                  <p></p>
+                )}
+                <div
+                  className="schedule__add"
+                  data-modal="ModalScheduleAdd"
+                  data-day={day.key}
+                  data-id={groupId}
+                >
+                  <img src={add} alt="" className="schedule__add-img" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="schedule__day">
-          <h1 className="schedule__day-title">Вторник</h1>
-          <div className="schedule__day-container">
-            {tuesday.map((obj, index) => {
-              return (
-                <LessonCard
-                  lesson={obj.lesson}
-                  teacher={obj.teacher}
-                  key={index}
-                />
-              );
-            })}
-            <div className="schedule__add" data-modal="ModalScheduleAdd">
-              <img src={add} alt="" className="schedule__add-img" />
-            </div>
-          </div>
-        </div>
-        <div className="schedule__day">
-          <h1 className="schedule__day-title">Среда</h1>
-          <div className="schedule__day-container">
-            {wednesday.map((obj, index) => {
-              return (
-                <LessonCard
-                  lesson={obj.lesson}
-                  teacher={obj.teacher}
-                  key={index}
-                />
-              );
-            })}
-            <div className="schedule__add" data-modal="ModalScheduleAdd">
-              <img src={add} alt="" className="schedule__add-img" />
-            </div>
-          </div>
-        </div>
-        <div className="schedule__day">
-          <h1 className="schedule__day-title">Четверг</h1>
-          <div className="schedule__day-container">
-            {thursday.map((obj, index) => {
-              return (
-                <LessonCard
-                  lesson={obj.lesson}
-                  teacher={obj.teacher}
-                  key={index}
-                />
-              );
-            })}
-            <div className="schedule__add" data-modal="ModalScheduleAdd">
-              <img src={add} alt="" className="schedule__add-img" />
-            </div>
-          </div>
-        </div>
-        <div className="schedule__day">
-          <h1 className="schedule__day-title">Пятница</h1>
-          <div className="schedule__day-container">
-            {friday.map((obj, index) => {
-              return (
-                <LessonCard
-                  lesson={obj.lesson}
-                  teacher={obj.teacher}
-                  key={index}
-                />
-              );
-            })}
-            <div className="schedule__add" data-modal="ModalScheduleAdd">
-              <img src={add} alt="" className="schedule__add-img" />
-            </div>
-          </div>
-        </div>
-        <div className="schedule__swipe">
-          <div className="schedule__swipe-block">
-            <img src={left} alt="" className="schedule__swipe-block-button" />
-            <p className="schedule__swipe-block-button-text">Прошлая неделя</p>
-          </div>
-          <div className="schedule__swipe-block">
-            <p className="schedule__swipe-block-button-text">
-              Следующая неделя
-            </p>
-            <img src={right} alt="" className="schedule__swipe-block-button" />
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

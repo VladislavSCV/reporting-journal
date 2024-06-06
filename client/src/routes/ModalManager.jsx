@@ -8,7 +8,7 @@ import ModalStudentSettings from "../components/common/ModalStudent/ModalStudent
 
 import ModalScheduleAdd from "../components/common/ModalSchedule/ModalScheduleAdd/ModalScheduleAdd";
 import ModalScheduleLinks from "../components/common/ModalSchedule/ModalScheduleLinks/ModalScheduleLinks";
-
+import ModalScheduleSettings from "../components/common/ModalSchedule/ModalScheduleSettings/ModalScheduleSettings";
 import ModalGroupAdd from "../components/common/ModalGroup/ModalGroupAdd/ModalGroupAdd";
 import ModalGroupLinks from "../components/common/ModalGroup/ModalGroupLinks/ModalGroupLinks";
 import ModalGroupSettings from "../components/common/ModalGroup/ModalGroupSettings/ModalGroupSettings";
@@ -20,7 +20,7 @@ import ModalNotesAdd from "../components/common/ModalNotes/ModalNotesAdd/ModalNo
 import ModalNotesDelete from "../components/common/ModalNotes/ModalNotesDelete/ModalNotesDelete";
 import ModalNotesSettings from "../components/common/ModalNotes/ModalNotesSettings/ModalNotesSettings";
 
-const ModalManager = ({ closeFn, modal = "", id }) => {
+const ModalManager = ({ closeFn, modal = "", id, day }) => {
   return (
     <>
       <ModalMainInfo closeFn={closeFn} open={modal === "modalMainInfo"} />
@@ -40,10 +40,21 @@ const ModalManager = ({ closeFn, modal = "", id }) => {
         id={id}
       />
 
-      <ModalScheduleAdd closeFn={closeFn} open={modal === "ModalScheduleAdd"} />
+      <ModalScheduleAdd
+        closeFn={closeFn}
+        open={modal === "ModalScheduleAdd"}
+        day={day}
+        id={id}
+      />
       <ModalScheduleLinks
         closeFn={closeFn}
         open={modal === "modalScheduleLinks"}
+        id={id}
+      />
+      <ModalScheduleSettings
+        closeFn={closeFn}
+        open={modal === "modalScheduleSettings"}
+        id={id}
       />
 
       <ModalGroupAdd closeFn={closeFn} open={modal === "modalGroupAdd"} />

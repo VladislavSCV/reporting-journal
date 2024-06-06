@@ -14,6 +14,7 @@ import { auth } from "./actions/users";
 function App() {
   const [modalOpen, setModal] = useState(false);
   const [id, setId] = useState(false);
+  const [day, setDay] = useState(false);
   const isAuth = useSelector((state) => state.user.isAuth);
   const dispatch = useDispatch();
 
@@ -29,11 +30,13 @@ function App() {
       target: {
         dataset: { modal },
         dataset: { id },
+        dataset: { day },
       },
     } = event;
     if (modal) {
       setModal(modal);
       setId(id);
+      setDay(day);
     }
   };
 
@@ -61,7 +64,12 @@ function App() {
           {isAuth && getRole()}
           {console.log(store.getState())}
           <ScreenSwitchboard />
-          <ModalManager closeFn={closeModal} modal={modalOpen} id={id} />
+          <ModalManager
+            closeFn={closeModal}
+            modal={modalOpen}
+            id={id}
+            day={day}
+          />
         </div>
         <Footer />
       </BrowserRouter>
