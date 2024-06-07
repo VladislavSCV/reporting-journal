@@ -75,18 +75,18 @@ const TeacherNavigation = () => {
             />
 
             <ul className="navigation__list">
-              <li>
+              {/* <li>
                 <Link to="/groups" className="navigation__list-element">
                   <img src={group} alt="" />
                   <p className="navigation__list-element-text">Группы</p>
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link to="/schedule" className="navigation__list-element">
                   <img src={calendar} alt="" />
                   <p className="navigation__list-element-text">Расписание</p>
                 </Link>
-              </li>
+              </li> */}
             </ul>
             <p className="navigation__list-title">Преподавателю</p>
             <ul className="navigation__list">

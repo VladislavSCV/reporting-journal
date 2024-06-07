@@ -16,6 +16,10 @@
     border-right: 1px solid #b1b1b1;
     text-align: center;
     grid-column: 2;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      height: 5px;
+    }
   }
   &__role {
     text-align: center;

@@ -28,13 +28,13 @@ class authController {
           .status(400)
           .json({ message: "Такой пользователь уже существует" });
       }
-      // const hashPassword = bcrypt.hashSync(password, 7);
+      const hashPassword = bcrypt.hashSync(password, 7);
       // const userRole = await Role.findOne({ where: { value: "Админ" } });
 
       const user = await User.create({
         name: "Гилоян Роман",
         login,
-        password,
+        password: hashPassword,
         role,
       });
 
@@ -57,14 +57,14 @@ class authController {
           .status(400)
           .json({ message: `Пользователь ${login} не найден` });
       }
-      // const validPassword = bcrypt.compareSync(password, user.password);
-      // if (!validPassword) {
-      //   return res.status(400).json({ message: "Неверный пароль" });
-      // }
-
-      if (password !== user.password) {
+      const validPassword = bcrypt.compareSync(password, user.password);
+      if (!validPassword) {
         return res.status(400).json({ message: "Неверный пароль" });
       }
+
+      // if (password !== user.password) {
+      //   return res.status(400).json({ message: "Неверный пароль" });
+      // }
       const token = generateAccessToken(user.id);
       return res.json({
         token,

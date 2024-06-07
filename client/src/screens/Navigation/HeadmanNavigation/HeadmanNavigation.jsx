@@ -38,7 +38,7 @@ const HeadmanNavigation = () => {
       <aside className={`navigation${isActive ? " invisible" : ""}`}>
         <div className="navigation__container">
           <nav className="navigation__lists">
-          <div className="navigation__user">
+            <div className="navigation__user">
               <div className="navigation__user-container">
                 <div className="navigation__user-avatar"></div>
                 <div className="navigation__user-info">
@@ -74,15 +74,32 @@ const HeadmanNavigation = () => {
             />
 
             <ul className="navigation__list">
-              <li>
+              {/* <li>
                 <Link to="/groups" className="navigation__list-element">
                   <img src={group} alt="" />
                   <p className="navigation__list-element-text">Группы</p>
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link to="/schedule" className="navigation__list-element">
                   <img src={calendar} alt="" />
+                  <p className="navigation__list-element-text">Расписание</p>
+                </Link>
+              </li> */}
+              <li>
+                <Link
+                  to="/groupsStudentsList"
+                  className="navigation__list-element"
+                >
+                  <img src={studentsLits} alt="" />
+                  <p className="navigation__list-element-text">
+                    Список студентов
+                  </p>
+                </Link>
+              </li>
+              <li>
+                <Link to="/GroupsSchedule" className="navigation__list-element">
+                  <img src={schedule2} alt="" />
                   <p className="navigation__list-element-text">Расписание</p>
                 </Link>
               </li>
