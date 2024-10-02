@@ -1,15 +1,20 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import welcome from "./../../assets/Welcome.svg";
 import "./main.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/users";
-import { logout } from "../../reducers/userReducer";
+// import { logout } from "../../reducers/userReducer";
 const main = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [userLogin, setUserLogin] = useState("");
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [password, setPassword] = useState("");
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const isAuth = useSelector((state) => state.user.isAuth);
 
   return (

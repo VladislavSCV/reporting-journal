@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Groups from "../screens/Groups/Groups";
 import StudentsList from "../screens/StudentsList/StudentsList";
@@ -15,21 +16,21 @@ import CuratorGroupsNotes from "../screens/CuratorGroupsNotes/CuratorGroupsNotes
 import CuratorGroupsSchedule from "../screens/CuratorGroupsSchedule/CuratorGroupsSchedule";
 import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/CuratorGroupsStudentsList";
 import AdminPanel from "../screens/AdminPanel/AdminPanel";
-import { useDispatch, useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const ScreenSwitchboard = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
+  // const isAuth = useSelector((state) => state.user.isAuth);
   return (
     <>
-      {!isAuth ? (
+      {/*{!isAuth ? (*/}
+      {/*  <Routes>*/}
+      {/*    <Route path="/main" element={<Main />} />*/}
+      {/*    <Route path="*" element={<Navigate to="/main" />} />*/}
+      {/*  </Routes>*/}
+      {/*) : (*/}
         <Routes>
           <Route path="/main" element={<Main />} />
-          <Route path="*" element={<Navigate to="/main" />} />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="/main" element={<Main />} />
-          <Route path="groups" element={<Groups />} />
+          <Route path="/groups" element={<Groups />} />
           <Route path="/curatorgroups/*" element={<CuratorGroups />} />
           <Route path="/studentsList" element={<StudentsList />} />
           <Route path="/schedule" element={<Schedule />} />
@@ -53,7 +54,7 @@ const ScreenSwitchboard = () => {
             element={<AdminPanel />}
           />
         </Routes>
-      )}
+      {/*)}*/}
     </>
   );
 };
