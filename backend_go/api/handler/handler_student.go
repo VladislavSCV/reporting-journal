@@ -1,34 +1,33 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
 
 type StudentHandler interface {
-	CreateStudent(c echo.Context) error
-	GetStudent(c echo.Context) error
-	UpdateStudent(c echo.Context) error
-	DeleteStudent(c echo.Context) error
+	CreateStudent(c *gin.Context) error
+	GetStudent(c *gin.Context) error
+	UpdateStudent(c *gin.Context) error
+	DeleteStudent(c *gin.Context) error
 }
 
 type studentHandler struct {
 	logger *zap.Logger
 }
 
-func (sh *studentHandler) CreateStudent(c echo.Context) error {
+func (sh *studentHandler) CreateStudent(c *gin.Context) error {
 	return nil
 }
 
-func (sh *studentHandler) GetStudent(c echo.Context) error {
+func (sh *studentHandler) GetStudent(c *gin.Context) error {
 	return nil
 }
 
-func (sh *studentHandler) UpdateStudent(c echo.Context) error {
+func (sh *studentHandler) UpdateStudent(c *gin.Context) error {
 	return nil
 }
 
-func (sh *studentHandler) DeleteStudent(c echo.Context) error {
+func (sh *studentHandler) DeleteStudent(c *gin.Context) error {
 	return nil
 }
 

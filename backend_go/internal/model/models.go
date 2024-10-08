@@ -10,6 +10,11 @@ const (
 	SUNDAY    = "Sunday"
 )
 
+type UserAuth struct {
+	Login    string
+	Password string
+}
+
 type User struct {
 	ID       int
 	Name     string

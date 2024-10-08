@@ -1,34 +1,33 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
 
 type NoteHandler interface {
-	CreateNote(c echo.Context) error
-	GetNote(c echo.Context) error
-	UpdateNote(c echo.Context) error
-	DeleteNote(c echo.Context) error
+	CreateNote(c *gin.Context) error
+	GetNote(c *gin.Context) error
+	UpdateNote(c *gin.Context) error
+	DeleteNote(c *gin.Context) error
 }
 
 type noteHandler struct {
 	logger *zap.Logger
 }
 
-func (noteHandler) CreateNote(c echo.Context) error {
+func (noteHandler) CreateNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) GetNote(c echo.Context) error {
+func (noteHandler) GetNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) UpdateNote(c echo.Context) error {
+func (noteHandler) UpdateNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) DeleteNote(c echo.Context) error {
+func (noteHandler) DeleteNote(c *gin.Context) error {
 	return nil
 }
 

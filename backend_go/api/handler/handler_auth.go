@@ -1,25 +1,25 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 type AuthHandler interface {
-	Login(c echo.Context) error
-	SignUp(c echo.Context) error
+	Login(c *gin.Context) error
+	SignUp(c *gin.Context) error
 }
 
 type authHandler struct {
 	logger zap.Logger
 }
 
-func (a *authHandler) Login(c echo.Context) error {
+func (a *authHandler) Login(c *gin.Context) error {
 	//TODO Обращаемся к бд и получаем данные пользователя.
 	return nil
 }
 
-func (a *authHandler) SignUp(c echo.Context) error {
+func (a *authHandler) SignUp(c *gin.Context) error {
 	//TODO Обращаемся к бд и сравниваем данные пользователя
 	return nil
 }

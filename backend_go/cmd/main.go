@@ -1,13 +1,26 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
+	_ "github.com/gin-gonic/gin"
 )
 
 func main() {
-	g := echo.New()
-	g.GET("/", func(c echo.Context) error {
-		return c.String(200, "Hello, World!")
+	r := gin.Default()
+
+	// Logger middleware will write the logs to gin.DefaultWriter stream
+	r.Use(gin.Logger())
+
+	// Recovery middleware recovers from any panics and writes a 500 if there was one.
+	r.Use(gin.Recovery())
+
+	r.GET("ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
 	})
-	g.Logger.Fatal(g.Start(":5001"))
+	err := r.Run(":8000")
+	if err != nil {
+		return
+	}
 }

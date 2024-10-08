@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reporting_journal_deployment
+  labels:
+    app: reporting_journal_deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reporting_journal_deployment
+  template:
+    metadata:
+      name: reporting_journal_deployment
+      labels:
+        app: reporting_journal_deployment
+    spec:
+      containers:
+        - name: reporting_journal_deployment
+          image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+      

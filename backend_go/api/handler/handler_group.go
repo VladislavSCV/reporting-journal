@@ -1,34 +1,34 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
 type GroupHandler interface {
-	CreateGroup(c echo.Context) error
-	GetGroup(c echo.Context) error
-	UpdateGroup(c echo.Context) error
-	DeleteGroup(c echo.Context) error
+	CreateGroup(c *gin.Context) error
+	GetGroup(c *gin.Context) error
+	UpdateGroup(c *gin.Context) error
+	DeleteGroup(c *gin.Context) error
 }
 
 type groupHandler struct {
 	logger *zap.Logger
 }
 
-func (gh *groupHandler) CreateGroup(c echo.Context) error {
+func (gh *groupHandler) CreateGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) GetGroup(c echo.Context) error {
+func (gh *groupHandler) GetGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) UpdateGroup(c echo.Context) error {
+func (gh *groupHandler) UpdateGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) DeleteGroup(c echo.Context) error {
+func (gh *groupHandler) DeleteGroup(c *gin.Context) error {
 	return nil
 }
 
