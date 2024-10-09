@@ -18,8 +18,8 @@ type UserAuth struct {
 type User struct {
 	ID       int
 	Name     string
-	Role     string
-	GroupId  int
+	RoleID   int
+	GroupID  int
 	Login    string
 	Password string
 }

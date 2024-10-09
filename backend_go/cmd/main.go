@@ -1,11 +1,13 @@
 package main
 
 import (
+	"backend_go/internal/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/gin-gonic/gin"
 )
 
 func main() {
+	go config.LoadEnv()
 	r := gin.Default()
 
 	// Logger middleware will write the logs to gin.DefaultWriter stream

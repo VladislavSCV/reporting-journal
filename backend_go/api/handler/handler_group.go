@@ -16,19 +16,19 @@ type groupHandler struct {
 	logger *zap.Logger
 }
 
-func (gh *groupHandler) CreateGroup(c *gin.Context) error {
+func (gh groupHandler) CreateGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) GetGroup(c *gin.Context) error {
+func (gh groupHandler) GetGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) UpdateGroup(c *gin.Context) error {
+func (gh groupHandler) UpdateGroup(c *gin.Context) error {
 	return nil
 }
 
-func (gh *groupHandler) DeleteGroup(c *gin.Context) error {
+func (gh groupHandler) DeleteGroup(c *gin.Context) error {
 	return nil
 }
 

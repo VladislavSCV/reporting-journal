@@ -1,2 +1,2 @@
-run_server:
+run:
 	go run main.go
