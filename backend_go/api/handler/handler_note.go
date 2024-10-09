@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -15,19 +16,19 @@ type noteHandler struct {
 	logger *zap.Logger
 }
 
-func (noteHandler) CreateNote(c *gin.Context) error {
+func (nh noteHandler) CreateNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) GetNote(c *gin.Context) error {
+func (nh noteHandler) GetNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) UpdateNote(c *gin.Context) error {
+func (nh noteHandler) UpdateNote(c *gin.Context) error {
 	return nil
 }
 
-func (noteHandler) DeleteNote(c *gin.Context) error {
+func (nh noteHandler) DeleteNote(c *gin.Context) error {
 	return nil
 }
 

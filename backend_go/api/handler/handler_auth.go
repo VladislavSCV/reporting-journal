@@ -14,12 +14,12 @@ type authHandler struct {
 	logger zap.Logger
 }
 
-func (a *authHandler) Login(c *gin.Context) error {
+func (a authHandler) Login(c *gin.Context) error {
 	//TODO Обращаемся к бд и получаем данные пользователя.
 	return nil
 }
 
-func (a *authHandler) SignUp(c *gin.Context) error {
+func (a authHandler) SignUp(c *gin.Context) error {
 	//TODO Обращаемся к бд и сравниваем данные пользователя
 	return nil
 }
