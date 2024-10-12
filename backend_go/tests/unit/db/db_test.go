@@ -4,9 +4,9 @@ import (
 	"regexp"
 	"testing"
 
-	"backend_go/internal/database/postgres"
-	"backend_go/internal/model"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/VladislavSCV/internal/database/postgres"
+	"github.com/VladislavSCV/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

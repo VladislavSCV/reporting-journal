@@ -4,9 +4,9 @@ import (
 	"regexp"
 	"testing"
 
-	"backend_go/internal/database/postgres"
-	"backend_go/internal/model"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/VladislavSCV/internal/database/postgres"
+	"github.com/VladislavSCV/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +19,7 @@ func TestCreateUser(t *testing.T) {
 		WithArgs("John", 1, 1, "john123", "password").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	handler := postgres.NewUserPostgresHandlerDB(db)
+	handler := postgres.NewUserPostgresHandlerDBWithoutConnStr(db)
 
 	user := model.User{
 		Name:     "John",
@@ -47,7 +47,7 @@ func TestGetUserByLogin(t *testing.T) {
 		WithArgs("john123").
 		WillReturnRows(rows)
 
-	handler := postgres.NewUserPostgresHandlerDB(db)
+	handler := postgres.NewUserPostgresHandlerDBWithoutConnStr(db)
 
 	// Тестируем метод
 	user, err := handler.GetUserByLogin("john123")

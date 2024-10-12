@@ -16,12 +16,12 @@ type UserAuth struct {
 }
 
 type User struct {
-	ID       int
-	Name     string
-	RoleID   int
-	GroupID  int
-	Login    string
-	Password string
+	ID       int    `json:"ID"`
+	Name     string `json:"Name"`
+	RoleID   int    `json:"RoleID"`
+	GroupID  int    `json:"GroupID"`
+	Login    string `json:"Login"`
+	Password string `json:"Password"`
 }
 
 type Role struct {

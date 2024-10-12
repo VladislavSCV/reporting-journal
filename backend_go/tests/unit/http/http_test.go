@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"backend_go/api/handler"
-	"backend_go/internal/model"
+	"github.com/VladislavSCV/api/handler"
+	"github.com/VladislavSCV/internal/model"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
