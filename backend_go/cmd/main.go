@@ -14,10 +14,12 @@ import (
 )
 
 func main() {
-	go config.LoadEnv()
+	config.LoadEnv()
 	db := postgres.NewUserPostgresHandlerDB(os.Getenv("CONN_TO_DB_PQ"))
 
-	//gin.SetMode(gin.ReleaseMode)
+	//if os.Args[1] == "prod" {
+	//	gin.SetMode(gin.ReleaseMode)
+	//}
 	r := gin.Default()
 
 	// Logger middleware will write the logs to gin.DefaultWriter stream
