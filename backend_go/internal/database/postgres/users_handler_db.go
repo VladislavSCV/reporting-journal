@@ -21,24 +21,13 @@ type userHandlerDB struct {
 	db *sql.DB
 }
 
-// GetUsers возвращает список всех пользователей.
-//
-//	GET /api/v1/users
-//
-//	Responses:
-//	  200 OK
-//	  500 Internal Server Error
 func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
-	//defer func() {
-	//	if r := recover(); r != nil {
-	//		pkg.Log(fmt.Errorf("panic: %v", r))
-	//	}
-	//}()
 	rows, err := uh.db.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
+
 	var users []model.User
 	for rows.Next() {
 		user := model.User{}
@@ -61,11 +50,6 @@ func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
 }
 
 func (uh *userHandlerDB) CreateUser(user *model.User) error {
-	//defer func() {
-	//	if r := recover(); r != nil {
-	//		pkg.Log(fmt.Errorf("panic: %v", r))
-	//	}
-	//}()
 	_, err := uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, user.Password)
 	if err != nil {
 		return pkg.CError(err)
