@@ -12,7 +12,7 @@ type UserHandlerDB interface {
 	GetUsers() ([]model.User, error)
 	GetUserByLogin(login string) (model.User, error)
 	GetUserById(id int) (model.User, error)
-	CreateUser(user model.User) error
+	CreateUser(user *model.User) error
 	UpdateUser(id int, updates map[string]string) error
 	DeleteUser(id int) error
 }
@@ -29,6 +29,11 @@ type userHandlerDB struct {
 //	  200 OK
 //	  500 Internal Server Error
 func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
+	//defer func() {
+	//	if r := recover(); r != nil {
+	//		pkg.Log(fmt.Errorf("panic: %v", r))
+	//	}
+	//}()
 	rows, err := uh.db.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, err
@@ -55,7 +60,16 @@ func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
 	return model.User{}, nil
 }
 
-func (uh *userHandlerDB) CreateUser(user model.User) error {
+func (uh *userHandlerDB) CreateUser(user *model.User) error {
+	//defer func() {
+	//	if r := recover(); r != nil {
+	//		pkg.Log(fmt.Errorf("panic: %v", r))
+	//	}
+	//}()
+	_, err := uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, user.Password)
+	if err != nil {
+		return pkg.CError(err)
+	}
 	return nil
 }
 

@@ -69,7 +69,7 @@ func main() {
 			return
 		}
 
-		err = db.CreateUser(*user)
+		err = db.CreateUser(user)
 		if err != nil {
 			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to create user", err)
 			return
