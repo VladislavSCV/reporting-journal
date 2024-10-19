@@ -8,10 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CError checks if the error is not nil and logs it. This is a convenience
-// function for cases where you want to log an error but don't want to
-// explicitly check if the error is not nil.
-func CError(err error) error {
+func LogWriteFileReturnError(err error) error {
 	if err != nil {
 		Log(err)
 		writeErrorInFile(err)
@@ -19,7 +16,10 @@ func CError(err error) error {
 	return err
 }
 
-// writeErrorInFile записывает ошибку в файл.
+// writeErrorInFile - функция, которая записывает ошибку в файл errors.log.
+// Функция создает новый файл, если его не существует, и закрывает его после записи.
+// Если не удалось открыть файл, функция выходит, не записывая ошибку.
+// Функция не возвращает ошибку и не имеет возвращаемого значения.
 func writeErrorInFile(err error) {
 	// Открываем файл для записи. Если файла нет, создаем новый.
 	file, openErr := os.OpenFile("errors.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
@@ -39,7 +39,7 @@ func writeErrorInFile(err error) {
 
 func HandleHTTPError(c *gin.Context, statusCode int, message string, err error) {
 	// Здесь можно добавить логику логирования ошибок, если это нужно
-	err = CError(err)
+	err = LogWriteFileReturnError(err)
 	if err != nil {
 		return
 	} // Обрабатываем ошибку, например, логируем её

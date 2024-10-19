@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// UnmarshalJson reads the JSON request body from gin.Context
+// ParseUserRequest UnmarshalJson reads the JSON request body from gin.Context
 func ParseUserRequest(c *gin.Context) (*model.User, error) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)

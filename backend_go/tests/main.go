@@ -17,7 +17,7 @@ func main() {
 	fmt.Scan(&num2)
 
 	num, err := Devide(num1, num2)
-	if pkg.CError(err) != nil { // Проверяем ошибку после вызова CError
+	if pkg.LogWriteFileReturnError(err) != nil { // Проверяем ошибку после вызова LogWriteFileReturnError
 		return
 	}
 	fmt.Println(num)

@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/VladislavSCV/internal/model"
 	"github.com/VladislavSCV/pkg"
@@ -21,10 +22,14 @@ type userHandlerDB struct {
 	db *sql.DB
 }
 
+// GetUsers возвращает список всех пользователей
+//
+//	@return []model.User - список пользователей
+//	@return error - ошибка, если она возникла
 func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
 	rows, err := uh.db.Query("SELECT * FROM users")
 	if err != nil {
-		return nil, err
+		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	defer rows.Close()
 
@@ -40,64 +45,150 @@ func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
 	return users, nil
 }
 
+// GetUserByLogin возвращает пользователя по его логину
+//
+//	@param login string - логин пользователя
+//
+//	@return model.User - пользователь
+//	@return error - ошибка, если она возникла
 func (uh *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
-	//rows, err := uh.db.Query(`SELECT id, name, role_id, group_id, login, password`)
-	return model.User{}, nil
-}
-
-func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
-	return model.User{}, nil
-}
-
-func (uh *userHandlerDB) CreateUser(user *model.User) error {
-	_, err := uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, user.Password)
+	var user model.User
+	row := uh.db.QueryRow(`SELECT id, name, role_id, group_id, login, password from users WHERE login = $1`, login)
+	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
 	if err != nil {
-		return pkg.CError(err)
+		return model.User{}, pkg.LogWriteFileReturnError(err)
+	}
+	return user, nil
+}
+
+// GetUserById возвращает пользователя по его ID
+//
+//	@param id int - ID пользователя
+//
+//	@return model.User - пользователь
+//	@return error - ошибка, если она возникла
+func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
+	var user model.User
+	row := uh.db.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
+
+	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
+	if err != nil {
+		return model.User{}, pkg.LogWriteFileReturnError(err)
+	}
+	return user, nil
+}
+
+// CreateUser создает нового пользователя
+//
+//	@param user *model.User - пользователь, который будет создан
+//
+//	@return error - ошибка, если она возникла
+func (uh *userHandlerDB) CreateUser(user *model.User) error {
+	tx, err := uh.db.Begin()
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+	_, err = uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, user.Password)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	if err := tx.Commit(); err != nil {
+		return pkg.LogWriteFileReturnError(err)
 	}
 	return nil
 }
 
+// UpdateUser обновляет существующего пользователя
+//
+//	@param id int - ID пользователя, который будет обновлен
+//	@param updates map[string]string - поля, которые будут обновлены
+//
+//	@return error - ошибка, если она возникла
 func (uh *userHandlerDB) UpdateUser(id int, updates map[string]string) error {
+	//var user model.User
+	_, err := uh.GetUserById(id)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	if len(updates) == 0 {
+		return fmt.Errorf("no fields to update for user with ID %d", id)
+	}
+
+	query := "UPDATE users SET "
+	var args []interface{}
+	i := 1
+
+	for k, v := range updates {
+		query += fmt.Sprintf("%s = %d, ", k, i)
+		args = append(args, v)
+		i++
+	}
+
+	query = query[:len(query)-2]
+	query += fmt.Sprintf(" WHERE id = $%d", i)
+	args = append(args, id)
+
+	_, err = uh.db.Exec(query, args...)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+
 	return nil
 }
 
+// DeleteUser удаляет существующего пользователя
+//
+//	@param id int - ID пользователя, который будет удален
+//
+//	@return error - ошибка, если она возникла
 func (uh *userHandlerDB) DeleteUser(id int) error {
+	_, err := uh.db.Exec(`DELETE FROM users WHERE id = $1`, id)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
 	return nil
 }
 
-// ConnToDB - функция, которая открывает соединение с базой данных Postgres
-// по заданной строке подключения.
+// ConnToDB возвращает соединение с базой данных PostgreSQL
+//
+//	@param connStr string - строка, содержащая информацию о подключении к базе
+//
+//	@return *sql.DB - готовое соединение с базой
+//
+//	@error error - ошибка, если она возникла
 func ConnToDB(connStr string) *sql.DB {
 	db, err := sql.Open("postgres", connStr)
-	pkg.CError(err)
+	pkg.LogWriteFileReturnError(err)
 	return db
 }
 
-// CheckConn - функция, которая проверяет соединение с базой данных.
+// CheckConn проверяет соединение с базой данных PostgreSQL
 //
-//	Если соединение не работает, то она вызывает pkg.CError с ошибкой
-//	соединения.
+//	@param db *sql.DB - соединение с базой данных
+//
+//	@return error - ошибка, если она возникла
 func CheckConn(db *sql.DB) {
-	pkg.CError(db.Ping())
+	pkg.LogWriteFileReturnError(db.Ping())
 }
 
-// NewUserPostgresHandlerDB - конструктор для UserHandlerDB, который принимает
-// строку подключения к базе данных в формате Postgres.
+// NewUserPostgresHandlerDB возвращает UserHandlerDB, готовый к работе с БД
 //
-// Он создает подключение к базе данных, проверяет его, и возвращает указатель
-// на UserHandlerDB, хранящий это подключение.
+//	@param connStr string - строка, содержащая информацию о подключении к базе
+//
+//	@return UserHandlerDB - готовый UserHandlerDB
 func NewUserPostgresHandlerDB(connStr string) UserHandlerDB {
 	db := ConnToDB(connStr)
 	CheckConn(db)
 	return &userHandlerDB{db: db}
 }
 
-// NewUserPostgresHandlerDBWithoutConnStr - конструктор для UserHandlerDB, принимает уже
-// существующий соединениe с базой данных.
+// NewUserPostgresHandlerDBWithoutConnStr возвращает готовый UserHandlerDB с готовым соединением
 //
-//	NewUserPostgresHandlerDBWithoutConnStr - это вспомогательная функция, которая
-//	принимает уже существующий объект sql.DB, проверяет его на работоспособность
-//	и возвращает объект UserHandlerDB.
+//	@param db *sql.DB - готовое соединение с базой данных
+//
+//	@return UserHandlerDB - готовый UserHandlerDB
 func NewUserPostgresHandlerDBWithoutConnStr(db *sql.DB) UserHandlerDB {
 	//db := ConnToDB(connStr)
 	CheckConn(db)
