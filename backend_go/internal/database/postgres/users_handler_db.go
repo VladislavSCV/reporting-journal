@@ -3,6 +3,7 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 
 	"github.com/VladislavSCV/internal/model"
 	"github.com/VladislavSCV/pkg"
@@ -14,7 +15,7 @@ type UserHandlerDB interface {
 	GetUserByLogin(login string) (model.User, error)
 	GetUserById(id int) (model.User, error)
 	CreateUser(user *model.User) error
-	UpdateUser(id int, updates map[string]string) error
+	UpdateUser(id string, updates map[string]string) error
 	DeleteUser(id int) error
 }
 
@@ -88,7 +89,14 @@ func (uh *userHandlerDB) CreateUser(user *model.User) error {
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
-	_, err = uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, user.Password)
+
+	password, err := pkg.GenerateFromPassword(user.Password)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+	fmt.Println(user.Password)
+
+	_, err = uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, password)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -105,31 +113,41 @@ func (uh *userHandlerDB) CreateUser(user *model.User) error {
 //	@param updates map[string]string - поля, которые будут обновлены
 //
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) UpdateUser(id int, updates map[string]string) error {
-	//var user model.User
-	_, err := uh.GetUserById(id)
+func (uh *userHandlerDB) UpdateUser(StrId string, updates map[string]string) error {
+	// Преобразование строки в число
+	id, err := strconv.Atoi(StrId)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
 
+	// Проверка наличия пользователя
+	_, err = uh.GetUserById(id)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	// Проверка наличия полей для обновления
 	if len(updates) == 0 {
 		return fmt.Errorf("no fields to update for user with ID %d", id)
 	}
 
+	// Формирование запроса
 	query := "UPDATE users SET "
 	var args []interface{}
 	i := 1
 
 	for k, v := range updates {
-		query += fmt.Sprintf("%s = %d, ", k, i)
+		query += fmt.Sprintf("%s = $%d, ", k, i) // Используем $ для подстановки
 		args = append(args, v)
 		i++
 	}
 
+	// Удаляем последнюю запятую
 	query = query[:len(query)-2]
 	query += fmt.Sprintf(" WHERE id = $%d", i)
 	args = append(args, id)
 
+	// Выполняем запрос
 	_, err = uh.db.Exec(query, args...)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)

@@ -16,12 +16,12 @@ type UserAuth struct {
 }
 
 type User struct {
-	ID       int    `json:"ID"`
-	Name     string `json:"Name"`
-	RoleID   int    `json:"RoleID"`
-	GroupID  int    `json:"GroupID"`
-	Login    string `json:"Login"`
-	Password string `json:"Password"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	RoleID   int    `json:"role_id"`
+	GroupID  int    `json:"group_id"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }
 
 type Role struct {
@@ -51,9 +51,9 @@ type Schedule struct {
 	allowNull string
 }
 
-type Student struct {
-	Id      int
-	Name    string
-	GroupId int
-	Role    string
-}
+//type Student struct {
+//	Id      int
+//	Name    string
+//	GroupId int
+//	Role    string
+//}

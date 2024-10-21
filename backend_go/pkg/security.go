@@ -1,9 +1,10 @@
-package main
+package pkg
 
 import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -19,11 +20,10 @@ type params struct {
 func main() {
 	// Pass the plaintext password and parameters to our generateFromPassword
 	// helper function.
-	hash, err := GenerateFromPassword("123456")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(hash)
+	//hash, err := generateFromPassword("", p)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 }
 
 // Хеширование пароля с base64-кодированием
@@ -49,7 +49,11 @@ func GenerateFromPassword(password string) (hash string, err error) {
 	hashStr := base64.StdEncoding.EncodeToString(hashBytes)
 
 	// Возвращаем соль и хеш как одну строку (или можно хранить отдельно)
-	return fmt.Sprintf("%s.%s", saltStr, hashStr), nil
+	res := fmt.Sprintf("%s.%s", saltStr, hashStr)
+
+	res = strings.Replace(res, "==.", "", -1)
+	//res = strings.Replace(res, "=.", "", -1)
+	return res, nil
 }
 
 func generateRandomBytes(n uint32) ([]byte, error) {
