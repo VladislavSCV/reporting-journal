@@ -1,63 +1,41 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/base64"
+	"context"
+	"errors"
 	"fmt"
 
-	"golang.org/x/crypto/argon2"
+	"github.com/redis/go-redis/v9"
 )
 
-type params struct {
-	memory      uint32
-	iterations  uint32
-	parallelism uint8
-	saltLength  uint32
-	keyLength   uint32
-}
+var ctx = context.Background()
 
-func main() {
-	// Pass the plaintext password and parameters to our generateFromPassword
-	// helper function.
-	hash, err := GenerateFromPassword("123456")
+func ExampleClient() {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	err := rdb.Set(ctx, "key", "value", 0).Err()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
-	fmt.Println(hash)
-}
 
-// Хеширование пароля с base64-кодированием
-func GenerateFromPassword(password string) (hash string, err error) {
-	p := &params{
-		memory:      64 * 1024,
-		iterations:  3,
-		parallelism: 2,
-		saltLength:  16,
-		keyLength:   32,
-	}
-	// Генерация соли
-	salt, err := generateRandomBytes(p.saltLength)
+	val, err := rdb.Get(ctx, "key").Result()
 	if err != nil {
-		return "", err
+		panic(err)
 	}
+	fmt.Println("key", val)
 
-	// Хеширование пароля
-	hashBytes := argon2.IDKey([]byte(password), salt, p.iterations, p.memory, p.parallelism, p.keyLength)
-
-	// Кодируем результат в base64 для вставки в строковое поле
-	saltStr := base64.StdEncoding.EncodeToString(salt)
-	hashStr := base64.StdEncoding.EncodeToString(hashBytes)
-
-	// Возвращаем соль и хеш как одну строку (или можно хранить отдельно)
-	return fmt.Sprintf("%s.%s", saltStr, hashStr), nil
-}
-
-func generateRandomBytes(n uint32) ([]byte, error) {
-	b := make([]byte, n)
-	_, err := rand.Read(b)
-	if err != nil {
-		return nil, err
+	val2, err := rdb.Get(ctx, "key2").Result()
+	if errors.Is(err, redis.Nil) {
+		fmt.Println("key2 does not exist")
+	} else if err != nil {
+		panic(err)
+	} else {
+		fmt.Println("key2", val2)
 	}
-
-	return b, nil
+	// Output: key value
+	// key2 does not exist
 }

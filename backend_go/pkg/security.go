@@ -26,7 +26,7 @@ func main() {
 	//}
 }
 
-// Хеширование пароля с base64-кодированием
+// GenerateFromPassword Хеширование пароля с base64-кодированием
 func GenerateFromPassword(password string) (hash string, err error) {
 	p := &params{
 		memory:      64 * 1024,

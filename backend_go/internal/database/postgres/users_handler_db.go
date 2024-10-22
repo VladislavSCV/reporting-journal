@@ -27,8 +27,8 @@ type userHandlerDB struct {
 //
 //	@return []model.User - список пользователей
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
-	rows, err := uh.db.Query("SELECT * FROM users")
+func (uhp *userHandlerDB) GetUsers() ([]model.User, error) {
+	rows, err := uhp.db.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
@@ -52,9 +52,9 @@ func (uh *userHandlerDB) GetUsers() ([]model.User, error) {
 //
 //	@return model.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
+func (uhp *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
 	var user model.User
-	row := uh.db.QueryRow(`SELECT id, name, role_id, group_id, login, password from users WHERE login = $1`, login)
+	row := uhp.db.QueryRow(`SELECT id, name, role_id, group_id, login, password from users WHERE login = $1`, login)
 	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
 	if err != nil {
 		return model.User{}, pkg.LogWriteFileReturnError(err)
@@ -68,9 +68,9 @@ func (uh *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
 //
 //	@return model.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
+func (uhp *userHandlerDB) GetUserById(id int) (model.User, error) {
 	var user model.User
-	row := uh.db.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
+	row := uhp.db.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
 
 	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
 	if err != nil {
@@ -84,8 +84,8 @@ func (uh *userHandlerDB) GetUserById(id int) (model.User, error) {
 //	@param user *model.User - пользователь, который будет создан
 //
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) CreateUser(user *model.User) error {
-	tx, err := uh.db.Begin()
+func (uhp *userHandlerDB) CreateUser(user *model.User) error {
+	tx, err := uhp.db.Begin()
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -96,7 +96,7 @@ func (uh *userHandlerDB) CreateUser(user *model.User) error {
 	}
 	fmt.Println(user.Password)
 
-	_, err = uh.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, password)
+	_, err = uhp.db.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, password)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -113,7 +113,7 @@ func (uh *userHandlerDB) CreateUser(user *model.User) error {
 //	@param updates map[string]string - поля, которые будут обновлены
 //
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) UpdateUser(StrId string, updates map[string]string) error {
+func (uhp *userHandlerDB) UpdateUser(StrId string, updates map[string]string) error {
 	// Преобразование строки в число
 	id, err := strconv.Atoi(StrId)
 	if err != nil {
@@ -121,7 +121,7 @@ func (uh *userHandlerDB) UpdateUser(StrId string, updates map[string]string) err
 	}
 
 	// Проверка наличия пользователя
-	_, err = uh.GetUserById(id)
+	_, err = uhp.GetUserById(id)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -148,7 +148,7 @@ func (uh *userHandlerDB) UpdateUser(StrId string, updates map[string]string) err
 	args = append(args, id)
 
 	// Выполняем запрос
-	_, err = uh.db.Exec(query, args...)
+	_, err = uhp.db.Exec(query, args...)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -161,8 +161,8 @@ func (uh *userHandlerDB) UpdateUser(StrId string, updates map[string]string) err
 //	@param id int - ID пользователя, который будет удален
 //
 //	@return error - ошибка, если она возникла
-func (uh *userHandlerDB) DeleteUser(id int) error {
-	_, err := uh.db.Exec(`DELETE FROM users WHERE id = $1`, id)
+func (uhp *userHandlerDB) DeleteUser(id int) error {
+	_, err := uhp.db.Exec(`DELETE FROM users WHERE id = $1`, id)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}

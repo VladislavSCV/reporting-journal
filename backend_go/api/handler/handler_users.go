@@ -21,8 +21,9 @@ type UserHandler interface {
 }
 
 type userHandler struct {
-	logger  *zap.Logger
-	service postgres.UserHandlerDB // Сервис для работы с данными студентов
+	logger            *zap.Logger
+	servicePostgresql postgres.UserHandlerDB // Сервис для работы с данными студентов
+
 }
 
 func (sh *userHandler) Login(c *gin.Context) (model.User, error) {
@@ -35,7 +36,7 @@ func (sh *userHandler) Login(c *gin.Context) (model.User, error) {
 	}
 
 	// получаем пользователя из базы данных
-	userDB, err := sh.service.GetUserByLogin(user.Login)
+	userDB, err := sh.servicePostgresql.GetUserByLogin(user.Login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user"})
 		return model.User{}, pkg.LogWriteFileReturnError(err)
@@ -49,7 +50,7 @@ func (sh *userHandler) Login(c *gin.Context) (model.User, error) {
 
 }
 
-// CreateStudent создает нового студента
+// SignUp CreateStudent создает нового студента
 func (sh *userHandler) SignUp(c *gin.Context) error {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -58,7 +59,7 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 		return err
 	}
 
-	err := sh.service.CreateUser(&user)
+	err := sh.servicePostgresql.CreateUser(&user)
 	if err != nil {
 		sh.logger.Error("failed to create student", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create student"})
@@ -78,7 +79,7 @@ func (sh *userHandler) GetStudent(c *gin.Context) error {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return err
 	}
-	student, err := sh.service.GetUserById(id)
+	student, err := sh.servicePostgresql.GetUserById(id)
 	if err != nil {
 		sh.logger.Error("failed to get student", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "student not found"})
@@ -106,7 +107,7 @@ func (sh *userHandler) UpdateStudent(c *gin.Context) error {
 		return err
 	}
 
-	err = sh.service.UpdateUser(id, updates)
+	err = sh.servicePostgresql.UpdateUser(strconv.Itoa(id), updates)
 	if err != nil {
 		sh.logger.Error("failed to update student", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update student"})
@@ -126,7 +127,7 @@ func (sh *userHandler) DeleteStudent(c *gin.Context) error {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return err
 	}
-	err = sh.service.DeleteUser(id)
+	err = sh.servicePostgresql.DeleteUser(id)
 	if err != nil {
 		sh.logger.Error("failed to delete student", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete student"})
@@ -139,9 +140,9 @@ func (sh *userHandler) DeleteStudent(c *gin.Context) error {
 }
 
 // NewStudentHandler создает новый обработчик студентов
-func NewStudentHandler(logger *zap.Logger, service postgres.UserHandlerDB) UserHandler {
+func NewStudentHandler(logger *zap.Logger, servicePostgresql postgres.UserHandlerDB) UserHandler {
 	return &userHandler{
-		logger:  logger,
-		service: service,
+		logger:            logger,
+		servicePostgresql: servicePostgresql,
 	}
 }
