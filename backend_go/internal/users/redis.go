@@ -1,4 +1,4 @@
-package cache
+package users
 
 import (
 	"context"
@@ -12,19 +12,11 @@ import (
 
 var ctx = context.Background()
 
-type UserHandlerRedisInterface interface {
-	Login(user *model.User) error
-	Logout(id int) error
-	GetUserById(id int) (model.User, error)
-	UpdateUser(id string, updates map[string]string) error
-	DeleteUser(id int) error
-}
-
 type userHandlerRedis struct {
 	redisClient *redis.Client
 }
 
-// SetUser добавляет нового пользователя в Redis
+// Login добавляет нового пользователя в Redis
 //
 //	@param user model.User - пользователь, который будет добавлен
 //
@@ -52,46 +44,7 @@ func (uhr *userHandlerRedis) Logout(id int) error {
 	return err
 }
 
-//// SetUserData обновляет данные пользователя в Redis
-////
-////	@param id int - ID пользователя, у которого будут обновлены данные
-////	@param userUpdates map[string]string - поля, которые будут обновлены
-////
-////	@return error - ошибка, если она возникла
-//func (uhr *userHandlerRedis) SetUserData(id int, userUpdates map[string]string) error {
-//	userKey := fmt.Sprintf("user:%d", id)
-//	result, err := uhr.redisClient.HGetAll(ctx, userKey).Result()
-//	if err != nil {
-//		return err
-//	}
-//
-//	for k, v := range userUpdates {
-//		result[k] = v
-//	}
-//
-//	var user model.User
-//
-//	user.ID = id
-//	user.Name = result["name"]
-//	user.RoleID, err = strconv.Atoi(result["role_id"])
-//	if err != nil {
-//		pkg.LogWriteFileReturnError(err)
-//	}
-//	user.GroupID, err = strconv.Atoi(result["group_id"])
-//	if err != nil {
-//		pkg.LogWriteFileReturnError(err)
-//	}
-//	user.Login = result["login"]
-//	user.Password = result["password"]
-//
-//	err = uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Password).Err()
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
-
-// GetUser возвращает пользователя по его ID
+// GetUserById возвращает пользователя по его ID
 //
 //	@param id int - ID пользователя
 //
@@ -191,7 +144,7 @@ func connToRedis(connStr string) *redis.Client {
 //	@param client *redis.Client - клиент Redis
 //
 //	@return error - ошибка, если она возникла
-func checkConn(client *redis.Client) error {
+func checkConnRedis(client *redis.Client) error {
 	if err := client.Ping(ctx).Err(); err != nil {
 		return err
 	}
@@ -199,10 +152,10 @@ func checkConn(client *redis.Client) error {
 }
 
 // NewUserHandlerRedis возвращает User
-func NewUserHandlerRedis(connStr string) UserHandlerRedisInterface {
+func NewUserHandlerRedis(connStr string) ScheduleRedisRepository {
 	r := connToRedis(connStr)
 
-	err := checkConn(r)
+	err := checkConnRedis(r)
 	if err != nil {
 		pkg.LogWriteFileReturnError(err)
 	}

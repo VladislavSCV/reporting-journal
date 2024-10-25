@@ -1,4 +1,4 @@
-package cache
+package users
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ func TestUserHandlerRedis_Login(t *testing.T) {
 		Password: "test",
 	}
 
-	err := uhr.Login(user)
+	err := uhr.Login(&user)
 	assert.NoError(t, err)
 
 	userKey := fmt.Sprintf("user:%d", user.ID)
@@ -48,7 +48,7 @@ func TestUserHandlerRedis_Logout(t *testing.T) {
 		Password: "test",
 	}
 
-	err := uhr.Login(user)
+	err := uhr.Login(&user)
 	assert.NoError(t, err)
 
 	err = uhr.Logout(user.ID)
@@ -74,10 +74,10 @@ func TestUserHandlerRedis_GetUser(t *testing.T) {
 		Password: "test",
 	}
 
-	err := uhr.Login(user)
+	err := uhr.Login(&user)
 	assert.NoError(t, err)
 
-	userData, err := uhr.GetUser(user.ID)
+	userData, err := uhr.GetUserById(user.ID)
 	assert.NoError(t, err)
 
 	assert.Equal(t, user.ID, userData.ID)
@@ -102,7 +102,7 @@ func TestUserHandlerRedis_UpdateUser(t *testing.T) {
 		Password: "test",
 	}
 
-	err := uhr.Login(user)
+	err := uhr.Login(&user)
 	assert.NoError(t, err)
 
 	updates := map[string]string{
@@ -114,7 +114,7 @@ func TestUserHandlerRedis_UpdateUser(t *testing.T) {
 	err = uhr.UpdateUser(fmt.Sprint(user.ID), updates)
 	assert.NoError(t, err)
 
-	userData, err := uhr.GetUser(user.ID)
+	userData, err := uhr.GetUserById(user.ID)
 	assert.NoError(t, err)
 
 	assert.Equal(t, user.ID, userData.ID)
@@ -140,7 +140,7 @@ func TestUserHandlerRedis_DeleteUser(t *testing.T) {
 		Password: "test",
 	}
 
-	err := uhr.Login(user)
+	err := uhr.Login(&user)
 	assert.NoError(t, err)
 
 	// Delete the user

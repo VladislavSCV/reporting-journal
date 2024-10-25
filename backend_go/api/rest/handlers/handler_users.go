@@ -1,31 +1,28 @@
-package handler
+package handlers
 
 import (
 	"errors"
 	"net/http"
 	"strconv"
 
-	"github.com/VladislavSCV/internal/database/postgres"
 	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/users"
 	"github.com/VladislavSCV/pkg"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-type UserHandler interface {
-	Login(c *gin.Context) (model.User, error)
-	SignUp(c *gin.Context) error
-	GetStudent(c *gin.Context) error
-	UpdateStudent(c *gin.Context) error
-	DeleteStudent(c *gin.Context) error
-}
-
 type userHandler struct {
 	logger            *zap.Logger
-	servicePostgresql postgres.UserHandlerDB // Сервис для работы с данными студентов
-
+	servicePostgresql users.UserPostgresRepository // Сервис для работы с данными пользователей
+	serviceRedis      users.UserRedisRepository
 }
 
+// Login аутентифицирует пользователя
+//
+//	Accepts:	JSON {login: string, password: string}
+//	Returns:	JSON {user: model.User}
+//	Returns error:	invalid input, failed to get user, invalid credentials
 func (sh *userHandler) Login(c *gin.Context) (model.User, error) {
 	var user model.User
 	// принимаем логин и пароль
@@ -71,28 +68,63 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 	return nil
 }
 
-// GetStudent получает данные студента по ID
-func (sh *userHandler) GetStudent(c *gin.Context) error {
-	strID := c.Param("id")
-	id, err := strconv.Atoi(strID)
+// GetUsers возвращает список всех студентов
+//
+//	@return error - ошибка, если она возникла
+func (sh *userHandler) GetUsers(c *gin.Context) error {
+	usersDB, err := sh.servicePostgresql.GetUsers()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
 		return err
 	}
-	student, err := sh.servicePostgresql.GetUserById(id)
+	c.JSON(http.StatusOK, gin.H{"users": usersDB})
+	return err
+}
+
+// GetStudent получает данные студента по ID
+func (sh *userHandler) GetUser(c *gin.Context) error {
+	strId := c.Param("id")
+	id, err := strconv.Atoi(strId)
 	if err != nil {
-		sh.logger.Error("failed to get student", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "student not found"})
-		return pkg.LogWriteFileReturnError(err)
+		pkg.LogWriteFileReturnError(errors.New("invalid user ID format"))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return err
 	}
 
-	sh.logger.Info("student retrieved successfully", zap.Int("id", student.ID))
-	c.JSON(http.StatusOK, student)
-	return nil
+	user, err := sh.serviceRedis.GetUserById(id)
+	if err != nil {
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from Redis"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+		return err
+	}
+	if user.Name == "" {
+		user, err = sh.servicePostgresql.GetUserById(id)
+		if err != nil {
+			pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+			return err
+		}
+		user.ID = id
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user})
+	return err
+}
+
+func (sh *userHandler) GetUserByLogin(c *gin.Context) (model.User, error) {
+	strLogin := c.Param("login")
+	user, err := sh.servicePostgresql.GetUserByLogin(strLogin)
+	if err != nil {
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+		return model.User{}, err
+	}
+	return user, nil
 }
 
 // UpdateStudent обновляет данные студента
-func (sh *userHandler) UpdateStudent(c *gin.Context) error {
+func (sh *userHandler) UpdateUser(c *gin.Context) error {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
@@ -119,8 +151,8 @@ func (sh *userHandler) UpdateStudent(c *gin.Context) error {
 	return nil
 }
 
-// DeleteStudent удаляет студента по ID
-func (sh *userHandler) DeleteStudent(c *gin.Context) error {
+// DeleteUser удаляет студента по ID
+func (sh *userHandler) DeleteUser(c *gin.Context) error {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
@@ -140,9 +172,14 @@ func (sh *userHandler) DeleteStudent(c *gin.Context) error {
 }
 
 // NewStudentHandler создает новый обработчик студентов
-func NewStudentHandler(logger *zap.Logger, servicePostgresql postgres.UserHandlerDB) UserHandler {
+func NewUserHandler(servicePostgresql users.UserPostgresRepository, serviceRedis users.UserRedisRepository) users.UserAPIRepository {
+	logger, err := zap.NewProduction()
+	if err != nil {
+		pkg.LogWriteFileReturnError(err)
+	}
 	return &userHandler{
 		logger:            logger,
 		servicePostgresql: servicePostgresql,
+		serviceRedis:      serviceRedis,
 	}
 }

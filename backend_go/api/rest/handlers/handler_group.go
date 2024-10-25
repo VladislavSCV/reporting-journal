@@ -1,8 +1,7 @@
-package handler
+package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type GroupHandler interface {
@@ -12,9 +11,7 @@ type GroupHandler interface {
 	DeleteGroup(c *gin.Context) error
 }
 
-type groupHandler struct {
-	logger *zap.Logger
-}
+type groupHandler struct{}
 
 func (gh groupHandler) CreateGroup(c *gin.Context) error {
 	return nil

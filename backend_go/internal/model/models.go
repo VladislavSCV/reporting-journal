@@ -11,8 +11,8 @@ const (
 )
 
 type UserAuth struct {
-	Login    string
-	Password string
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }
 
 type User struct {
@@ -25,35 +25,31 @@ type User struct {
 }
 
 type Role struct {
-	ID    int
-	Value string
+	ID    int    `json:"id"`
+	Value string `json:"value"`
 }
 
 type Note struct {
-	Id      int
-	Title   string
-	Body    string
-	GroupId int
+	Id      int    `json:"id"`
+	Title   string `json:"title"`
+	Body    string `json:"body"`
+	GroupId int    `json:"group_id"`
 }
 
 type Group struct {
-	Id   int
-	Name string
-	Body string
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	Body string `json:"body"`
 }
 
 type Schedule struct {
-	Id        int
-	GroupId   int
-	DayOfWeek string
-	Subject   string
-	Teacher   string
-	allowNull string
+	ID         int    `json:"id"`
+	GroupID    int    `json:"group_id"`
+	DayOfWeek  int    `json:"day_of_week"`
+	StartTime  string `json:"start_time"`
+	EndTime    string `json:"end_time"`
+	Subject    string `json:"subject"`
+	TeacherID  int    `json:"teacher_id"`
+	Location   string `json:"location"`
+	Recurrence string `json:"recurrence"`
 }
-
-//type Student struct {
-//	Id      int
-//	Name    string
-//	GroupId int
-//	Role    string
-//}

@@ -1,0 +1,12 @@
+/your_project
+    /internal
+        /schedules
+            schedules.go        // Основные структуры и методы работы с расписаниями
+            repository.go       // Интерфейсы репозитория для расписаний
+            postgres.go         // Реализация репозитория для PostgreSQL
+            redis.go            // Реализация репозитория для Redis (если необходимо)
+            handlers.go         // Хендлеры для API
+    /models
+        models.go              // Определения структур данных
+    /pkg
+        ...

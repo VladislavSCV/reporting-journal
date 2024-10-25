@@ -1,4 +1,4 @@
-package postgres
+package users
 
 import (
 	"database/sql"
@@ -9,15 +9,6 @@ import (
 	"github.com/VladislavSCV/pkg"
 	_ "github.com/lib/pq"
 )
-
-type UserHandlerDB interface {
-	GetUsers() (*[]model.User, error)
-	GetUserByLogin(login string) (model.User, error)
-	GetUserById(id int) (model.User, error)
-	CreateUser(user *model.User) error
-	UpdateUser(id string, updates map[string]string) error
-	DeleteUser(id int) error
-}
 
 type userHandlerDB struct {
 	db *sql.DB
@@ -187,7 +178,7 @@ func ConnToDB(connStr string) *sql.DB {
 //	@param db *sql.DB - соединение с базой данных
 //
 //	@return error - ошибка, если она возникла
-func checkConn(db *sql.DB) {
+func checkConPostgres(db *sql.DB) {
 	pkg.LogWriteFileReturnError(db.Ping())
 }
 
@@ -196,9 +187,9 @@ func checkConn(db *sql.DB) {
 //	@param connStr string - строка, содержащая информацию о подключении к базе
 //
 //	@return UserHandlerDB - готовый UserHandlerDB
-func NewUserPostgresHandlerDB(connStr string) UserHandlerDB {
+func NewUserPostgresHandlerDB(connStr string) UserPostgresRepository {
 	db := ConnToDB(connStr)
-	checkConn(db)
+	checkConPostgres(db)
 	return &userHandlerDB{db: db}
 }
 
@@ -207,8 +198,8 @@ func NewUserPostgresHandlerDB(connStr string) UserHandlerDB {
 //	@param db *sql.DB - готовое соединение с базой данных
 //
 //	@return UserHandlerDB - готовый UserHandlerDB
-func NewUserPostgresHandlerDBWithoutConnStr(db *sql.DB) UserHandlerDB {
+func NewUserPostgresHandlerDBWithoutConnStr(db *sql.DB) UserPostgresRepository {
 	//db := ConnToDB(connStr)
-	checkConn(db)
+	checkConPostgres(db)
 	return &userHandlerDB{db: db}
 }
