@@ -1,10 +1,12 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"os"
 	"strconv"
 
+	"github.com/VladislavSCV/internal/cache"
 	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/database/postgres"
 	"github.com/VladislavSCV/pkg"
@@ -13,8 +15,8 @@ import (
 
 func main() {
 	config.LoadEnv()
-	db := postgres.NewUserPostgresHandlerDB(os.Getenv("CONN_TO_DB_PQ"))
-
+	dbp := postgres.NewUserPostgresHandlerDB(os.Getenv("CONN_TO_DB_PQ"))
+	dbr := cache.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
 	r := gin.Default()
 
 	r.Use(gin.Logger())
@@ -25,9 +27,10 @@ func main() {
 	})
 
 	r.GET("/api/v1/get_users", func(c *gin.Context) {
-		users, err := db.GetUsers()
+		users, err := dbp.GetUsers()
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to get users", err)
+			pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{"users": users})
@@ -35,10 +38,11 @@ func main() {
 
 	r.GET("/api/v1/get_user_by_login/:login", func(c *gin.Context) {
 		strLogin := c.Param("login")
+		user, err := dbp.GetUserByLogin(strLogin)
 
-		user, err := db.GetUserByLogin(strLogin)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to find user", err)
+			pkg.LogWriteFileReturnError(errors.New("failed to retrieve user by login"))
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
 			return
 		}
 
@@ -49,15 +53,25 @@ func main() {
 		strId := c.Param("id")
 		id, err := strconv.Atoi(strId)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusBadRequest, "Invalid user ID", err)
+			pkg.LogWriteFileReturnError(errors.New("invalid user ID format"))
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 			return
 		}
 
-		user, err := db.GetUserById(id)
-		user.ID = id
+		user, err := dbr.GetUserById(id)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to find user", err)
+			pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from Redis"))
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
 			return
+		}
+		if user.Name == "" {
+			user, err = dbp.GetUserById(id)
+			if err != nil {
+				pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+				return
+			}
+			user.ID = id
 		}
 
 		c.JSON(http.StatusOK, gin.H{"user": user})
@@ -66,14 +80,19 @@ func main() {
 	r.POST("/api/v1/create_user", func(c *gin.Context) {
 		user, err := pkg.ParseUserRequest(c)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusBadRequest, "Invalid request payload", err)
+			pkg.LogWriteFileReturnError(errors.New("invalid request payload for creating user"))
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 			return
 		}
 
-		err = db.CreateUser(user)
+		err = dbr.Login(user)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to create user", err)
-			return
+			err = dbp.CreateUser(user)
+			if err != nil {
+				pkg.LogWriteFileReturnError(errors.New("failed to create user in PostgreSQL"))
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "User created successfully"})
@@ -82,23 +101,29 @@ func main() {
 	r.PUT("/api/v1/update_user", func(c *gin.Context) {
 		userUpdates := make(map[string]string)
 
-		// Парсим обновления из JSON в карту
+		// Parse updates from JSON
 		if err := c.ShouldBindJSON(&userUpdates); err != nil {
-			pkg.HandleHTTPError(c, http.StatusBadRequest, "Invalid request payload", err)
+			pkg.LogWriteFileReturnError(errors.New("invalid request payload for updating user"))
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
 			return
 		}
 
-		// Убедитесь, что в запросе присутствует "id"
+		// Ensure "id" field exists
 		userID, exists := userUpdates["id"]
 		if !exists {
-			pkg.HandleHTTPError(c, http.StatusBadRequest, "Missing user ID", nil)
+			pkg.LogWriteFileReturnError(errors.New("missing 'id' field in request body"))
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Missing user ID"})
 			return
 		}
 
-		err := db.UpdateUser(userID, userUpdates)
+		err := dbr.UpdateUser(userID, userUpdates)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to update user", err)
-			return
+			err = dbp.UpdateUser(userID, userUpdates)
+			if err != nil {
+				pkg.LogWriteFileReturnError(errors.New("failed to update user in PostgreSQL"))
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
@@ -108,20 +133,26 @@ func main() {
 		strId := c.Param("id")
 		id, err := strconv.Atoi(strId)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusBadRequest, "Invalid user ID", err)
+			pkg.LogWriteFileReturnError(errors.New("invalid user ID format for deletion"))
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 			return
 		}
 
-		err = db.DeleteUser(id)
+		err = dbr.DeleteUser(id)
 		if err != nil {
-			pkg.HandleHTTPError(c, http.StatusInternalServerError, "Failed to delete user", err)
-			return
+			err = dbp.DeleteUser(id)
+			if err != nil {
+				pkg.LogWriteFileReturnError(errors.New("failed to delete user from PostgreSQL"))
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete user"})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 	})
 
 	if err := r.Run(":8000"); err != nil {
+		pkg.LogWriteFileReturnError(errors.New("failed to start the server"))
 		return
 	}
 }

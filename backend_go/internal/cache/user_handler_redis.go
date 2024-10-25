@@ -13,9 +13,9 @@ import (
 var ctx = context.Background()
 
 type UserHandlerRedisInterface interface {
-	Login(user model.User) error
+	Login(user *model.User) error
 	Logout(id int) error
-	GetUser(id int) (model.User, error)
+	GetUserById(id int) (model.User, error)
 	UpdateUser(id string, updates map[string]string) error
 	DeleteUser(id int) error
 }
@@ -29,12 +29,12 @@ type userHandlerRedis struct {
 //	@param user model.User - пользователь, который будет добавлен
 //
 //	@return error - ошибка, если она возникла
-func (uhr *userHandlerRedis) Login(user model.User) error {
+func (uhr *userHandlerRedis) Login(user *model.User) error {
 	userKey := fmt.Sprintf("user:%d", user.ID)
 	// Expiration - время жизни ключа в Redis, 10000 - 10 секунд
 	//uhr.redisClient.Set(ctx, userId, user, 0) // 0 - ключ не будет истекать
 
-	err := uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Password).Err()
+	err := uhr.redisClient.HSet(ctx, userKey, "name", &user.Name, "role_id", &user.RoleID, "group_id", &user.GroupID, "login", &user.Login, "password", &user.Password).Err()
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func (uhr *userHandlerRedis) Logout(id int) error {
 //
 //	@return model.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uhr *userHandlerRedis) GetUser(id int) (model.User, error) {
+func (uhr *userHandlerRedis) GetUserById(id int) (model.User, error) {
 	userKey := fmt.Sprintf("user:%d", id)
 	user, err := uhr.redisClient.HGetAll(ctx, userKey).Result()
 	if err != nil {
@@ -201,5 +201,10 @@ func checkConn(client *redis.Client) error {
 // NewUserHandlerRedis возвращает User
 func NewUserHandlerRedis(connStr string) UserHandlerRedisInterface {
 	r := connToRedis(connStr)
+
+	err := checkConn(r)
+	if err != nil {
+		pkg.LogWriteFileReturnError(err)
+	}
 	return &userHandlerRedis{redisClient: r}
 }

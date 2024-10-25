@@ -11,7 +11,7 @@ import (
 )
 
 type UserHandlerDB interface {
-	GetUsers() ([]model.User, error)
+	GetUsers() (*[]model.User, error)
 	GetUserByLogin(login string) (model.User, error)
 	GetUserById(id int) (model.User, error)
 	CreateUser(user *model.User) error
@@ -27,7 +27,7 @@ type userHandlerDB struct {
 //
 //	@return []model.User - список пользователей
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) GetUsers() ([]model.User, error) {
+func (uhp *userHandlerDB) GetUsers() (*[]model.User, error) {
 	rows, err := uhp.db.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
@@ -43,7 +43,7 @@ func (uhp *userHandlerDB) GetUsers() ([]model.User, error) {
 		}
 		users = append(users, user)
 	}
-	return users, nil
+	return &users, nil
 }
 
 // GetUserByLogin возвращает пользователя по его логину
@@ -187,7 +187,7 @@ func ConnToDB(connStr string) *sql.DB {
 //	@param db *sql.DB - соединение с базой данных
 //
 //	@return error - ошибка, если она возникла
-func CheckConn(db *sql.DB) {
+func checkConn(db *sql.DB) {
 	pkg.LogWriteFileReturnError(db.Ping())
 }
 
@@ -198,7 +198,7 @@ func CheckConn(db *sql.DB) {
 //	@return UserHandlerDB - готовый UserHandlerDB
 func NewUserPostgresHandlerDB(connStr string) UserHandlerDB {
 	db := ConnToDB(connStr)
-	CheckConn(db)
+	checkConn(db)
 	return &userHandlerDB{db: db}
 }
 
@@ -209,6 +209,6 @@ func NewUserPostgresHandlerDB(connStr string) UserHandlerDB {
 //	@return UserHandlerDB - готовый UserHandlerDB
 func NewUserPostgresHandlerDBWithoutConnStr(db *sql.DB) UserHandlerDB {
 	//db := ConnToDB(connStr)
-	CheckConn(db)
+	checkConn(db)
 	return &userHandlerDB{db: db}
 }

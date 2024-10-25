@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type ScheduleHandler interface {
@@ -12,9 +11,7 @@ type ScheduleHandler interface {
 	DeleteSchedule(c *gin.Context) error
 }
 
-type scheduleHandler struct {
-	logger *zap.Logger
-}
+type scheduleHandler struct{}
 
 func (sh scheduleHandler) CreateSchedule(c *gin.Context) error {
 	return nil

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/gin-gonic/gin"
 )
 
 func LogWriteFileReturnError(err error) error {
@@ -35,16 +33,4 @@ func writeErrorInFile(err error) {
 	// Записываем ошибку в файл
 	logger.Println(err)
 	fmt.Println("All")
-}
-
-func HandleHTTPError(c *gin.Context, statusCode int, message string, err error) {
-	// Здесь можно добавить логику логирования ошибок, если это нужно
-	err = LogWriteFileReturnError(err)
-	if err != nil {
-		return
-	} // Обрабатываем ошибку, например, логируем её
-	c.JSON(statusCode, gin.H{
-		"error":   message,
-		"details": err.Error(),
-	})
 }
