@@ -152,7 +152,7 @@ func checkConnRedis(client *redis.Client) error {
 }
 
 // NewUserHandlerRedis возвращает User
-func NewUserHandlerRedis(connStr string) ScheduleRedisRepository {
+func NewUserHandlerRedis(connStr string) UserRedisRepository {
 	r := connToRedis(connStr)
 
 	err := checkConnRedis(r)
