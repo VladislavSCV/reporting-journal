@@ -2,8 +2,6 @@ package groups
 
 import (
 	"database/sql"
-	"errors"
-	"fmt"
 
 	"github.com/VladislavSCV/internal/model"
 	"github.com/VladislavSCV/pkg"
@@ -13,114 +11,104 @@ type groupHandlerDB struct {
 	db *sql.DB
 }
 
-func (ghp *groupHandlerDB) GetGroups() (*[]model.Group, error) {
-	rows, err := ghp.db.Query("SELECT * FROM groups")
+// NewGroupRepository создает новый репозиторий для работы с группами
+func NewGroupRepository(db *sql.DB) GroupPostgresRepository {
+	return &groupHandlerDB{db: db}
+}
+
+// CreateGroup добавляет новую группу в БД
+func (gh *groupHandlerDB) CreateGroup(group *model.Group) error {
+	_, err := gh.db.Exec("INSERT INTO groups (name) VALUES ($1)", group.Name)
+	return pkg.LogWriteFileReturnError(err)
+}
+
+// GetGroupByID получает группу по ID
+func (gh *groupHandlerDB) GetGroupByID(id int) (*model.Group, error) {
+	group := &model.Group{}
+	err := gh.db.QueryRow("SELECT id, name FROM groups WHERE id = $1", id).Scan(&group.Id, &group.Name)
+	if err == sql.ErrNoRows {
+		return nil, nil // если группа не найдена, возвращаем nil
+	}
+	return group, pkg.LogWriteFileReturnError(err)
+}
+
+// GetAllGroups возвращает список всех групп
+func (gh *groupHandlerDB) GetAllGroups() ([]*model.Group, error) {
+	rows, err := gh.db.Query("SELECT id, name FROM groups")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	defer rows.Close()
 
-	var groups []model.Group
+	var groups []*model.Group
 	for rows.Next() {
-		group := model.Group{}
-		err = rows.Scan(&group.Id, &group.Name)
-		if err != nil {
+		group := &model.Group{}
+		if err := rows.Scan(&group.Id, &group.Name); err != nil {
 			return nil, err
 		}
 		groups = append(groups, group)
 	}
-	if rows.Err() != nil {
-		return nil, pkg.LogWriteFileReturnError(rows.Err())
-	}
-	return &groups, nil
+	return groups, nil
 }
 
-// GetStudentsByGroupName returns a list of students in a given group
-//
-//	@param groupName string - name of the group
-//
-//	@return *[]model.User - list of students
-//	@return error - error, if it occurs
-func (ghp *groupHandlerDB) GetStudentsByGroupName(groupName string) (*[]model.User, error) {
-	groupsId := ghp.db.QueryRow("SELECT id FROM groups WHERE name = $1", groupName)
+// UpdateGroup обновляет данные группы
+func (gh *groupHandlerDB) UpdateGroup(group *model.Group) error {
+	_, err := gh.db.Exec("UPDATE groups SET name = $1 WHERE id = $2", group.Name, group.Id)
+	return pkg.LogWriteFileReturnError(err)
+}
 
-	var groupId int
-	err := groupsId.Scan(&groupId)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, pkg.LogWriteFileReturnError(err)
-		}
-		return nil, pkg.LogWriteFileReturnError(err)
-	}
+// DeleteGroup удаляет группу по ID
+func (gh *groupHandlerDB) DeleteGroup(id int) error {
+	_, err := gh.db.Exec("DELETE FROM groups WHERE id = $1", id)
+	return pkg.LogWriteFileReturnError(err)
+}
 
-	rows, err := ghp.db.Query("SELECT id, name, role_id, group_id, login FROM users WHERE group_id = $1", groupId)
+// AddStudentToGroup добавляет студента в группу, обновляя его group_id
+func (gh *groupHandlerDB) AddStudentToGroup(studentID, groupID int) error {
+	_, err := gh.db.Exec("UPDATE users SET group_id = $1 WHERE id = $2", groupID, studentID)
+	return pkg.LogWriteFileReturnError(err)
+}
+
+// RemoveStudentFromGroup удаляет студента из группы, обновляя его group_id на NULL
+func (gh *groupHandlerDB) RemoveStudentFromGroup(studentID int) error {
+	_, err := gh.db.Exec("UPDATE users SET group_id = NULL WHERE id = $1", studentID)
+	return pkg.LogWriteFileReturnError(err)
+}
+
+// GetStudentsByGroupID возвращает список студентов, принадлежащих указанной группе
+func (gh *groupHandlerDB) GetStudentsByGroupID(groupID int) ([]*model.User, error) {
+	rows, err := gh.db.Query("SELECT id, name, role_id, group_id, login FROM users WHERE group_id = $1", groupID)
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	defer rows.Close()
 
-	var students []model.User
+	var students []*model.User
 	for rows.Next() {
-		user := model.User{}
-		err = rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login)
-		if err != nil {
+		user := &model.User{}
+		if err := rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login); err != nil {
 			return nil, err
 		}
 		students = append(students, user)
 	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	return &students, nil
+	return students, nil
 }
 
-func (ghp *groupHandlerDB) GetGroupById(id int) (model.Group, error) {
-	var group model.Group
-	err := ghp.db.QueryRow("SELECT name FROM groups WHERE id = $1", id).Scan(&group.Name)
+// FindGroupsByName находит группы по имени (или его части)
+func (gh *groupHandlerDB) FindGroupsByName(name string) ([]*model.Group, error) {
+	rows, err := gh.db.Query("SELECT id, name FROM groups WHERE name ILIKE '%' || $1 || '%'", name)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return model.Group{}, pkg.LogWriteFileReturnError(fmt.Errorf("group not found: id %d", id))
+		return nil, pkg.LogWriteFileReturnError(err)
+	}
+	defer rows.Close()
+
+	var groups []*model.Group
+	for rows.Next() {
+		group := &model.Group{}
+		if err := rows.Scan(&group.Id, &group.Name); err != nil {
+			return nil, err
 		}
-		return model.Group{}, pkg.LogWriteFileReturnError(err)
+		groups = append(groups, group)
 	}
-	group.Id = id // Можно установить ID группы
-	return group, nil
-}
-
-func (ghp *groupHandlerDB) CreateGroup(group *model.Group) error {
-	_, err := ghp.db.Exec("INSERT INTO groups (name) VALUES ($1)", group.Name)
-	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
-	}
-	return nil
-}
-
-func (ghp *groupHandlerDB) DeleteStudentFromGroup(studentId int) error {
-	// Проверяем, существует ли студент
-	var exists bool
-	err := ghp.db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE id = $1)", studentId).Scan(&exists)
-	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
-	}
-	if !exists {
-		return pkg.LogWriteFileReturnError(fmt.Errorf("student not found: id %d", studentId))
-	}
-
-	// Удаляем студента из группы
-	_, err = ghp.db.Exec("UPDATE users SET group_id = NULL WHERE id = $1", studentId)
-	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
-	}
-	return nil
-}
-
-func (ghp *groupHandlerDB) DeleteGroup(id int) error {
-	_, err := ghp.db.Exec("DELETE FROM groups WHERE id = $1", id)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return pkg.LogWriteFileReturnError(fmt.Errorf("group not found: id %d", id))
-		}
-		return pkg.LogWriteFileReturnError(err)
-	}
-	return nil
+	return groups, nil
 }

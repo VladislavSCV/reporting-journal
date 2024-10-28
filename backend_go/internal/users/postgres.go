@@ -178,8 +178,8 @@ func ConnToDB(connStr string) *sql.DB {
 //	@param db *sql.DB - соединение с базой данных
 //
 //	@return error - ошибка, если она возникла
-func checkConPostgres(db *sql.DB) {
-	pkg.LogWriteFileReturnError(db.Ping())
+func checkConPostgres(dbConn *sql.DB) {
+	pkg.LogWriteFileReturnError(dbConn.Ping())
 }
 
 // NewUserPostgresHandlerDB возвращает UserHandlerDB, готовый к работе с БД
