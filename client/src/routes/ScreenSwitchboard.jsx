@@ -29,7 +29,7 @@ const ScreenSwitchboard = () => {
         ) : (
             <Routes>
               <Route path="/main" element={<Main />} />
-              <Route path="groups" element={<Groups />} />
+              <Route path="/groups" element={<Groups />} />
               <Route path="/curatorgroups/*" element={<CuratorGroups />} />
               <Route path="/studentsList" element={<StudentsList />} />
               <Route path="/schedule" element={<Schedule />} />

@@ -1,8 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
-
-
-import { thunk } from "redux-thunk";
+import thunk from "redux-thunk";  // исправление импорта
 import userReducer from "./userReducer";
 
 const rootReducer = combineReducers({
@@ -10,6 +8,6 @@ const rootReducer = combineReducers({
 });
 
 export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk))
 );

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import welcome from "./../../assets/Welcome.svg";
 import "./main.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/users";
+import { login } from "../../actions/api.js";
 // import { logout } from "../../reducers/userReducer";
 const main = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks

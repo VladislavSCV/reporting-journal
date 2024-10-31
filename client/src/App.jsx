@@ -8,44 +8,34 @@ import ModalManager from "./routes/ModalManager";
 import Footer from "./screens/Footer/Footer";
 import { BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { store } from "./reducers";
-import { auth } from "./actions/users";
+import { auth } from "./actions/api.js";
+
 function App() {
-  const [modalOpen, setModal] = useState(false);
-  const [id, setId] = useState(false);
-  const [day, setDay] = useState(false);
+  const [modal, setModal] = useState({ isOpen: false, id: null, day: null });
   const isAuth = useSelector((state) => state.user.isAuth);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(auth());
     }
-  }, []);
+  }, [dispatch]);
 
   const openModal = (event) => {
     event.preventDefault();
-    const {
-      target: {
-        dataset: { modal },
-        dataset: { id },
-        dataset: { day },
-      },
-    } = event;
+    const { modal, id, day } = event.target.dataset;
     if (modal) {
-      setModal(modal);
-      setId(id);
-      setDay(day);
+      setModal({ isOpen: true, id, day });
     }
   };
 
   const closeModal = () => {
-    setModal("");
+    setModal({ isOpen: false, id: null, day: null });
   };
 
-  function getRole() {
-    switch (store.getState().user.currentUser.role) {
+  const getNavigationComponent = () => {
+    switch (currentUser?.role) {
       case "Админ":
         return <AdminNavigation />;
       case "Преподаватель":
@@ -55,25 +45,17 @@ function App() {
       default:
         return <UserNavigation />;
     }
-  }
+  };
 
   return (
-    <>
       <BrowserRouter>
         <div className="container" onClick={openModal}>
-          {isAuth && getRole()}
-          {console.log(store.getState())}
+          {isAuth && getNavigationComponent()}
           <ScreenSwitchboard />
-          <ModalManager
-            closeFn={closeModal}
-            modal={modalOpen}
-            id={id}
-            day={day}
-          />
+          <ModalManager closeFn={closeModal} modal={modal.isOpen} id={modal.id} day={modal.day} />
         </div>
         <Footer />
       </BrowserRouter>
-    </>
   );
 }
 

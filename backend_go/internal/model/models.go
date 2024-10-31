@@ -1,5 +1,9 @@
 package model
 
+import (
+	"database/sql"
+)
+
 const (
 	MONDAY    = "Monday"
 	TUESDAY   = "Tuesday"
@@ -52,4 +56,11 @@ type Schedule struct {
 	TeacherID  int    `json:"teacher_id"`
 	Location   string `json:"location"`
 	Recurrence string `json:"recurrence"`
+}
+
+// Execer интерфейс для работы с транзакцией или базой данных.
+type Execer interface {
+	Exec(query string, args ...interface{}) (sql.Result, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	Query(query string, args ...interface{}) (*sql.Rows, error)
 }
