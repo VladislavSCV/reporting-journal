@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,12 +13,12 @@ func TestUserHandlerRedis_Login(t *testing.T) {
 	uhr := &userHandlerRedis{redisClient: r}
 	defer r.Close()
 
-	user := model.User{
-		Name:     "test",
+	user := models.User{
+		Name:     "t_main",
 		RoleID:   1,
 		GroupID:  1,
-		Login:    "test",
-		Password: "test",
+		Login:    "t_main",
+		Password: "t_main",
 	}
 
 	err := uhr.Login(&user)
@@ -40,12 +40,12 @@ func TestUserHandlerRedis_Logout(t *testing.T) {
 	uhr := &userHandlerRedis{redisClient: r}
 	defer r.Close()
 
-	user := model.User{
-		Name:     "test",
+	user := models.User{
+		Name:     "t_main",
 		RoleID:   1,
 		GroupID:  1,
-		Login:    "test",
-		Password: "test",
+		Login:    "t_main",
+		Password: "t_main",
 	}
 
 	err := uhr.Login(&user)
@@ -66,12 +66,12 @@ func TestUserHandlerRedis_GetUser(t *testing.T) {
 	uhr := &userHandlerRedis{redisClient: r}
 	defer r.Close()
 
-	user := model.User{
-		Name:     "test",
+	user := models.User{
+		Name:     "t_main",
 		RoleID:   1,
 		GroupID:  1,
-		Login:    "test",
-		Password: "test",
+		Login:    "t_main",
+		Password: "t_main",
 	}
 
 	err := uhr.Login(&user)
@@ -93,13 +93,13 @@ func TestUserHandlerRedis_UpdateUser(t *testing.T) {
 	uhr := &userHandlerRedis{redisClient: r}
 	defer r.Close()
 
-	user := model.User{
+	user := models.User{
 		ID:       1, // Ensure ID is set
 		Name:     "test12",
 		RoleID:   1,
 		GroupID:  1,
-		Login:    "test",
-		Password: "test",
+		Login:    "t_main",
+		Password: "t_main",
 	}
 
 	err := uhr.Login(&user)
@@ -131,13 +131,13 @@ func TestUserHandlerRedis_DeleteUser(t *testing.T) {
 	uhr := &userHandlerRedis{redisClient: r}
 	defer r.Close()
 
-	user := model.User{
-		ID:       1, // Ensure ID is set for the test
-		Name:     "test",
+	user := models.User{
+		ID:       1, // Ensure ID is set for the t_main
+		Name:     "t_main",
 		RoleID:   1,
 		GroupID:  1,
-		Login:    "test",
-		Password: "test",
+		Login:    "t_main",
+		Password: "t_main",
 	}
 
 	err := uhr.Login(&user)

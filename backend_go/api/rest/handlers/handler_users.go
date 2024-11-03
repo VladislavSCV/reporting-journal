@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/VladislavSCV/pkg"
 	"github.com/gin-gonic/gin"
@@ -21,50 +21,72 @@ type userHandler struct {
 // Login аутентифицирует пользователя
 //
 //	Accepts:	JSON {login: string, password: string}
-//	Returns:	JSON {user: model.User}
+//	Returns:	JSON {user: models.User}
 //	Returns error:	invalid input, failed to get user, invalid credentials
-func (sh *userHandler) Login(c *gin.Context) (model.User, error) {
-	var user model.User
-	// принимаем логин и пароль
+func (sh *userHandler) Login(c *gin.Context) error {
+	var user models.User
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return model.User{}, pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(err)
 	}
 
-	// получаем пользователя из базы данных
 	userDB, err := sh.servicePostgresql.GetUserByLogin(user.Login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user"})
-		return model.User{}, pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(err)
 	}
-	// сравниваем пароли
+
 	if userDB.Password != user.Password {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
-		return model.User{}, pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
+		return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
 	}
-	return userDB, nil
 
+	err = sh.serviceRedis.SaveInCache(&userDB)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(errors.New("failed to set user in cache"))
+	}
+
+	token, err := pkg.GenerateJWT(userDB.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	// Успешная аутентификация, возвращаем пользователя и JWT
+	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
+	return nil
 }
 
-// SignUp CreateStudent создает нового студента
+// SignUp Регистрация. создает нового студента
 func (sh *userHandler) SignUp(c *gin.Context) error {
-	var user model.User
+	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		sh.logger.Error("failed to bind student data", zap.Error(err))
+		sh.logger.Error("failed to bind user data", zap.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
 		return err
 	}
 
 	err := sh.servicePostgresql.CreateUser(&user)
 	if err != nil {
-		sh.logger.Error("failed to create student", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create student"})
+		sh.logger.Error("failed to create user", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
 		return err
 	}
 
-	sh.logger.Info("student created successfully", zap.Int("id", user.ID))
-	c.JSON(http.StatusCreated, user)
+	err = sh.serviceRedis.SaveInCache(&user)
+	if err != nil {
+		return err
+	}
+
+	token, err := pkg.GenerateJWT(user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	sh.logger.Info("user created successfully", zap.Int("id", user.ID))
+	c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
 	return nil
 }
 
@@ -112,15 +134,31 @@ func (sh *userHandler) GetUser(c *gin.Context) error {
 	return err
 }
 
-func (sh *userHandler) GetUserByLogin(c *gin.Context) (model.User, error) {
-	strLogin := c.Param("login")
-	user, err := sh.servicePostgresql.GetUserByLogin(strLogin)
+// GetUserByLogin возвращает данные студента по логину
+//
+//	Accepts:	JSON {login: string}
+//	Returns:	JSON {user: models.User}
+//	Returns error:	invalid input, failed to get user
+func (sh *userHandler) GetUserByLogin(c *gin.Context) (models.User, error) {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		sh.logger.Error("failed to bind student data", zap.Error(err))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
+		return models.User{}, err
+	}
+
+	userFromDB, err := sh.servicePostgresql.GetUserByLogin(user.Login)
 	if err != nil {
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
-		return model.User{}, err
+		return models.User{}, err
 	}
-	return user, nil
+
+	err = sh.serviceRedis.SaveInCache(&user)
+	if err != nil {
+		return models.User{}, err
+	}
+	return userFromDB, nil
 }
 
 // UpdateStudent обновляет данные студента

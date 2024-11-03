@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	_ "github.com/lib/pq"
 )
 
@@ -24,7 +24,7 @@ func setupTestDB() (*sql.DB, *sql.Tx, error) {
 }
 
 func TestCreateGroup(t *testing.T) {
-	var group model.Group
+	var group models.Group
 	group.Name = "22ИС3-2"
 
 	// Подключаемся к тестовой базе данных

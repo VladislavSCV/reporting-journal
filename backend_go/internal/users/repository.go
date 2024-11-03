@@ -1,7 +1,7 @@
 package users
 
 import (
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,27 +18,27 @@ type Schedule struct {
 }
 
 type UserPostgresRepository interface {
-	GetUsers() (*[]model.User, error)
-	GetUserByLogin(login string) (model.User, error)
-	GetUserById(id int) (model.User, error)
-	CreateUser(user *model.User) error
+	GetUsers() (*[]models.User, error)
+	GetUserByLogin(login string) (models.User, error)
+	GetUserById(id int) (models.User, error)
+	CreateUser(user *models.User) error
 	UpdateUser(id string, updates map[string]string) error
 	DeleteUser(id int) error
 }
 
 type UserRedisRepository interface {
-	Login(user *model.User) error
+	SaveInCache(user *models.User) error
 	Logout(id int) error
-	GetUserById(id int) (model.User, error)
+	GetUserById(id int) (models.User, error)
 	UpdateUser(id string, updates map[string]string) error
 	DeleteUser(id int) error
 }
 
 type UserAPIRepository interface {
-	Login(c *gin.Context) (model.User, error)
+	Login(c *gin.Context) error
 	SignUp(c *gin.Context) error
 	GetUser(c *gin.Context) error
-	GetUserByLogin(c *gin.Context) (model.User, error)
+	GetUserByLogin(c *gin.Context) (models.User, error)
 	GetUsers(c *gin.Context) error
 	UpdateUser(c *gin.Context) error
 	DeleteUser(c *gin.Context) error

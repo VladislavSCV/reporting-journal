@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -26,7 +26,7 @@ func TestCacheGroups(t *testing.T) {
 	defer rdb.Close()
 
 	groupCache := NewGroupCache(rdb)
-	groups := []*model.Group{{Name: "Группа 1"}, {Name: "Группа 2"}}
+	groups := []*models.Group{{Name: "Группа 1"}, {Name: "Группа 2"}}
 
 	err := groupCache.CacheGroups(groups)
 	if err != nil {

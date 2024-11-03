@@ -2,32 +2,33 @@ package users
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
 	_ "github.com/lib/pq"
 )
 
 type userHandlerDB struct {
-	dbAndTx model.Execer
+	dbAndTx models.Execer
 }
 
 // GetUsers возвращает список всех пользователей
 //
-//	@return []model.User - список пользователей
+//	@return []models.User - список пользователей
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) GetUsers() (*[]model.User, error) {
+func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
 	rows, err := uhp.dbAndTx.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	defer rows.Close()
 
-	var users []model.User
+	var users []models.User
 	for rows.Next() {
-		user := model.User{}
+		user := models.User{}
 		err = rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
 		if err != nil {
 			return nil, err
@@ -41,14 +42,14 @@ func (uhp *userHandlerDB) GetUsers() (*[]model.User, error) {
 //
 //	@param login string - логин пользователя
 //
-//	@return model.User - пользователь
+//	@return models.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
-	var user model.User
+func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
+	var user models.User
 	row := uhp.dbAndTx.QueryRow(`SELECT id, name, role_id, group_id, login, password from users WHERE login = $1`, login)
 	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
 	if err != nil {
-		return model.User{}, pkg.LogWriteFileReturnError(err)
+		return models.User{}, pkg.LogWriteFileReturnError(err)
 	}
 	return user, nil
 }
@@ -57,32 +58,35 @@ func (uhp *userHandlerDB) GetUserByLogin(login string) (model.User, error) {
 //
 //	@param id int - ID пользователя
 //
-//	@return model.User - пользователь
+//	@return models.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) GetUserById(id int) (model.User, error) {
-	var user model.User
+//
+// GetUserById возвращает пользователя по его ID
+func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
+	var user models.User
 	row := uhp.dbAndTx.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
-
 	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
-	if err != nil {
-		return model.User{}, pkg.LogWriteFileReturnError(err)
+	if err == sql.ErrNoRows {
+		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
+	} else if err != nil {
+		return models.User{}, pkg.LogWriteFileReturnError(err)
 	}
 	return user, nil
 }
 
 // CreateUser создает нового пользователя
 //
-//	@param user *model.User - пользователь, который будет создан
+//	@param user *models.User - пользователь, который будет создан
 //
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) CreateUser(user *model.User) error {
-	password, err := pkg.GenerateFromPassword(user.Password)
+func (uhp *userHandlerDB) CreateUser(user *models.User) error {
+	fmt.Println(user.Password)
+	newPassword, err := pkg.GenerateHashFromPassword(user.Password)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
-	fmt.Println(user.Password)
 
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, password)
+	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, newPassword.Hash)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -106,7 +110,7 @@ func (uhp *userHandlerDB) UpdateUser(StrId string, updates map[string]string) er
 	// Проверка наличия пользователя
 	_, err = uhp.GetUserById(id)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(err) // Здесь лучше уточнить ошибку
 	}
 
 	// Проверка наличия полей для обновления
@@ -159,10 +163,12 @@ func (uhp *userHandlerDB) DeleteUser(id int) error {
 //	@return *sql.DB - готовое соединение с базой
 //
 //	@error error - ошибка, если она возникла
-func ConnToDB(connStr string) *sql.DB {
+func ConnToDB(connStr string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", connStr)
-	pkg.LogWriteFileReturnError(err)
-	return db
+	if err != nil {
+		return nil, pkg.LogWriteFileReturnError(err)
+	}
+	return db, nil
 }
 
 // CheckConn проверяет соединение с базой данных PostgreSQL

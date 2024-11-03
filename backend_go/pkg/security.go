@@ -2,12 +2,16 @@ package pkg
 
 import (
 	"crypto/rand"
+	"crypto/subtle"
 	"encoding/base64"
-	"fmt"
-	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
+
+type HashResult struct {
+	Salt string
+	Hash string
+}
 
 type params struct {
 	memory      uint32
@@ -17,17 +21,10 @@ type params struct {
 	keyLength   uint32
 }
 
-func main() {
-	// Pass the plaintext password and parameters to our generateFromPassword
-	// helper function.
-	//hash, err := generateFromPassword("", p)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-}
+var p params
 
 // GenerateFromPassword Хеширование пароля с base64-кодированием
-func GenerateFromPassword(password string) (hash string, err error) {
+func GenerateHashFromPassword(password string) (*HashResult, error) {
 	p := &params{
 		memory:      64 * 1024,
 		iterations:  3,
@@ -38,7 +35,7 @@ func GenerateFromPassword(password string) (hash string, err error) {
 	// Генерация соли
 	salt, err := generateRandomBytes(p.saltLength)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	// Хеширование пароля
@@ -49,11 +46,15 @@ func GenerateFromPassword(password string) (hash string, err error) {
 	hashStr := base64.StdEncoding.EncodeToString(hashBytes)
 
 	// Возвращаем соль и хеш как одну строку (или можно хранить отдельно)
-	res := fmt.Sprintf("%s.%s", saltStr, hashStr)
-
-	res = strings.Replace(res, "==.", "", -1)
+	//res := fmt.Sprintf("%s.%s", saltStr, hashStr)
+	//
+	//res = strings.Replace(res, "==.", "", -1)
 	//res = strings.Replace(res, "=.", "", -1)
-	return res, nil
+	hr := HashResult{
+		Salt: saltStr,
+		Hash: hashStr,
+	}
+	return &hr, nil
 }
 
 func generateRandomBytes(n uint32) ([]byte, error) {
@@ -64,4 +65,22 @@ func generateRandomBytes(n uint32) ([]byte, error) {
 	}
 
 	return b, nil
+}
+
+// VerifyPassword проверяет, соответствует ли введенный пароль хешу
+func VerifyPassword(password, saltStr, hashStr string) (bool, error) {
+	salt, err := base64.StdEncoding.DecodeString(saltStr)
+	if err != nil {
+		return false, err
+	}
+
+	hashBytes, err := base64.StdEncoding.DecodeString(hashStr)
+	if err != nil {
+		return false, err
+	}
+
+	// Хешируем введенный пароль с той же солью
+	newHash := argon2.IDKey([]byte(password), salt, p.iterations, p.memory, p.parallelism, p.keyLength)
+
+	return subtle.ConstantTimeCompare(hashBytes, newHash) == 1, nil
 }

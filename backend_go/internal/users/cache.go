@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
 	"github.com/redis/go-redis/v9"
 )
@@ -18,15 +18,15 @@ type userHandlerRedis struct {
 
 // Login добавляет нового пользователя в Redis
 //
-//	@param user model.User - пользователь, который будет добавлен
+//	@param user models.User - пользователь, который будет добавлен
 //
 //	@return error - ошибка, если она возникла
-func (uhr *userHandlerRedis) Login(user *model.User) error {
+func (uhr *userHandlerRedis) SaveInCache(user *models.User) error {
 	userKey := fmt.Sprintf("user:%d", user.ID)
 	// Expiration - время жизни ключа в Redis, 10000 - 10 секунд
 	//uhr.redisClient.Set(ctx, userId, user, 0) // 0 - ключ не будет истекать
 
-	err := uhr.redisClient.HSet(ctx, userKey, "name", &user.Name, "role_id", &user.RoleID, "group_id", &user.GroupID, "login", &user.Login, "password", &user.Password).Err()
+	err := uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Password).Err()
 	if err != nil {
 		return err
 	}
@@ -48,26 +48,26 @@ func (uhr *userHandlerRedis) Logout(id int) error {
 //
 //	@param id int - ID пользователя
 //
-//	@return model.User - пользователь
+//	@return models.User - пользователь
 //	@return error - ошибка, если она возникла
-func (uhr *userHandlerRedis) GetUserById(id int) (model.User, error) {
+func (uhr *userHandlerRedis) GetUserById(id int) (models.User, error) {
 	userKey := fmt.Sprintf("user:%d", id)
 	user, err := uhr.redisClient.HGetAll(ctx, userKey).Result()
 	if err != nil {
-		return model.User{}, err
+		return models.User{}, err
 	}
 
 	roleId, err := strconv.Atoi(user["role_id"])
 	if err != nil {
-		pkg.LogWriteFileReturnError(err)
+		return models.User{}, pkg.LogWriteFileReturnError(err) // Добавьте возврат ошибки
 	}
 
 	groupId, err := strconv.Atoi(user["group_id"])
 	if err != nil {
-		pkg.LogWriteFileReturnError(err)
+		return models.User{}, pkg.LogWriteFileReturnError(err) // Добавьте возврат ошибки
 	}
 
-	userData := model.User{
+	userData := models.User{
 		ID:       id,
 		Name:     user["name"],
 		RoleID:   roleId,
@@ -101,7 +101,7 @@ func (uhr *userHandlerRedis) UpdateUser(id string, updates map[string]string) er
 	}
 
 	// Преобразуем обновленные данные обратно в Redis
-	err = uhr.redisClient.HMSet(ctx, userKey, currentData).Err()
+	err = uhr.redisClient.HSet(ctx, userKey, currentData).Err()
 	if err != nil {
 		return err
 	}

@@ -1,24 +1,24 @@
 package groups
 
 import (
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 )
 
 type GroupPostgresRepository interface {
-	CreateGroup(group *model.Group) error
-	GetGroupByID(id int) (*model.Group, error)
-	GetAllGroups() ([]*model.Group, error)
-	UpdateGroup(group *model.Group) error
+	CreateGroup(group *models.Group) error
+	GetGroupByID(id int) (*models.Group, error)
+	GetAllGroups() ([]*models.Group, error)
+	UpdateGroup(group *models.Group) error
 	DeleteGroup(id int) error
 
 	AddStudentToGroup(studentID, groupID int) error
 	RemoveStudentFromGroup(studentID int) error
-	GetStudentsByGroupID(groupID int) ([]*model.User, error)
+	GetStudentsByGroupID(groupID int) ([]*models.User, error)
 
-	FindGroupsByName(name string) ([]*model.Group, error)
+	FindGroupsByName(name string) ([]*models.Group, error)
 }
 
 type GroupRedisRepository interface {
-	CacheGroups(groups []*model.Group) error
-	GetCachedGroups() ([]*model.Group, error)
+	CacheGroups(groups []*models.Group) error
+	GetCachedGroups() ([]*models.Group, error)
 }

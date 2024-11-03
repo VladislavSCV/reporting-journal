@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/VladislavSCV/internal/model"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -18,7 +18,7 @@ func NewGroupCache(redisClient *redis.Client) GroupRedisRepository {
 }
 
 // CacheGroups сохраняет список групп в Redis с временем жизни кеша
-func (gc *groupCache) CacheGroups(groups []*model.Group) error {
+func (gc *groupCache) CacheGroups(groups []*models.Group) error {
 	data, err := json.Marshal(groups)
 	if err != nil {
 		return err
@@ -28,7 +28,7 @@ func (gc *groupCache) CacheGroups(groups []*model.Group) error {
 }
 
 // GetCachedGroups получает список групп из кеша Redis
-func (gc *groupCache) GetCachedGroups() ([]*model.Group, error) {
+func (gc *groupCache) GetCachedGroups() ([]*models.Group, error) {
 	data, err := gc.redisClient.Get(context.Background(), "groups").Result()
 	if err == redis.Nil {
 		return nil, nil // Кеш пуст
@@ -36,7 +36,7 @@ func (gc *groupCache) GetCachedGroups() ([]*model.Group, error) {
 		return nil, err
 	}
 
-	var groups []*model.Group
+	var groups []*models.Group
 	if err := json.Unmarshal([]byte(data), &groups); err != nil {
 		return nil, err
 	}
