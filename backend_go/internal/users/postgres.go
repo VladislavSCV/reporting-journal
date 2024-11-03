@@ -186,7 +186,10 @@ func checkConPostgres(dbConn *sql.DB) {
 //
 //	@return UserHandlerDB - готовый UserHandlerDB
 func NewUserPostgresHandlerDB(connStr string) UserPostgresRepository {
-	db := ConnToDB(connStr)
+	db, err := ConnToDB(connStr)
+	if err != nil {
+		pkg.LogWriteFileReturnError(err)
+	}
 	checkConPostgres(db)
 	return &userHandlerDB{dbAndTx: db}
 }

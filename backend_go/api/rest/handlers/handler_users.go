@@ -25,32 +25,22 @@ type userHandler struct {
 //	Returns error:	invalid input, failed to get user, invalid credentials
 func (sh *userHandler) Login(c *gin.Context) error {
 	var user models.User
-	err := c.ShouldBindJSON(&user)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return pkg.LogWriteFileReturnError(err)
+	if err := c.ShouldBindJSON(&user); err != nil {
+		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
 	}
 
 	userDB, err := sh.servicePostgresql.GetUserByLogin(user.Login)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get user"})
-		return pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(errors.New("failed to get user"))
 	}
 
 	if userDB.Password != user.Password {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
-	}
-
-	err = sh.serviceRedis.SaveInCache(&userDB)
-	if err != nil {
-		return pkg.LogWriteFileReturnError(errors.New("failed to set user in cache"))
 	}
 
 	token, err := pkg.GenerateJWT(userDB.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
-		return pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	// Успешная аутентификация, возвращаем пользователя и JWT
@@ -58,34 +48,22 @@ func (sh *userHandler) Login(c *gin.Context) error {
 	return nil
 }
 
-// SignUp Регистрация. создает нового студента
+// SignUp (Регистрация) создает нового студента
 func (sh *userHandler) SignUp(c *gin.Context) error {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		sh.logger.Error("failed to bind user data", zap.Error(err))
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return err
+		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
 	}
 
-	err := sh.servicePostgresql.CreateUser(&user)
-	if err != nil {
-		sh.logger.Error("failed to create user", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
-		return err
-	}
-
-	err = sh.serviceRedis.SaveInCache(&user)
-	if err != nil {
-		return err
+	if err := sh.servicePostgresql.CreateUser(&user); err != nil {
+		return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
 	}
 
 	token, err := pkg.GenerateJWT(user.ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
-		return pkg.LogWriteFileReturnError(err)
+		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
-	sh.logger.Info("user created successfully", zap.Int("id", user.ID))
 	c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
 	return nil
 }
@@ -106,32 +84,22 @@ func (sh *userHandler) GetUsers(c *gin.Context) error {
 
 // GetStudent получает данные студента по ID
 func (sh *userHandler) GetUser(c *gin.Context) error {
-	strId := c.Param("id")
-	id, err := strconv.Atoi(strId)
+	strID := c.Param("id")
+	id, err := strconv.Atoi(strID)
 	if err != nil {
-		pkg.LogWriteFileReturnError(errors.New("invalid user ID format"))
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return err
+		return pkg.LogWriteFileReturnError(errors.New("invalid user ID format"))
 	}
 
 	user, err := sh.serviceRedis.GetUserById(id)
-	if err != nil {
-		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from Redis"))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
-		return err
-	}
-	if user.Name == "" {
+	if err != nil || (user.Name == "") {
 		user, err = sh.servicePostgresql.GetUserById(id)
 		if err != nil {
-			pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
-			return err
+			return pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
 		}
-		user.ID = id
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
-	return err
+	return nil
 }
 
 // GetUserByLogin возвращает данные студента по логину
@@ -166,25 +134,18 @@ func (sh *userHandler) UpdateUser(c *gin.Context) error {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
-		return err
+		return pkg.LogWriteFileReturnError(errors.New("invalid id"))
 	}
 	var updates map[string]string
 
 	if err := c.ShouldBindJSON(&updates); err != nil {
-		sh.logger.Error("failed to bind updates", zap.Error(err))
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return err
+		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
 	}
 
-	err = sh.servicePostgresql.UpdateUser(strconv.Itoa(id), updates)
-	if err != nil {
-		sh.logger.Error("failed to update student", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update student"})
-		return err
+	if err := sh.servicePostgresql.UpdateUser(strconv.Itoa(id), updates); err != nil {
+		return pkg.LogWriteFileReturnError(errors.New("failed to update user"))
 	}
 
-	sh.logger.Info("student updated successfully", zap.String("id", strID))
 	c.JSON(http.StatusOK, gin.H{"status": "updated"})
 	return nil
 }
@@ -194,17 +155,12 @@ func (sh *userHandler) DeleteUser(c *gin.Context) error {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
-		return err
+		return pkg.LogWriteFileReturnError(errors.New("invalid id"))
 	}
-	err = sh.servicePostgresql.DeleteUser(id)
-	if err != nil {
-		sh.logger.Error("failed to delete student", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete student"})
-		return err
+	if err := sh.servicePostgresql.DeleteUser(id); err != nil {
+		return pkg.LogWriteFileReturnError(errors.New("failed to delete user"))
 	}
 
-	sh.logger.Info("student deleted successfully", zap.String("id", strID))
 	c.JSON(http.StatusOK, gin.H{"status": "deleted"})
 	return nil
 }
