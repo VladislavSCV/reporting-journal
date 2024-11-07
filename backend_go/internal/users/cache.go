@@ -3,7 +3,6 @@ package users
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
@@ -26,7 +25,7 @@ func (uhr *userHandlerRedis) SaveInCache(user *models.User) error {
 	// Expiration - время жизни ключа в Redis, 10000 - 10 секунд
 	//uhr.redisClient.Set(ctx, userId, user, 0) // 0 - ключ не будет истекать
 
-	err := uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Password).Err()
+	err := uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Hash).Err()
 	if err != nil {
 		return err
 	}
@@ -42,41 +41,6 @@ func (uhr *userHandlerRedis) Logout(id int) error {
 	userKey := fmt.Sprintf("user:%d", id)
 	_, err := uhr.redisClient.Del(ctx, userKey).Result()
 	return err
-}
-
-// GetUserById возвращает пользователя по его ID
-//
-//	@param id int - ID пользователя
-//
-//	@return models.User - пользователь
-//	@return error - ошибка, если она возникла
-func (uhr *userHandlerRedis) GetUserById(id int) (models.User, error) {
-	userKey := fmt.Sprintf("user:%d", id)
-	user, err := uhr.redisClient.HGetAll(ctx, userKey).Result()
-	if err != nil {
-		return models.User{}, err
-	}
-
-	roleId, err := strconv.Atoi(user["role_id"])
-	if err != nil {
-		return models.User{}, pkg.LogWriteFileReturnError(err) // Добавьте возврат ошибки
-	}
-
-	groupId, err := strconv.Atoi(user["group_id"])
-	if err != nil {
-		return models.User{}, pkg.LogWriteFileReturnError(err) // Добавьте возврат ошибки
-	}
-
-	userData := models.User{
-		ID:       id,
-		Name:     user["name"],
-		RoleID:   roleId,
-		GroupID:  groupId,
-		Login:    user["login"],
-		Password: user["password"],
-	}
-
-	return userData, nil
 }
 
 // UpdateUser обновляет существующего пользователя

@@ -29,7 +29,7 @@ func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		user := models.User{}
-		err = rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
+		err = rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
 		if err != nil {
 			return nil, err
 		}
@@ -46,11 +46,21 @@ func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT id, name, role_id, group_id, login, password from users WHERE login = $1`, login)
-	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
-	if err != nil {
-		return models.User{}, pkg.LogWriteFileReturnError(err)
+	row := uhp.dbAndTx.QueryRow(`SELECT id, name, role_id, group_id, login, password, salt FROM users WHERE login = $1`, login)
+	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
+	if errors.Is(err, sql.ErrNoRows) {
+		errMsg := fmt.Errorf("user %s not found", login)
+		pkg.LogWriteFileReturnError(errMsg)
+		return models.User{}, errMsg
 	}
+	if err != nil {
+		errMsg := fmt.Errorf("failed to get user %s from PostgreSQL: %w", login, err)
+		pkg.LogWriteFileReturnError(errMsg)
+		return models.User{}, errMsg
+	}
+
+	successMsg := fmt.Sprintf("successfully retrieved user %s from PostgreSQL", login)
+	pkg.LogWriteFileReturnError(fmt.Errorf(successMsg))
 	return user, nil
 }
 
@@ -65,7 +75,7 @@ func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 	var user models.User
 	row := uhp.dbAndTx.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
-	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Password)
+	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
 	if err == sql.ErrNoRows {
 		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
 	} else if err != nil {
@@ -80,16 +90,43 @@ func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 //
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) CreateUser(user *models.User) error {
-	fmt.Println(user.Password)
-	newPassword, err := pkg.GenerateHashFromPassword(user.Password)
+	// Генерация соли и хеш пароля
+	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
 
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (name, role_id, group_id, login, password) VALUES ($1, $2, $3, $4, $5)`, user.Name, user.RoleID, user.GroupID, user.Login, newPassword.Hash)
+	// Logging
+	pkg.LogWriteFileReturnError(fmt.Errorf("successfully generated hash with salt for user %s", user.Login))
+
+	// Проверяем, существует ли уже пользователь с таким логином
+	var count int
+	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
+
+	// Logging
+	pkg.LogWriteFileReturnError(fmt.Errorf("successfully checked if user %s already exists", user.Login))
+
+	if count > 0 {
+		// Если такой логин уже существует, возвращаем ошибку
+		return fmt.Errorf("пользователь с таким логином уже существует")
+	}
+
+	// Logging
+	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
+
+	// Сохранение пользователя с солью и хешем пароля
+	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (name, role_id, login, password, salt) 
+                               VALUES ($1, $2, $3, $4, $5)`,
+		user.Name, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+
+	// Logging
+	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
 	return nil
 }

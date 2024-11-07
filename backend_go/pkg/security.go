@@ -23,52 +23,36 @@ type params struct {
 
 var p params
 
-// GenerateFromPassword Хеширование пароля с base64-кодированием
-func GenerateHashFromPassword(password string) (*HashResult, error) {
-	p := &params{
-		memory:      64 * 1024,
-		iterations:  3,
-		parallelism: 2,
-		saltLength:  16,
-		keyLength:   32,
-	}
-	// Генерация соли
-	salt, err := generateRandomBytes(p.saltLength)
-	if err != nil {
-		return nil, err
-	}
-
-	// Хеширование пароля
-	hashBytes := argon2.IDKey([]byte(password), salt, p.iterations, p.memory, p.parallelism, p.keyLength)
-
-	// Кодируем результат в base64 для вставки в строковое поле
-	saltStr := base64.StdEncoding.EncodeToString(salt)
-	hashStr := base64.StdEncoding.EncodeToString(hashBytes)
-
-	// Возвращаем соль и хеш как одну строку (или можно хранить отдельно)
-	//res := fmt.Sprintf("%s.%s", saltStr, hashStr)
-	//
-	//res = strings.Replace(res, "==.", "", -1)
-	//res = strings.Replace(res, "=.", "", -1)
-	hr := HashResult{
-		Salt: saltStr,
-		Hash: hashStr,
-	}
-	return &hr, nil
+type PasswordHash struct {
+	Hash string
 }
 
-func generateRandomBytes(n uint32) ([]byte, error) {
-	b := make([]byte, n)
-	_, err := rand.Read(b)
+// GenerateSalt генерирует случайную соль
+func GenerateSalt() (string, error) {
+	salt := make([]byte, 16) // длина соли
+	if _, err := rand.Read(salt); err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(salt), nil
+}
+
+// GenerateHashFromPassword хеширует пароль с солью и возвращает результат
+func GenerateHashFromPassword(password, salt string) (*PasswordHash, error) {
+	saltBytes, err := base64.StdEncoding.DecodeString(salt)
 	if err != nil {
 		return nil, err
 	}
 
-	return b, nil
+	// Хешируем пароль с солью
+	hash := argon2.IDKey([]byte(password), saltBytes, 3, 32*1024, 4, 32)
+	return &PasswordHash{
+		Hash: base64.StdEncoding.EncodeToString(hash),
+	}, nil
 }
 
 // VerifyPassword проверяет, соответствует ли введенный пароль хешу
 func VerifyPassword(password, saltStr, hashStr string) (bool, error) {
+	// Декодируем соль и хеш из базы данных
 	salt, err := base64.StdEncoding.DecodeString(saltStr)
 	if err != nil {
 		return false, err
@@ -79,8 +63,43 @@ func VerifyPassword(password, saltStr, hashStr string) (bool, error) {
 		return false, err
 	}
 
-	// Хешируем введенный пароль с той же солью
-	newHash := argon2.IDKey([]byte(password), salt, p.iterations, p.memory, p.parallelism, p.keyLength)
+	// Хешируем введённый пароль с той же солью
+	newHash := argon2.IDKey([]byte(password), salt, 3, 32*1024, 4, 32)
 
+	// Сравниваем хеши
 	return subtle.ConstantTimeCompare(hashBytes, newHash) == 1, nil
+}
+
+// HashPasswordWithSalt хеширует пароль с переданной солью
+func HashPasswordWithSalt(password string, salt string) (string, error) {
+	saltBytes, err := base64.StdEncoding.DecodeString(salt)
+	if err != nil {
+		return "", err
+	}
+
+	// Используем argon2 для хеширования пароля с солью
+	hash := argon2.IDKey([]byte(password), saltBytes, 3, 32*1024, 4, 32)
+
+	return base64.StdEncoding.EncodeToString(hash), nil
+}
+
+// CreateHashWithSalt генерирует хеш пароля и возвращает соль вместе с хешем
+func CreateHashWithSalt(password string) (*HashResult, error) {
+	// Генерация соли
+	salt, err := GenerateSalt()
+	if err != nil {
+		return nil, err
+	}
+
+	// Генерация хеша с солью
+	hashResult, err := GenerateHashFromPassword(password, salt)
+	if err != nil {
+		return nil, err
+	}
+
+	// Возвращаем соль и хеш
+	return &HashResult{
+		Salt: salt,
+		Hash: hashResult.Hash,
+	}, nil
 }

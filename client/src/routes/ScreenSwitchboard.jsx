@@ -18,7 +18,10 @@ import AdminPanel from "../screens/AdminPanel/AdminPanel";
 import { useDispatch, useSelector } from "react-redux";
 
 const ScreenSwitchboard = () => {
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const isAuth = localStorage.getItem("token");
+  if (!isAuth) {
+    console.log("isAuth is false");
+  }
   return (
       <>
         {!isAuth ? (

@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import welcome from "./../../assets/Welcome.svg";
 import "./main.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/api.js";
+import { loginUser } from "../../actions/api.js";
 // import { logout } from "../../reducers/userReducer";
 const main = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [userLogin, setUserLogin] = useState("");
+  const [login, setUserLogin] = useState("");
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [password, setPassword] = useState("");
+  const [hash, setPassword] = useState("");
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useDispatch();
@@ -43,28 +43,33 @@ const main = () => {
                   Логин:
                 </label>
                 <input
-                  required
-                  onChange={(e) => setUserLogin(e.target.value)}
-                  type="text"
-                  className="main__loginBlock-input"
-                  id="login"
+                    required
+                    onChange={(e) => setUserLogin(e.target.value)}
+                    type="text"
+                    className="main__loginBlock-input"
+                    id="login"
                 />
                 <label htmlFor="password" className="main__loginBlock-label">
                   Пароль:
                 </label>
                 <input
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  className="main__loginBlock-input"
-                  id="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                    className="main__loginBlock-input"
+                    id="password"
                 />
                 <button
-                  className="main__loginBlock-button"
-                  onClick={() => dispatch(login(userLogin, password))}
+                    type="button" // добавляем type="button", чтобы предотвратить отправку формы
+                    className="main__loginBlock-button"
+                    onClick={(e) => {
+                      e.preventDefault(); // предотвращаем стандартное поведение
+                      loginUser(login, hash);
+                    }}
                 >
                   Войти
                 </button>
+
               </form>
               <p className="main__loginBlock-access" data-modal="modalMainInfo">
                 Как получить доступ?

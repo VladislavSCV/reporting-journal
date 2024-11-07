@@ -7,20 +7,64 @@ async function registerUser(login, password) {
   return response.json();
 }
 
-async function loginUser(login, password) {
-  const response = await fetch('http://localhost:8080/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ login, password })
-  });
-  if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem('token', data.token); // Сохраняем JWT токен
-    return data;
-  } else {
-    throw new Error('Login failed');
+export async function auth() {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+  try {
+    const response = await fetch('http://localhost:8080/api/auth/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Token verification failed');
+    }
+
+    return await response.json(); // Возвращает данные пользователя, если токен действителен
+  } catch (error) {
+    console.error('Token verification error:', error);
+    localStorage.removeItem('token'); // Удаление токена, если он недействителен
+    throw error;
   }
 }
+
+
+export async function loginUser(login, password) {
+  console.log(login, password);
+  try {
+    const response = await fetch('http://localhost:8080/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ login, password })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Login failed');
+    }
+
+    const data = await response.json();
+    if (data.token) {
+      console.log(data.token);
+      localStorage.setItem('token', data.token); // Сохраняем JWT токен
+    } else {
+      throw new Error('Token is missing in the response');
+    }
+
+
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error; // Переброс ошибки, чтобы её можно было обработать при вызове функции
+  }
+}
+
 
 async function getCurrentUser() {
   const token = localStorage.getItem('token');

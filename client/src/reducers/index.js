@@ -1,13 +1,12 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "@redux-devtools/extension";
-import thunk from "redux-thunk";  // исправление импорта
+import { configureStore } from "@reduxjs/toolkit";
+import { thunk } from 'redux-thunk';  // Именованный импорт
 import userReducer from "./userReducer";
 
-const rootReducer = combineReducers({
-  user: userReducer,
+export const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
-export const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-);
+export default store;

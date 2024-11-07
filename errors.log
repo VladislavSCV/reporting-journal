@@ -27,3 +27,99 @@ ERROR: 2024/10/21 14:01:32 error-handler.go:36: pq: duplicate key value violates
 ERROR: 2024/10/21 14:01:32 error-handler.go:36: pq: duplicate key value violates unique constraint "users_login_key"
 ERROR: 2024/10/21 14:02:00 error-handler.go:36: pq: duplicate key value violates unique constraint "users_login_key"
 ERROR: 2024/10/21 14:02:00 error-handler.go:36: pq: duplicate key value violates unique constraint "users_login_key"
+ERROR: 2024/11/06 09:42:17 error-handler.go:34: User is not found
+ERROR: 2024/11/06 09:42:17 error-handler.go:34: failed to get user
+ERROR: 2024/11/06 09:44:56 error-handler.go:34: invalid input
+ERROR: 2024/11/06 09:45:06 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/06 09:45:06 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 09:49:17 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/06 09:49:17 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 09:50:50 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/06 09:50:50 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 09:53:01 error-handler.go:34: pq: INSERT has more expressions than target columns
+ERROR: 2024/11/06 09:53:01 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 09:53:55 error-handler.go:34: pq: duplicate key value violates unique constraint "users_login_key"
+ERROR: 2024/11/06 09:53:55 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 09:56:15 error-handler.go:34: sql: Scan error on column index 3, name "group_id": converting NULL to int is unsupported
+ERROR: 2024/11/06 09:56:15 error-handler.go:34: failed to get user
+ERROR: 2024/11/06 10:10:01 error-handler.go:34: invalid credentials
+ERROR: 2024/11/06 10:27:44 error-handler.go:34: pq: column "password" of relation "users" does not exist
+ERROR: 2024/11/06 10:27:44 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 10:29:25 error-handler.go:34: pq: column "password" of relation "users" does not exist
+ERROR: 2024/11/06 10:29:25 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 10:32:45 error-handler.go:34: pq: column "password" of relation "users" does not exist
+ERROR: 2024/11/06 10:32:45 error-handler.go:34: failed to create user
+ERROR: 2024/11/06 10:34:02 error-handler.go:34: sql: expected 6 destination arguments in Scan, not 7
+ERROR: 2024/11/06 10:34:02 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:22:17 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:22:17 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:28:10 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:28:10 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:29:24 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:29:52 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:29:52 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:30:07 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:30:07 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:31:31 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:31:33 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:31:52 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:31:52 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:33:12 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:33:22 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:33:22 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:39:38 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:39:43 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:39:56 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:39:56 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:40:41 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:40:46 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:40:46 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:41:13 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:41:17 error-handler.go:34: failed to get user АфанасьевLogin from PostgreSQL
+ERROR: 2024/11/07 13:41:17 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:42:11 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:42:16 error-handler.go:34: failed to get user АфанасьевLogin from PostgreSQL
+ERROR: 2024/11/07 13:42:16 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:47:30 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:47:45 error-handler.go:34: failed to get user АфанасьевLogin from PostgreSQL: EOF
+ERROR: 2024/11/07 13:47:45 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 13:58:05 error-handler.go:34: invalid input
+ERROR: 2024/11/07 13:58:39 error-handler.go:34: invalid input
+ERROR: 2024/11/07 13:58:50 error-handler.go:34: invalid input
+ERROR: 2024/11/07 13:58:56 error-handler.go:34: EOF
+ERROR: 2024/11/07 13:59:04 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:00:16 error-handler.go:34: EOF
+ERROR: 2024/11/07 14:00:21 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:00:42 error-handler.go:34: EOF
+ERROR: 2024/11/07 14:00:45 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:01:23 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:01:42 error-handler.go:34: EOF
+ERROR: 2024/11/07 14:02:12 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:04:09 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:04:17 error-handler.go:34: invalid input
+ERROR: 2024/11/07 14:05:53 error-handler.go:34: pq: column "hash" of relation "users" does not exist
+ERROR: 2024/11/07 14:05:53 error-handler.go:34: failed to create user
+ERROR: 2024/11/07 14:08:54 error-handler.go:34: pq: column "hash" of relation "users" does not exist
+ERROR: 2024/11/07 14:08:54 error-handler.go:34: failed to create user
+ERROR: 2024/11/07 14:10:41 error-handler.go:34: pq: column "hash" of relation "users" does not exist
+ERROR: 2024/11/07 14:10:41 error-handler.go:34: failed to create user
+ERROR: 2024/11/07 14:12:44 error-handler.go:34: pq: column "hash" of relation "users" does not exist
+ERROR: 2024/11/07 14:12:44 error-handler.go:34: failed to create user
+ERROR: 2024/11/07 14:12:52 error-handler.go:34: successfully generated hash with salt for user testLogin
+ERROR: 2024/11/07 14:12:52 error-handler.go:34: successfully checked if user testLogin already exists
+ERROR: 2024/11/07 14:12:52 error-handler.go:34: user testLogin does not exist, so creating new user
+ERROR: 2024/11/07 14:12:53 error-handler.go:34: successfully created user testLogin
+ERROR: 2024/11/07 14:13:59 error-handler.go:34: failed to get user testLogin from PostgreSQL: pq: column "hash" does not exist
+ERROR: 2024/11/07 14:13:59 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 14:14:45 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:01:03 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:04:20 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:08:32 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:11:45 error-handler.go:34: user Vladislav Scvortsov not found
+ERROR: 2024/11/07 15:11:45 error-handler.go:34: failed to get user
+ERROR: 2024/11/07 15:12:07 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:44:22 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/07 15:46:55 error-handler.go:34: pq: column "hash" does not exist
+ERROR: 2024/11/07 15:46:55 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/07 15:48:23 error-handler.go:34: sql: expected 5 destination arguments in Scan, not 6
+ERROR: 2024/11/07 15:48:23 error-handler.go:34: failed to retrieve user from PostgreSQL

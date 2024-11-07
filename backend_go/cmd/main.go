@@ -14,6 +14,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//type allHandlers struct {
+//	UserApi users.UserAPIRepository
+//	RoleApi
+//}
+
 type NotFoundError struct {
 	Message string
 }
@@ -32,26 +37,44 @@ func (e *ValidationError) Error() string {
 
 func SetupRouter(api users.UserAPIRepository) *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.CORSMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	protected := r.Group("/")
-	protected.Use(middleware.AuthMiddleware())
+	//protected := r.Group("/")
+
+	//protected.Use(middleware.AuthMiddleware())
+	//{
+	//
+	//}
+
+	authRoutes := r.Group("/api/auth")
 	{
-		authRoutes := r.Group("/api/auth")
-		{
-			authRoutes.POST("/registration", errorHandler(api.SignUp))
-			authRoutes.POST("/login", errorHandler(api.Login))
-		}
+		authRoutes.POST("/registration", errorHandler(api.SignUp))
+		authRoutes.POST("/login", errorHandler(api.Login))
+		authRoutes.POST("/verify", errorHandler(api.VerifyToken))
 	}
 
-	userRoutes := r.Group("/api/users")
+	userRoutes := r.Group("/api/user")
 	{
 		userRoutes.GET("/", errorHandler(api.GetUsers))
 		userRoutes.GET("/:id", errorHandler(api.GetUser))
 		userRoutes.PUT("/:id", errorHandler(api.UpdateUser))
 		userRoutes.DELETE("/:id", errorHandler(api.DeleteUser))
 	}
+
+	//roleRoutes := r.Group("/api/role")
+	//{
+	//	roleRoutes.GET("/", errorHandler(api.GetRoles))
+	//	roleRoutes.GET("/:id", errorHandler(api.GetRole))
+	//	roleRoutes.POST("/", errorHandler(api.CreateRole))
+	//	roleRoutes.PUT("/:id", errorHandler(api.UpdateRole))
+	//	roleRoutes.DELETE("/:id", errorHandler(api.DeleteRole))
+	//}
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Page not found"})
+	})
 
 	return r
 }
@@ -69,7 +92,7 @@ func main() {
 
 	router := SetupRouter(api)
 	srv := &http.Server{
-		Addr:    ":8000",
+		Addr:    ":8080",
 		Handler: router,
 	}
 

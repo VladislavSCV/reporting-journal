@@ -29,7 +29,6 @@ type UserPostgresRepository interface {
 type UserRedisRepository interface {
 	SaveInCache(user *models.User) error
 	Logout(id int) error
-	GetUserById(id int) (models.User, error)
 	UpdateUser(id string, updates map[string]string) error
 	DeleteUser(id int) error
 }
@@ -37,6 +36,7 @@ type UserRedisRepository interface {
 type UserAPIRepository interface {
 	Login(c *gin.Context) error
 	SignUp(c *gin.Context) error
+	VerifyToken(c *gin.Context) error
 	GetUser(c *gin.Context) error
 	GetUserByLogin(c *gin.Context) (models.User, error)
 	GetUsers(c *gin.Context) error
