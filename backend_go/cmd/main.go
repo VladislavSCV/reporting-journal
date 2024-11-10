@@ -63,14 +63,14 @@ func SetupRouter(api users.UserAPIRepository) *gin.Engine {
 		userRoutes.DELETE("/:id", errorHandler(api.DeleteUser))
 	}
 
-	//roleRoutes := r.Group("/api/role")
-	//{
-	//	roleRoutes.GET("/", errorHandler(api.GetRoles))
-	//	roleRoutes.GET("/:id", errorHandler(api.GetRole))
-	//	roleRoutes.POST("/", errorHandler(api.CreateRole))
-	//	roleRoutes.PUT("/:id", errorHandler(api.UpdateRole))
-	//	roleRoutes.DELETE("/:id", errorHandler(api.DeleteRole))
-	//}
+	roleRoutes := r.Group("/api/role")
+	{
+		roleRoutes.GET("/", errorHandler(api.GetRoles))
+		roleRoutes.GET("/:id", errorHandler(api.GetRole))
+		roleRoutes.POST("/", errorHandler(api.CreateRole))
+		roleRoutes.PUT("/:id", errorHandler(api.UpdateRole))
+		roleRoutes.DELETE("/:id", errorHandler(api.DeleteRole))
+	}
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Page not found"})

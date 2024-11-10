@@ -8,7 +8,7 @@ import ModalManager from "./routes/ModalManager";
 import Footer from "./screens/Footer/Footer";
 import { BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "./actions/api.js";
+import { loginUser } from "./actions/api.js";
 
 function App() {
   const [modal, setModal] = useState({ isOpen: false, id: null, day: null });
@@ -16,11 +16,11 @@ function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      dispatch(auth());
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     dispatch();
+  //   }
+  // }, [dispatch]);
 
   const openModal = (event) => {
     event.preventDefault();

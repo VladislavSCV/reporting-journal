@@ -4,36 +4,38 @@ async function registerUser(login, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ login, password })
   });
+  localStorage.setItem("token", response.json().token);
   return response.json();
 }
 
-export async function auth() {
-  const token = localStorage.getItem('token');
+// export async function auth() {
+//   const token = localStorage.getItem('token');
+//
+//   if (!token) {
+//     throw new Error('No token found');
+//   }
+//
+//   try {
+//     const response = await fetch('http://localhost:8080/api/auth/verify', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ token }) // Отправка токена в теле запроса
+//     });
+//
+//     if (!response.ok) {
+//       throw new Error('Token verification failed');
+//     }
+//
+//     return await response.json(); // Возвращает данные пользователя, если токен действителен
+//   } catch (error) {
+//     console.error('Token verification error:', error);
+//     localStorage.removeItem('token'); // Удаление токена, если он недействителен
+//     throw error;
+//   }
+// }
 
-  if (!token) {
-    throw new Error('No token found');
-  }
-
-  try {
-    const response = await fetch('http://localhost:8080/api/auth/verify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Token verification failed');
-    }
-
-    return await response.json(); // Возвращает данные пользователя, если токен действителен
-  } catch (error) {
-    console.error('Token verification error:', error);
-    localStorage.removeItem('token'); // Удаление токена, если он недействителен
-    throw error;
-  }
-}
 
 
 export async function loginUser(login, password) {

@@ -123,3 +123,10 @@ ERROR: 2024/11/07 15:46:55 error-handler.go:34: pq: column "hash" does not exist
 ERROR: 2024/11/07 15:46:55 error-handler.go:34: failed to retrieve user from PostgreSQL
 ERROR: 2024/11/07 15:48:23 error-handler.go:34: sql: expected 5 destination arguments in Scan, not 6
 ERROR: 2024/11/07 15:48:23 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/10 10:35:35 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 10:36:55 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 10:44:48 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 10:49:18 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 11:11:39 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 11:11:55 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/10 11:11:59 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL

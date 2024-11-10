@@ -212,16 +212,22 @@ func (sh *userHandler) DeleteUser(c *gin.Context) error {
 }
 
 func (sh *userHandler) VerifyToken(c *gin.Context) error {
-	var token string
-	err := c.ShouldBindJSON(&token)
+	var request struct {
+		Token string `json:"token"` // Убедитесь, что тело запроса имеет нужную структуру
+	}
+	err := c.ShouldBindJSON(&request)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return err
 	}
 
-	_, err = pkg.VerifyToken(token)
+	_, err = pkg.VerifyToken(request.Token)
 	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return pkg.LogWriteFileReturnError(errors.New("invalid token"))
 	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Token is valid"})
 	return nil
 }
 

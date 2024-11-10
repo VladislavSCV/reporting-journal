@@ -14,7 +14,7 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/auth/user");
+        const response = await axios.get("http://localhost:5001/api/user");
 
         setUsers(response.data);
       } catch (error) {

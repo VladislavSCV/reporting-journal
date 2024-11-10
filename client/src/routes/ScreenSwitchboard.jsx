@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ScreenSwitchboard = () => {
   const isAuth = localStorage.getItem("token");
+  console.log(isAuth)
   if (!isAuth) {
     console.log("isAuth is false");
   }

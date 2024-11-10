@@ -7,23 +7,23 @@ import (
 type roleHandlerDB struct {
 }
 
-func (rh roleHandlerDB) GetAll() ([]*models.Role, error) {
+func (rh roleHandlerDB) GetRoles() ([]*models.Role, error) {
 	return nil, nil
 }
 
-func (rh roleHandlerDB) GetById(id int) (*models.Role, error) {
+func (rh roleHandlerDB) GetRole(id int) (*models.Role, error) {
 	return nil, nil
 }
 
-func (rh roleHandlerDB) Create(role *models.Role) error {
+func (rh roleHandlerDB) CreateRole(role *models.Role) error {
 	return nil
 }
 
-func (rh roleHandlerDB) Update(role *models.Role) error {
+func (rh roleHandlerDB) UpdateRole(role *models.Role) error {
 	return nil
 }
 
-func (rh roleHandlerDB) Delete(id int) error {
+func (rh roleHandlerDB) DeleteRole(id int) error {
 	return nil
 }
 

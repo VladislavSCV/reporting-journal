@@ -91,7 +91,7 @@ func CreateHashWithSalt(password string) (*HashResult, error) {
 		return nil, err
 	}
 
-	// Генерация хеша с солью
+	// Генерация хеша с солью С САХАРОМ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	hashResult, err := GenerateHashFromPassword(password, salt)
 	if err != nil {
 		return nil, err
