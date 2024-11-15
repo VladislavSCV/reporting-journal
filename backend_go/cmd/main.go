@@ -41,12 +41,13 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
 	// Настроим CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},                   // Разрешаем запросы только с этого адреса
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},            // Разрешаем эти методы
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Разрешаем эти заголовки
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowOrigins:     []string{"http://localhost:5173"}, // Check this URL carefully
+		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
 	}))
+
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 

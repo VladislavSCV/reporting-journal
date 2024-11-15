@@ -18,8 +18,8 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch("https://reporting-journal-2.onrender.com/api/user", {
-        });
+        const userResponse = (await fetch("https://reporting-journal-2.onrender.com/api/user", {
+        }))
         if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
         const userData = await userResponse.json();
         setUsers(userData.users);
@@ -38,7 +38,7 @@ const AdminPanel = () => {
   // Add user
   const addUser = async (e) => {
     e.preventDefault();
-    if (!firstName || !middleName || !lastName || !login || !password || !role) {
+    if (!firstName || !middleName || !login || !password || !role) {
       alert("Пожалуйста, заполните все поля.");
       return;
     }
@@ -47,7 +47,7 @@ const AdminPanel = () => {
       const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/registration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ first_name: firstName, middle_name: middleName, last_name: lastName, login, password, role }),
+        body: JSON.stringify({ first_name: firstName, middle_name: middleName, last_name: lastName, login, password, role_id: 1 }),
       });
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
