@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"github.com/VladislavSCV/internal/config"
 	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
@@ -90,7 +89,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 }
 
 func main() {
-	config.LoadEnv()
+	// config.LoadEnv()
 	connToDb := os.Getenv("CONN_TO_DB_PQ")
 	if connToDb == "" {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")
