@@ -25,7 +25,7 @@ func (uhr *userHandlerRedis) SaveInCache(user *models.User) error {
 	// Expiration - время жизни ключа в Redis, 10000 - 10 секунд
 	//uhr.redisClient.Set(ctx, userId, user, 0) // 0 - ключ не будет истекать
 
-	err := uhr.redisClient.HSet(ctx, userKey, "name", user.Name, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Hash).Err()
+	err := uhr.redisClient.HSet(ctx, userKey, "first_name", user.FirstName, "middle_name", user.MiddleName, "last_name", user.LastName, "role_id", user.RoleID, "group_id", user.GroupID, "login", user.Login, "password", user.Hash).Err()
 	if err != nil {
 		return err
 	}

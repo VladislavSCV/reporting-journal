@@ -19,7 +19,7 @@ func NewGroupRepository(dbAndTx models.Execer) GroupPostgresRepository {
 
 // CreateGroup добавляет новую группу в БД
 func (ghp *groupHandlerDB) CreateGroup(group *models.Group) error {
-	_, err := ghp.dbAndTx.Exec("INSERT INTO groups (name) VALUES ($1)", group.Name)
+	_, err := ghp.dbAndTx.Exec("INSERT INTO groups (name) VALUES ($1)", &group.Name)
 	return pkg.LogWriteFileReturnError(err)
 }
 
@@ -34,16 +34,16 @@ func (ghp *groupHandlerDB) GetGroupByID(id int) (*models.Group, error) {
 }
 
 // GetAllGroups возвращает список всех групп
-func (ghp *groupHandlerDB) GetAllGroups() ([]*models.Group, error) {
+func (ghp *groupHandlerDB) GetAllGroups() ([]models.Group, error) {
 	rows, err := ghp.dbAndTx.Query("SELECT id, name FROM groups")
 	if err != nil {
-		return nil, pkg.LogWriteFileReturnError(err)
+		return nil, pkg.LogWriteFileReturnError(err) // Убедитесь, что эта функция корректно логирует ошибки
 	}
 	defer rows.Close()
 
-	var groups []*models.Group
+	var groups []models.Group
 	for rows.Next() {
-		group := &models.Group{}
+		group := models.Group{}
 		if err := rows.Scan(&group.Id, &group.Name); err != nil {
 			return nil, err
 		}
@@ -87,7 +87,7 @@ func (ghp *groupHandlerDB) GetStudentsByGroupID(groupID int) ([]*models.User, er
 	var students []*models.User
 	for rows.Next() {
 		user := &models.User{}
-		if err := rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login); err != nil {
+		if err := rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login); err != nil {
 			return nil, err
 		}
 		students = append(students, user)
@@ -112,4 +112,25 @@ func (ghp *groupHandlerDB) FindGroupsByName(name string) ([]*models.Group, error
 		groups = append(groups, group)
 	}
 	return groups, nil
+}
+
+func ConnToDB(connStr string) (*sql.DB, error) {
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, pkg.LogWriteFileReturnError(err)
+	}
+	return db, nil
+}
+
+func checkConPostgres(dbConn *sql.DB) {
+	pkg.LogWriteFileReturnError(dbConn.Ping())
+}
+
+func NewGroupPostgresRepository(connStr string) GroupPostgresRepository {
+	db, err := ConnToDB(connStr)
+	if err != nil {
+		pkg.LogWriteFileReturnError(err)
+	}
+	checkConPostgres(db)
+	return &groupHandlerDB{dbAndTx: db}
 }

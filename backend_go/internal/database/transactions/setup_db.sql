@@ -14,8 +14,10 @@ create table groups (
 -- Пример структуры таблицы
 CREATE TABLE users (
                        id SERIAL PRIMARY KEY,
-                       name VARCHAR(100) NOT NULL,
-                       role_id INT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,  -- Если роль удалена, удаляются все пользователи с этой ролью
+                       first_name VARCHAR(100) NOT NULL,
+                       middle_name VARCHAR(100) NOT NULL,
+                       last_name VARCHAR(100),
+                       role_id INT NOT NULL REFERENCES roles(id), -- ON DELETE CASCADE Если роль удалена, удаляются все пользователи с этой ролью
                        group_id INT REFERENCES groups(id) ON DELETE SET NULL,  -- Для преподавателей group_id может быть NULL
                        login VARCHAR(100) NOT NULL UNIQUE,  -- Уникальность логина
                        password TEXT NOT NULL,  -- Пароль теперь может быть длиннее (например, после хеширования)

@@ -18,7 +18,7 @@ type Schedule struct {
 }
 
 type UserPostgresRepository interface {
-	GetUsers() (*[]models.User, error)
+	GetUsers() ([]models.User, error)
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
 	CreateUser(user *models.User) error

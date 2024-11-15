@@ -6,18 +6,23 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 
-	"github.com/VladislavSCV/api/middleware"
+	"github.com/gin-contrib/cors"
+
 	"github.com/VladislavSCV/api/rest/handlers"
 	"github.com/VladislavSCV/internal/config"
+	"github.com/VladislavSCV/internal/groups"
+	"github.com/VladislavSCV/internal/role"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
-//type allHandlers struct {
-//	UserApi users.UserAPIRepository
-//	RoleApi
-//}
+type ApiHandlers struct {
+	UserApi  users.UserAPIRepository
+	RoleApi  role.RoleApiRepository
+	GroupApi groups.GroupApiRepository
+}
 
 type NotFoundError struct {
 	Message string
@@ -35,41 +40,48 @@ func (e *ValidationError) Error() string {
 	return e.Message
 }
 
-func SetupRouter(api users.UserAPIRepository) *gin.Engine {
+func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
-	r.Use(middleware.CORSMiddleware())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	//protected := r.Group("/")
-
-	//protected.Use(middleware.AuthMiddleware())
-	//{
-	//
-	//}
-
 	authRoutes := r.Group("/api/auth")
 	{
-		authRoutes.POST("/registration", errorHandler(api.SignUp))
-		authRoutes.POST("/login", errorHandler(api.Login))
-		authRoutes.POST("/verify", errorHandler(api.VerifyToken))
+		authRoutes.POST("/registration", errorHandler(api.UserApi.SignUp))
+		authRoutes.POST("/login", errorHandler(api.UserApi.Login))
+		authRoutes.POST("/verify", errorHandler(api.UserApi.VerifyToken))
 	}
 
 	userRoutes := r.Group("/api/user")
 	{
-		userRoutes.GET("/", errorHandler(api.GetUsers))
-		userRoutes.GET("/:id", errorHandler(api.GetUser))
-		userRoutes.PUT("/:id", errorHandler(api.UpdateUser))
-		userRoutes.DELETE("/:id", errorHandler(api.DeleteUser))
+		userRoutes.GET("/", errorHandler(api.UserApi.GetUsers))
+		userRoutes.GET("/:id", errorHandler(api.UserApi.GetUser))
+		userRoutes.PUT("/:id", errorHandler(api.UserApi.UpdateUser))
+		userRoutes.DELETE("/:id", errorHandler(api.UserApi.DeleteUser))
 	}
 
 	roleRoutes := r.Group("/api/role")
 	{
-		roleRoutes.GET("/", errorHandler(api.GetRoles))
-		roleRoutes.GET("/:id", errorHandler(api.GetRole))
-		roleRoutes.POST("/", errorHandler(api.CreateRole))
-		roleRoutes.PUT("/:id", errorHandler(api.UpdateRole))
-		roleRoutes.DELETE("/:id", errorHandler(api.DeleteRole))
+		roleRoutes.GET("/", errorHandler(api.RoleApi.GetRoles))
+		roleRoutes.GET("/:id", errorHandler(api.RoleApi.GetRole))
+		roleRoutes.POST("/", errorHandler(api.RoleApi.CreateRole))
+		roleRoutes.DELETE("/:id", errorHandler(api.RoleApi.DeleteRole))
+	}
+
+	groupRoutes := r.Group("/api/group")
+	{
+		groupRoutes.GET("/", errorHandler(api.GroupApi.GetGroups))
+		groupRoutes.POST("/", errorHandler(api.GroupApi.CreateGroup))
+		groupRoutes.PUT("/:id", errorHandler(api.GroupApi.UpdateGroup))
+		groupRoutes.DELETE("/:id", errorHandler(api.GroupApi.DeleteGroup))
 	}
 
 	r.NoRoute(func(c *gin.Context) {
@@ -86,13 +98,20 @@ func main() {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")
 	}
 
-	dbp := users.NewUserPostgresHandlerDB(connToDb)
-	dbr := users.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
-	api := handlers.NewUserHandler(dbp, dbr)
+	dbpu := users.NewUserPostgresHandlerDB(connToDb)
+	dbru := users.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
+	apiUsers := handlers.NewUserHandler(dbpu, dbru)
 
+	dbpr := role.NewRolePostgresHandler(connToDb)
+	apiRoles := handlers.NewRoleHandler(dbpr)
+
+	dbpg := groups.NewGroupPostgresRepository(connToDb)
+	apiGroups := handlers.NewGroupHandler(dbpg)
+
+	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles, GroupApi: apiGroups}
 	router := SetupRouter(api)
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":8000",
 		Handler: router,
 	}
 

@@ -2,12 +2,13 @@ package groups
 
 import (
 	"github.com/VladislavSCV/internal/models"
+	"github.com/gin-gonic/gin"
 )
 
 type GroupPostgresRepository interface {
 	CreateGroup(group *models.Group) error
 	GetGroupByID(id int) (*models.Group, error)
-	GetAllGroups() ([]*models.Group, error)
+	GetAllGroups() ([]models.Group, error)
 	UpdateGroup(group *models.Group) error
 	DeleteGroup(id int) error
 
@@ -21,4 +22,11 @@ type GroupPostgresRepository interface {
 type GroupRedisRepository interface {
 	CacheGroups(groups []*models.Group) error
 	GetCachedGroups() ([]*models.Group, error)
+}
+
+type GroupApiRepository interface {
+	CreateGroup(c *gin.Context) error
+	GetGroups(c *gin.Context) error
+	UpdateGroup(c *gin.Context) error
+	DeleteGroup(c *gin.Context) error
 }

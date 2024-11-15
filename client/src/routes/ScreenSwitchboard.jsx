@@ -15,6 +15,7 @@ import CuratorGroupsNotes from "../screens/CuratorGroupsNotes/CuratorGroupsNotes
 import CuratorGroupsSchedule from "../screens/CuratorGroupsSchedule/CuratorGroupsSchedule";
 import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/CuratorGroupsStudentsList";
 import AdminPanel from "../screens/AdminPanel/AdminPanel";
+import MainPage from "../screens/MainPage/MainPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 
 const ScreenSwitchboard = () => {
@@ -28,11 +29,13 @@ const ScreenSwitchboard = () => {
         {!isAuth ? (
             <Routes>
               <Route path="/main" element={<Main />} />
-              <Route path="*" element={<Navigate to="/main" />} />
+              <Route path="/" element={<Navigate to="/main" />} />
             </Routes>
         ) : (
             <Routes>
               <Route path="/main" element={<Main />} />
+              <Route path="*" element={<MainPage />} />
+              <Route path="/mainPage" element={<MainPage />} />
               <Route path="/groups" element={<Groups />} />
               <Route path="/curatorgroups/*" element={<CuratorGroups />} />
               <Route path="/studentsList" element={<StudentsList />} />

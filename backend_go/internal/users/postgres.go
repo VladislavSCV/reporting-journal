@@ -19,7 +19,7 @@ type userHandlerDB struct {
 //
 //	@return []models.User - список пользователей
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
+func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
 	rows, err := uhp.dbAndTx.Query("SELECT * FROM users")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
@@ -29,13 +29,13 @@ func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		user := models.User{}
-		err = rows.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
 		if err != nil {
 			return nil, err
 		}
 		users = append(users, user)
 	}
-	return &users, nil
+	return users, nil
 }
 
 // GetUserByLogin возвращает пользователя по его логину
@@ -46,8 +46,8 @@ func (uhp *userHandlerDB) GetUsers() (*[]models.User, error) {
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT id, name, role_id, group_id, login, password, salt FROM users WHERE login = $1`, login)
-	err := row.Scan(&user.ID, &user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
+	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password, salt FROM users WHERE login = $1`, login)
+	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
 	if errors.Is(err, sql.ErrNoRows) {
 		errMsg := fmt.Errorf("user %s not found", login)
 		pkg.LogWriteFileReturnError(errMsg)
@@ -74,8 +74,8 @@ func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 // GetUserById возвращает пользователя по его ID
 func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
-	err := row.Scan(&user.Name, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+	row := uhp.dbAndTx.QueryRow(`SELECT first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
+	err := row.Scan(&user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
 	if err == sql.ErrNoRows {
 		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
 	} else if err != nil {
@@ -118,9 +118,9 @@ func (uhp *userHandlerDB) CreateUser(user *models.User) error {
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
 	// Сохранение пользователя с солью и хешем пароля
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (name, role_id, login, password, salt) 
-                               VALUES ($1, $2, $3, $4, $5)`,
-		user.Name, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt)
+	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (first_name, middle_name, last_name, role_id, login, password, salt) 
+                               VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
