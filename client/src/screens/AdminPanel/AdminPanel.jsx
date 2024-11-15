@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./adminPanel.scss";
 import UserCard from "../../components/UserCard/UserCard";
 import del from "../../assets/AdminPanel/delete.svg";
@@ -18,29 +18,23 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/user");
-        if (!response.ok) {
-          throw new Error(`Ошибка запроса: ${response.status}`);
-        }
+        const response = await fetch("https://reporting-journal-2.onrender.com/api/user");
+        if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`);
         const data = await response.json();
-        setUsers(data);
+        setUsers(data.users);
       } catch (error) {
-        console.error(error);
+        console.error("Ошибка загрузки пользователей:", error);
       }
     };
 
-    // Fetch roles
     const fetchRoles = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/role");
-        if (!response.ok) {
-          throw new Error(`Ошибка запроса: ${response.status}`);
-        }
+        const response = await fetch("https://reporting-journal-2.onrender.com/api/role");
+        if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`);
         const data = await response.json();
-        console.log(data)
-        setRoleList(data);
+        setRoleList(data.roles);
       } catch (error) {
-        console.error(error);
+        console.error("Ошибка загрузки ролей:", error);
       }
     };
 
@@ -48,14 +42,15 @@ const AdminPanel = () => {
     fetchRoles();
   }, []);
 
+
   // Add user
   const addUser = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/auth/registration", {
+      const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/registration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ first_name, middle_name, last_name, login, password, role }),
+        body: JSON.stringify({ first_name, middle_name, last_name, login, password, role: 1}),
       });
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
@@ -71,7 +66,7 @@ const AdminPanel = () => {
   const addRole = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/auth/role", {
+      const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/role", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ value }),
@@ -89,7 +84,7 @@ const AdminPanel = () => {
   // Delete role
   const deleteRole = async (key) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/auth/role/${key}`, {
+      const response = await fetch(`https://reporting-journal-2.onrender.com/api/auth/role/${key}`, {
         method: "DELETE",
       });
       if (!response.ok) {

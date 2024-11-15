@@ -2,13 +2,12 @@ package main
 
 import (
 	"context"
+	"github.com/VladislavSCV/internal/config"
+	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"time"
-
-	"github.com/gin-contrib/cors"
 
 	"github.com/VladislavSCV/api/rest/handlers"
 	"github.com/VladislavSCV/internal/groups"
@@ -41,13 +40,13 @@ func (e *ValidationError) Error() string {
 
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
+	// Настроим CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowOrigins:     []string{"http://localhost:5173"},                   // Разрешаем запросы только с этого адреса
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},            // Разрешаем эти методы
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Разрешаем эти заголовки
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
 	}))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
@@ -91,7 +90,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 }
 
 func main() {
-	// config.LoadEnv()
+	config.LoadEnv()
 	connToDb := os.Getenv("CONN_TO_DB_PQ")
 	if connToDb == "" {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")

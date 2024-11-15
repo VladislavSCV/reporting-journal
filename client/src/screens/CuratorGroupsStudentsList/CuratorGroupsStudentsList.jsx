@@ -7,7 +7,7 @@ const CuratorGroupsStudentsList = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/group");
+        const response = await axios.get("https://reporting-journal-2.onrender.com/api/group");
         setGroups(response.data);
       } catch (error) {
         console.error(error);
