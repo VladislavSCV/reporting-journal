@@ -46,6 +46,7 @@ const AdminPanel = () => {
     try {
       const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/registration", {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ first_name: firstName, middle_name: middleName, last_name: lastName, login, password, role_id: 1 }),
       });
@@ -71,6 +72,7 @@ const AdminPanel = () => {
     try {
       const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/role", {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ value }),
       });
@@ -90,6 +92,7 @@ const AdminPanel = () => {
     try {
       const response = await fetch(`https://reporting-journal-2.onrender.com/api/auth/role/${roleId}`, {
         method: "DELETE",
+        mode: "no-cors"
       });
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
