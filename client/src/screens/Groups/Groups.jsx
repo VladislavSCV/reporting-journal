@@ -9,7 +9,7 @@ const Groups = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/groups");
+        const response = await axios.get("http://localhost:8000/api/group");
         setGroups(response.data);
       } catch (error) {
         console.error(error);

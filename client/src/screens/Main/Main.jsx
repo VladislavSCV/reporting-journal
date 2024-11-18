@@ -2,28 +2,17 @@ import React, { useState } from "react";
 import welcome from "./../../assets/Welcome.svg";
 import "./main.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../actions/api.js";
+import { loginUser } from "../../actions/api";
 import { useNavigate } from "react-router-dom";
 
-const Main = () => {
+const main = () => {
   const [login, setUserLogin] = useState("");
-  const [hash, setPassword] = useState("");
-  const [error, setError] = useState(null); // Для отображения ошибки
+  const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const dispatch = useDispatch();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await loginUser(login, hash); // Ожидание завершения loginUser
-      navigate("/mainPage"); // Перенаправление после успешного входа
-    } catch (err) {
-      console.error("Ошибка входа:", err);
-      setError("Неверный логин или пароль"); // Обновляем состояние ошибки
-    }
-  };
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   return (
       <div className="main">
@@ -39,20 +28,19 @@ const Main = () => {
                 Exel-файл
               </p>
             </div>
-            <img src={welcome} alt="Welcome" />
+            <img src={welcome} alt="" />
           </div>
 
           {!isAuth && (
               <div className="main__loginBlock">
                 <div className="main__loginBlock-container">
                   <h1 className="main__loginBlock-title">Вход в аккаунт</h1>
-                  <form onSubmit={handleLogin}>
+                  <form action="">
                     <label htmlFor="login" className="main__loginBlock-label">
                       Логин:
                     </label>
                     <input
                         required
-                        value={login}
                         onChange={(e) => setUserLogin(e.target.value)}
                         type="text"
                         className="main__loginBlock-input"
@@ -63,17 +51,18 @@ const Main = () => {
                     </label>
                     <input
                         required
-                        value={hash}
                         onChange={(e) => setPassword(e.target.value)}
                         type="password"
                         className="main__loginBlock-input"
                         id="password"
                     />
-                    <button type="submit" className="main__loginBlock-button">
+                    <button
+                        className="main__loginBlock-button"
+                        onClick={() => loginUser(login, password)}
+                    >
                       Войти
                     </button>
                   </form>
-                  {error && <p className="error-message">{error}</p>}
                   <p className="main__loginBlock-access" data-modal="modalMainInfo">
                     Как получить доступ?
                   </p>
@@ -85,4 +74,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default main;

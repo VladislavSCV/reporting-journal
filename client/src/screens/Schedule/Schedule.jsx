@@ -16,7 +16,7 @@ const Schedule = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/schedule");
+        const response = await axios.get("http://localhost:8000/api/schedule");
         setSchedule(response.data);
       } catch (error) {
         console.error(error);

@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"strconv"
-
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
 	_ "github.com/lib/pq"
@@ -137,15 +135,9 @@ func (uhp *userHandlerDB) CreateUser(user *models.User) error {
 //	@param updates map[string]string - поля, которые будут обновлены
 //
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) UpdateUser(StrId string, updates map[string]string) error {
-	// Преобразование строки в число
-	id, err := strconv.Atoi(StrId)
-	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
-	}
-
+func (uhp *userHandlerDB) UpdateUser(id int, updates map[string]string) error {
 	// Проверка наличия пользователя
-	_, err = uhp.GetUserById(id)
+	_, err := uhp.GetUserById(id)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err) // Здесь лучше уточнить ошибку
 	}
@@ -168,7 +160,7 @@ func (uhp *userHandlerDB) UpdateUser(StrId string, updates map[string]string) er
 
 	// Удаляем последнюю запятую
 	query = query[:len(query)-2]
-	query += fmt.Sprintf(" WHERE id = $%d", i)
+	query += fmt.Sprintf(" WHERE id = $%d", id)
 	args = append(args, id)
 
 	// Выполняем запрос

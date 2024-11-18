@@ -41,12 +41,12 @@ type Note struct {
 	Title   string `json:"title"`
 	Body    string `json:"body"`
 	GroupId int    `json:"group_id"`
+	UserId  int    `json:"user_id"`
 }
 
 type Group struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
-	Body string `json:"body"`
 }
 
 type Schedule struct {

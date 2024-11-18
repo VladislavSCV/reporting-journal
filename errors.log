@@ -74,3 +74,8 @@ ERROR: 2024/11/15 18:18:06 error-handler.go:34: successfully checked if user tes
 ERROR: 2024/11/15 18:18:06 error-handler.go:34: user testVlad does not exist, so creating new user
 ERROR: 2024/11/15 18:18:07 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_role_id_fkey"
 ERROR: 2024/11/15 18:18:07 error-handler.go:34: failed to create user
+ERROR: 2024/11/17 22:36:35 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/18 09:10:14 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6c73af3gm0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/11/18 09:10:14 error-handler.go:34: dial tcp: lookup oregon-redis.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/11/18 09:35:19 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/18 09:36:15 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL

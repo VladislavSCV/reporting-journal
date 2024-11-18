@@ -18,13 +18,13 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = (await fetch("https://reporting-journal-2.onrender.com/api/user", {
+        const userResponse = (await fetch("http://127.0.0.1:8000/api/user", {
         }))
         if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
         const userData = await userResponse.json();
         setUsers(userData.users);
 
-        const roleResponse = await fetch("https://reporting-journal-2.onrender.com/api/role");
+        const roleResponse = await fetch("http://127.0.0.1:8000/api/role");
         if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
         const roleData = await roleResponse.json();
         setRoleList(roleData.roles);
@@ -44,7 +44,7 @@ const AdminPanel = () => {
     }
 
     try {
-      const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/registration", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/registration", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ const AdminPanel = () => {
     }
 
     try {
-      const response = await fetch("https://reporting-journal-2.onrender.com/api/auth/role", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/role", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -90,7 +90,7 @@ const AdminPanel = () => {
   // Delete role
   const deleteRole = async (roleId) => {
     try {
-      const response = await fetch(`https://reporting-journal-2.onrender.com/api/auth/role/${roleId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/auth/role/${roleId}`, {
         method: "DELETE",
         mode: "no-cors"
       });

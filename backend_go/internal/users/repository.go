@@ -22,7 +22,7 @@ type UserPostgresRepository interface {
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
 	CreateUser(user *models.User) error
-	UpdateUser(id string, updates map[string]string) error
+	UpdateUser(id int, updates map[string]string) error
 	DeleteUser(id int) error
 }
 

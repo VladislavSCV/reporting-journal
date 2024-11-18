@@ -188,7 +188,7 @@ func (sh *userHandler) UpdateUser(c *gin.Context) error {
 		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
 	}
 
-	if err := sh.servicePostgresql.UpdateUser(strconv.Itoa(id), updates); err != nil {
+	if err := sh.servicePostgresql.UpdateUser(id, updates); err != nil {
 		return pkg.LogWriteFileReturnError(errors.New("failed to update user"))
 	}
 

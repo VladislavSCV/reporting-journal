@@ -6,7 +6,7 @@ import axios from "axios";
 const GroupCard = (obj) => {
   const deleteGroup = async (key) => {
     try {
-      await axios.delete(`http://localhost:5001/api/groups/${key}`);
+      await axios.delete(`http://localhost:8000/api/groups/${key}`);
     } catch (error) {
       console.error(error);
     }

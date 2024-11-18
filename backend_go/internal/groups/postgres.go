@@ -20,6 +20,7 @@ func NewGroupRepository(dbAndTx models.Execer) GroupPostgresRepository {
 // CreateGroup добавляет новую группу в БД
 func (ghp *groupHandlerDB) CreateGroup(group *models.Group) error {
 	_, err := ghp.dbAndTx.Exec("INSERT INTO groups (name) VALUES ($1)", &group.Name)
+
 	return pkg.LogWriteFileReturnError(err)
 }
 
