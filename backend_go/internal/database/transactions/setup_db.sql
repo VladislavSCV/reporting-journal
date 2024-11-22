@@ -21,7 +21,8 @@ CREATE TABLE users (
                        group_id INT REFERENCES groups(id) ON DELETE SET NULL,  -- Для преподавателей group_id может быть NULL
                        login VARCHAR(100) NOT NULL UNIQUE,  -- Уникальность логина
                        password TEXT NOT NULL,  -- Пароль теперь может быть длиннее (например, после хеширования)
-                       salt TEXT NOT NULL  -- Соль для хеширования пароля
+                       salt TEXT NOT NULL,  -- Соль для хеширования пароля
+                       token TEXT NOT NULL -- Токен для авторизации
 );
 
 -- Заметки
@@ -33,23 +34,25 @@ create table notes (
                        user_id int not null references users(id) on delete cascade
 );
 
--- Предметы
-create table subjects (
-                          id serial primary key,
-                          name varchar(100) not null unique  -- Уникальность на название предмета
+-- Таблица предметов
+CREATE TABLE subjects (
+                          id SERIAL PRIMARY KEY,
+                          name VARCHAR(100) NOT NULL UNIQUE  -- Уникальность на название предмета
 );
 
 -- Расписание
-create table schedules (
-                           id serial primary key,
-                           group_id int not null references groups(id) on delete cascade,
-                           day_of_week smallint not null check (day_of_week >= 1 and day_of_week <= 7),  -- Ограничение на дни недели
-                           start_time time not null,
-                           end_time time not null,
-                           subject varchar(100) not null references subjects(name) on delete cascade,  -- Предмет должен ссылаться на таблицу subjects
-                           teacher_id int not null references users(id) on delete cascade,  -- Преподаватель должен существовать в таблице пользователей
-                           location varchar(100)  -- Место проведения
+CREATE TABLE schedules (
+                           id SERIAL PRIMARY KEY,
+                           group_id INT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+                           day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 1 AND 7),  -- Ограничение на дни недели (1-7)
+                           start_time TIME NOT NULL,
+                           end_time TIME NOT NULL CHECK (end_time > start_time),  -- Проверка, что время окончания больше времени начала
+                           subject_id INT NOT NULL REFERENCES subjects(id) ON DELETE CASCADE,  -- Предмет связан с ID из таблицы subjects
+                           teacher_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- Преподаватель связан с таблицей пользователей
+--                         -- TODO лучше перевести в тип int
+                           location VARCHAR(100)  -- Место проведения
 );
+
 
 -- Добавление данных в таблицы
 INSERT INTO roles (value) VALUES ('student');

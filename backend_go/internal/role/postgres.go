@@ -14,13 +14,13 @@ type roleHandlerDB struct {
 
 func (rh roleHandlerDB) GetRoles() ([]models.Role, error) {
 	var roles []models.Role
-	q, err := rh.dbAndTx.Query("SELECT value FROM roles")
+	q, err := rh.dbAndTx.Query("SELECT id, value FROM roles")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	for q.Next() {
 		var role models.Role
-		if err := q.Scan(&role.Value); err != nil {
+		if err := q.Scan(&role.ID, &role.Value); err != nil {
 			return nil, err
 		}
 		roles = append(roles, role)

@@ -27,7 +27,7 @@ func (rh *roleHandler) CreateRole(c *gin.Context) error {
 		c.Status(http.StatusInternalServerError)
 		return pkg.LogWriteFileReturnError(err)
 	}
-
+	c.JSON(http.StatusCreated, modelRole)
 	return nil
 }
 
@@ -71,7 +71,7 @@ func (rh *roleHandler) DeleteRole(c *gin.Context) error {
 		c.Status(http.StatusInternalServerError)
 		return pkg.LogWriteFileReturnError(err)
 	}
-
+	c.JSON(http.StatusOK, gin.H{"status": "deleted"})
 	return nil
 }
 

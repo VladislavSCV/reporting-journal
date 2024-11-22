@@ -79,3 +79,97 @@ ERROR: 2024/11/18 09:10:14 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6
 ERROR: 2024/11/18 09:10:14 error-handler.go:34: dial tcp: lookup oregon-redis.render.com on 127.0.0.53:53: server misbehaving
 ERROR: 2024/11/18 09:35:19 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
 ERROR: 2024/11/18 09:36:15 error-handler.go:34: successfully retrieved user testLogin from PostgreSQL
+ERROR: 2024/11/19 20:39:23 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/11/19 20:39:54 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_user_id_fkey"
+ERROR: 2024/11/19 20:42:32 error-handler.go:34: sql: expected 5 destination arguments in Scan, not 2
+ERROR: 2024/11/19 20:46:17 error-handler.go:34: pq: syntax error at or near "%"
+ERROR: 2024/11/19 20:48:26 error-handler.go:34: pq: syntax error at or near "%"
+ERROR: 2024/11/19 20:49:06 error-handler.go:34: pq: syntax error at or near "%"
+ERROR: 2024/11/19 20:50:05 error-handler.go:34: pq: syntax error at or near "$"
+ERROR: 2024/11/19 20:50:41 error-handler.go:34: pq: syntax error at or near "$"
+ERROR: 2024/11/19 20:51:26 error-handler.go:34: pq: column "string" does not exist
+ERROR: 2024/11/19 20:52:36 error-handler.go:34: pq: syntax error at or near "$"
+ERROR: 2024/11/19 20:58:00 error-handler.go:34: pq: got 3 parameters but the statement requires 2
+ERROR: 2024/11/20 21:08:06 error-handler.go:34: json: cannot unmarshal string into Go struct field Schedule.teacher_id of type int
+ERROR: 2024/11/20 21:08:19 error-handler.go:34: json: cannot unmarshal string into Go struct field Schedule.teacher_id of type int
+ERROR: 2024/11/20 21:08:55 error-handler.go:34: pq: relation "schedule" does not exist
+ERROR: 2024/11/20 21:11:06 error-handler.go:34: pq: column "subjects" of relation "schedules" does not exist
+ERROR: 2024/11/20 21:14:48 error-handler.go:34: pq: column "subjects" of relation "schedules" does not exist
+ERROR: 2024/11/20 21:17:15 error-handler.go:34: pq: invalid input syntax for type integer: ""
+ERROR: 2024/11/20 21:20:19 error-handler.go:34: json: cannot unmarshal number into Go struct field Schedule.subject_id of type string
+ERROR: 2024/11/20 21:22:18 error-handler.go:34: pq: there is no parameter $1
+ERROR: 2024/11/20 21:23:29 error-handler.go:34: pq: there is no parameter $1
+ERROR: 2024/11/20 21:25:26 error-handler.go:34: pq: there is no parameter $1
+ERROR: 2024/11/20 21:26:16 error-handler.go:34: pq: got 2 parameters but the statement requires 1
+ERROR: 2024/11/20 21:27:08 error-handler.go:34: pq: got 2 parameters but the statement requires 1
+ERROR: 2024/11/20 21:42:08 error-handler.go:34: pq: got 2 parameters but the statement requires 1
+ERROR: 2024/11/20 21:42:52 error-handler.go:34: pq: got 2 parameters but the statement requires 1
+ERROR: 2024/11/21 18:38:36 error-handler.go:34: successfully generated hash with salt for user PoliinaLogin
+ERROR: 2024/11/21 18:38:36 error-handler.go:34: successfully checked if user PoliinaLogin already exists
+ERROR: 2024/11/21 18:38:36 error-handler.go:34: user PoliinaLogin does not exist, so creating new user
+ERROR: 2024/11/21 18:38:37 error-handler.go:34: successfully created user PoliinaLogin
+ERROR: 2024/11/21 18:40:12 error-handler.go:34: successfully retrieved user PoliinaLogin from PostgreSQL
+ERROR: 2024/11/21 18:40:18 error-handler.go:34: successfully retrieved user PoliinaLogin from PostgreSQL
+ERROR: 2024/11/21 18:40:18 error-handler.go:34: invalid credentials
+ERROR: 2024/11/21 18:40:24 error-handler.go:34: successfully retrieved user PoliinaLogin from PostgreSQL
+ERROR: 2024/11/21 18:40:27 error-handler.go:34: successfully retrieved user PoliinaLogin from PostgreSQL
+ERROR: 2024/11/21 18:46:25 error-handler.go:34: successfully retrieved user PoliinaLogin from PostgreSQL
+ERROR: 2024/11/21 19:15:43 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 19:15:44 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 19:15:44 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 19:15:45 error-handler.go:34: pq: null value in column "token" of relation "users" violates not-null constraint
+ERROR: 2024/11/21 19:15:45 error-handler.go:34: failed to create user
+ERROR: 2024/11/21 19:22:46 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 19:22:47 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 19:22:47 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 19:22:47 error-handler.go:34: successfully created user Login
+ERROR: 2024/11/21 19:25:30 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 19:25:30 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 19:25:30 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 19:25:31 error-handler.go:34: successfully created user Login
+ERROR: 2024/11/21 19:26:49 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 19:26:50 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 19:26:50 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 19:26:50 error-handler.go:34: pq: INSERT has more target columns than expressions
+ERROR: 2024/11/21 19:26:50 error-handler.go:34: failed to create user
+ERROR: 2024/11/21 19:27:23 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 19:27:23 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 19:27:23 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 19:27:24 error-handler.go:34: successfully created user Login
+ERROR: 2024/11/21 19:27:59 error-handler.go:34: successfully retrieved user Login from PostgreSQL
+ERROR: 2024/11/21 19:32:18 error-handler.go:34: successfully retrieved user Login from PostgreSQL
+ERROR: 2024/11/21 19:38:12 error-handler.go:34: successfully retrieved user Login from PostgreSQL
+ERROR: 2024/11/21 19:45:18 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/21 19:47:17 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 19:47:18 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 19:47:24 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 19:47:24 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 19:48:59 error-handler.go:34: pq: could not determine data type of parameter $3
+ERROR: 2024/11/21 19:48:59 error-handler.go:34: failed to update user
+ERROR: 2024/11/21 19:50:10 error-handler.go:34: dial tcp: lookup oregon-redis.render.com: i/o timeout
+ERROR: 2024/11/21 19:51:47 error-handler.go:34: pq: could not determine data type of parameter $3
+ERROR: 2024/11/21 19:51:47 error-handler.go:34: failed to update user
+ERROR: 2024/11/21 19:53:04 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 19:53:05 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 19:53:29 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 19:53:30 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 19:54:48 error-handler.go:34: sql: expected 2 destination arguments in Scan, not 1
+ERROR: 2024/11/21 20:06:22 error-handler.go:34: pq: duplicate key value violates unique constraint "groups_name_key"
+ERROR: 2024/11/21 20:10:10 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/21 20:10:11 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/21 20:10:11 error-handler.go:34: user Login does not exist, so creating new user
+ERROR: 2024/11/21 20:10:11 error-handler.go:34: successfully created user Login
+ERROR: 2024/11/21 20:10:37 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 20:10:37 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 20:11:42 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/11/21 20:16:48 error-handler.go:34: pq: insert or update on table "schedules" violates foreign key constraint "schedules_teacher_id_fkey"
+ERROR: 2024/11/21 20:17:45 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/11/21 20:17:55 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/11/21 20:19:39 error-handler.go:34: pq: insert or update on table "schedules" violates foreign key constraint "schedules_teacher_id_fkey"
+ERROR: 2024/11/21 20:20:08 error-handler.go:34: pq: insert or update on table "schedules" violates foreign key constraint "schedules_teacher_id_fkey"
+ERROR: 2024/11/21 20:20:12 error-handler.go:34: pq: insert or update on table "schedules" violates foreign key constraint "schedules_teacher_id_fkey"
+ERROR: 2024/11/21 20:20:19 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/21 20:20:19 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/21 20:21:59 error-handler.go:34: sql: no rows in result set
+ERROR: 2024/11/21 20:25:36 error-handler.go:34: pq: column "name" of relation "users" does not exist
+ERROR: 2024/11/21 20:26:28 error-handler.go:34: pq: could not determine data type of parameter $2

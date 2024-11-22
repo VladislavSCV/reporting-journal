@@ -11,7 +11,7 @@ type Schedule struct {
 	DayOfWeek  int    `json:"day_of_week"`
 	StartTime  string `json:"start_time"`
 	EndTime    string `json:"end_time"`
-	Subject    string `json:"subject"`
+	Subject    string `json:"subjects"`
 	TeacherID  int    `json:"teacher_id"`
 	Location   string `json:"location"`
 	Recurrence string `json:"recurrence"`
@@ -19,10 +19,14 @@ type Schedule struct {
 
 type UserPostgresRepository interface {
 	GetUsers() ([]models.User, error)
+	GetUsersByGroupID(groupID int) ([]models.User, error)
+	GetUsersByRoleID(roleID int) ([]models.User, error)
+	GetUserByToken(token string) (models.User, error)
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
-	CreateUser(user *models.User) error
+	CreateUser(user *models.User) (string, error)
 	UpdateUser(id int, updates map[string]string) error
+	UpdateToken(id int, token string) error
 	DeleteUser(id int) error
 }
 
@@ -39,6 +43,7 @@ type UserAPIRepository interface {
 	VerifyToken(c *gin.Context) error
 	GetUser(c *gin.Context) error
 	GetUserByLogin(c *gin.Context) (models.User, error)
+	GetUserByToken(c *gin.Context) error
 	GetUsers(c *gin.Context) error
 	UpdateUser(c *gin.Context) error
 	DeleteUser(c *gin.Context) error

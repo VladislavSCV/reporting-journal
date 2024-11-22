@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -15,13 +16,13 @@ type noteHandler struct {
 
 // CreateNote добавляет новую заметку
 func (nh *noteHandler) CreateNote(c *gin.Context) error {
-	var note models.Note
-	if err := c.ShouldBindJSON(&note); err != nil {
+	var modelsNote models.Note
+	if err := c.ShouldBindJSON(&modelsNote); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
 		return err
 	}
 
-	if err := nh.servicePostgres.CreateNote(note); err != nil {
+	if err := nh.servicePostgres.CreateNote(modelsNote); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not create note"})
 		return err
 	}
@@ -73,7 +74,7 @@ func (nh *noteHandler) UpdateNote(c *gin.Context) error {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
 		return err
 	}
-
+	log.Println(newNote)
 	if err := nh.servicePostgres.UpdateNote(id, newNote); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not update note"})
 		return err

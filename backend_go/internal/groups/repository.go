@@ -27,6 +27,7 @@ type GroupRedisRepository interface {
 type GroupApiRepository interface {
 	CreateGroup(c *gin.Context) error
 	GetGroups(c *gin.Context) error
+	GetGroupByID(c *gin.Context) error
 	UpdateGroup(c *gin.Context) error
 	DeleteGroup(c *gin.Context) error
 }

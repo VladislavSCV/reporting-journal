@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/note"
+	"github.com/VladislavSCV/internal/subjects"
 	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
@@ -13,15 +14,18 @@ import (
 	"github.com/VladislavSCV/api/rest/handlers"
 	"github.com/VladislavSCV/internal/groups"
 	"github.com/VladislavSCV/internal/role"
+	"github.com/VladislavSCV/internal/schedules"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/gin-gonic/gin"
 )
 
 type ApiHandlers struct {
-	UserApi  users.UserAPIRepository
-	RoleApi  role.RoleApiRepository
-	GroupApi groups.GroupApiRepository
-	NoteApi  note.NoteApiRepository
+	UserApi     users.UserAPIRepository
+	RoleApi     role.RoleApiRepository
+	GroupApi    groups.GroupApiRepository
+	NoteApi     note.NoteApiRepository
+	ScheduleApi schedules.ScheduleApiRepository
+	SubjectApi  subjects.SubjectApiRepository
 }
 
 type NotFoundError struct {
@@ -56,6 +60,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 
 	authRoutes := r.Group("/api/auth")
 	{
+		authRoutes.POST("/", errorHandler(api.UserApi.GetUserByToken))
 		authRoutes.POST("/registration", errorHandler(api.UserApi.SignUp))
 		authRoutes.POST("/login", errorHandler(api.UserApi.Login))
 		authRoutes.POST("/verify", errorHandler(api.UserApi.VerifyToken))
@@ -80,17 +85,39 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 	groupRoutes := r.Group("/api/group")
 	{
 		groupRoutes.GET("/", errorHandler(api.GroupApi.GetGroups))
+		groupRoutes.GET("/:id", errorHandler(api.GroupApi.GetGroupByID))
+		// TODO настроить возврат id группы
 		groupRoutes.POST("/", errorHandler(api.GroupApi.CreateGroup))
+		// TODO настроить возврат id группы
 		groupRoutes.PUT("/:id", errorHandler(api.GroupApi.UpdateGroup))
 		groupRoutes.DELETE("/:id", errorHandler(api.GroupApi.DeleteGroup))
 	}
 
-	notesRoutes := r.Group("/api/notes")
+	notesRoutes := r.Group("/api/note")
 	{
 		notesRoutes.GET("/", errorHandler(api.NoteApi.GetNotes))
+		notesRoutes.GET("/:id", errorHandler(api.NoteApi.GetNote))
 		notesRoutes.POST("/", errorHandler(api.NoteApi.CreateNote))
 		notesRoutes.PUT("/:id", errorHandler(api.NoteApi.UpdateNote))
 		notesRoutes.DELETE("/:id", errorHandler(api.NoteApi.DeleteNote))
+	}
+
+	scheduleRoutes := r.Group("/api/schedule")
+	{
+		scheduleRoutes.GET("/", errorHandler(api.ScheduleApi.GetSchedules))
+		scheduleRoutes.GET("/:id", errorHandler(api.ScheduleApi.GetSchedule))
+		scheduleRoutes.POST("/", errorHandler(api.ScheduleApi.CreateSchedule))
+		scheduleRoutes.PUT("/:id", errorHandler(api.ScheduleApi.UpdateSchedule))
+		scheduleRoutes.DELETE("/:id", errorHandler(api.ScheduleApi.DeleteSchedule))
+	}
+
+	subjectRoutes := r.Group("/api/subject")
+	{
+		subjectRoutes.GET("/", errorHandler(api.SubjectApi.GetSubjects))
+		subjectRoutes.GET("/:id", errorHandler(api.SubjectApi.GetSubjectById))
+		subjectRoutes.POST("/", errorHandler(api.SubjectApi.CreateSubject))
+		subjectRoutes.PUT("/:id", errorHandler(api.SubjectApi.UpdateSubject))
+		subjectRoutes.DELETE("/:id", errorHandler(api.SubjectApi.DeleteSubject))
 	}
 
 	r.NoRoute(func(c *gin.Context) {
@@ -120,7 +147,13 @@ func main() {
 	dbpn := note.NewNotePostgresHandlerDB(connToDb)
 	apiNotes := handlers.NewNoteHandler(dbpn)
 
-	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles, GroupApi: apiGroups, NoteApi: apiNotes}
+	dbps := schedules.NewUserPostgresHandlerDB(connToDb)
+	apiSchedules := handlers.NewScheduleHandler(dbps)
+
+	dbpsu := subjects.NewSubjectPostgresHandlerDB(connToDb)
+	apiSubjects := handlers.NewSubjectHandler(dbpsu)
+
+	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles, GroupApi: apiGroups, NoteApi: apiNotes, ScheduleApi: apiSchedules, SubjectApi: apiSubjects}
 	router := SetupRouter(api)
 	srv := &http.Server{
 		Addr:    ":8000",

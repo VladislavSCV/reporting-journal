@@ -7,10 +7,12 @@ import (
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
 	_ "github.com/lib/pq"
+	"go.uber.org/zap"
 )
 
 type userHandlerDB struct {
 	dbAndTx models.Execer
+	logger  zap.Logger
 }
 
 // GetUsers возвращает список всех пользователей
@@ -18,22 +20,36 @@ type userHandlerDB struct {
 //	@return []models.User - список пользователей
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
+	pkg.LogWriteFileReturnError(fmt.Errorf("attempting to retrieve all users from PostgreSQL"))
 	rows, err := uhp.dbAndTx.Query("SELECT * FROM users")
 	if err != nil {
-		return nil, pkg.LogWriteFileReturnError(err)
+		errMsg := fmt.Errorf("failed to get all users from PostgreSQL: %w", err)
+		pkg.LogWriteFileReturnError(errMsg)
+		return nil, errMsg
 	}
 	defer rows.Close()
 
 	var users []models.User
 	for rows.Next() {
 		user := models.User{}
-		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt, &user.Token)
 		if err != nil {
-			return nil, err
+			errMsg := fmt.Errorf("failed to scan user from row: %w", err)
+			pkg.LogWriteFileReturnError(errMsg)
+			return nil, errMsg
 		}
 		users = append(users, user)
 	}
+	pkg.LogWriteFileReturnError(fmt.Errorf("successfully retrieved all users from PostgreSQL"))
 	return users, nil
+}
+
+func (uhp *userHandlerDB) UpdateToken(id int, token string) error {
+	_, err := uhp.dbAndTx.Exec(`UPDATE users SET token = $1 WHERE id = $2`, token, id)
+	if err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+	return nil
 }
 
 // GetUserByLogin возвращает пользователя по его логину
@@ -62,6 +78,56 @@ func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 	return user, nil
 }
 
+func (uhp *userHandlerDB) GetUsersByGroupID(groupID int) ([]models.User, error) {
+	rows, err := uhp.dbAndTx.Query(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE group_id = $1`, groupID)
+	if err != nil {
+		return nil, pkg.LogWriteFileReturnError(err)
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		user := models.User{}
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}
+
+func (uhp *userHandlerDB) GetUsersByRoleID(roleID int) ([]models.User, error) {
+	rows, err := uhp.dbAndTx.Query(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE role_id = $1`, roleID)
+	if err != nil {
+		return nil, pkg.LogWriteFileReturnError(err)
+	}
+	defer rows.Close()
+
+	var users []models.User
+	for rows.Next() {
+		user := models.User{}
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}
+
+func (uhp *userHandlerDB) GetUserByToken(token string) (models.User, error) {
+	var user models.User
+	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE token = $1`, token)
+	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+	if err == sql.ErrNoRows {
+		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
+	} else if err != nil {
+		return models.User{}, pkg.LogWriteFileReturnError(err)
+	}
+	return user, nil
+}
+
 // GetUserById возвращает пользователя по его ID
 //
 //	@param id int - ID пользователя
@@ -79,6 +145,7 @@ func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 	} else if err != nil {
 		return models.User{}, pkg.LogWriteFileReturnError(err)
 	}
+	user.ID = id
 	return user, nil
 }
 
@@ -87,11 +154,11 @@ func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 //	@param user *models.User - пользователь, который будет создан
 //
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) CreateUser(user *models.User) error {
+func (uhp *userHandlerDB) CreateUser(user *models.User) (string, error) {
 	// Генерация соли и хеш пароля
 	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
+		return "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -101,7 +168,7 @@ func (uhp *userHandlerDB) CreateUser(user *models.User) error {
 	var count int
 	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
+		return "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -109,24 +176,33 @@ func (uhp *userHandlerDB) CreateUser(user *models.User) error {
 
 	if count > 0 {
 		// Если такой логин уже существует, возвращаем ошибку
-		return fmt.Errorf("пользователь с таким логином уже существует")
+		return "", fmt.Errorf("пользователь с таким логином уже существует")
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
-	// Сохранение пользователя с солью и хешем пароля
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (first_name, middle_name, last_name, role_id, login, password, salt) 
-                               VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt)
+	token, err := pkg.GenerateJWT(user.ID)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
+		uhp.logger.Error("failed to generate token",
+			zap.Int("id", user.ID),
+			zap.Error(err),
+		)
+		return "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+	}
+
+	// Сохранение пользователя с солью и хешем пароля
+	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt, token) 
+                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.GroupID, user.Login, hashResult.Hash, hashResult.Salt, token)
+	if err != nil {
+		return "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
-	return nil
+	return token, nil
 }
 
 // UpdateUser обновляет существующего пользователя
@@ -160,7 +236,7 @@ func (uhp *userHandlerDB) UpdateUser(id int, updates map[string]string) error {
 
 	// Удаляем последнюю запятую
 	query = query[:len(query)-2]
-	query += fmt.Sprintf(" WHERE id = $%d", id)
+	query += fmt.Sprintf(" WHERE id = $%d", i)
 	args = append(args, id)
 
 	// Выполняем запрос

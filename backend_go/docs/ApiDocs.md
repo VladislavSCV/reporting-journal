@@ -7,12 +7,17 @@
 - **Тело запроса**:
 ```json
 {
-"login": "string",
-"password": "string"
+  "first_name": "fn",
+  "middle_name": "mn",
+  "last_name": "da.",
+  "role_id": 1,
+  "group_id": 1,
+  "login": "Login",
+  "password": "Password"
 }
 ```
 - **Ответ**:
-- **Успех**: `201 Created` с сообщением о успешной регистрации.
+- **Успех**: `201 Created` пользователь с пользовательскими данными
 - **Ошибка**: `400 Bad Request` при некорректных данных.
 
 #### 1.2 Вход пользователя
@@ -22,19 +27,24 @@
 - **Тело запроса**:
 ```json
 {
-"login": "string",
-"password": "string"
+  "login": "Login",
+  "password": "Password"
 }
 ```
 - **Ответ**:
-- **Успех**: `200 OK` с JWT токеном.
+- **Успех**: `200 OK` пользователь с JWT токеном.
 - **Ошибка**: `401 Unauthorized` при неверных данных.
 
 #### 1.3 Получение текущего пользователя
 
-- **Метод**: `GET`
+- **Метод**: `POST`
 - **URL**: `/api/auth`
-- **Заголовок**: `Authorization: Bearer {token}`
+- **Тело запроса**: 
+```json
+{
+"token": "string"
+}
+```
 - **Ответ**:
 - **Успех**: `200 OK` с данными текущего пользователя.
 - **Ошибка**: `401 Unauthorized` при отсутствии или некорректном токене.
@@ -159,7 +169,7 @@
 ---
 {
 "id": 3,
-"name": "ljdwiqdw-1"
+"name": "name"
 }
 ---
 
@@ -172,9 +182,10 @@
 - **Тело запроса**:
 ```json
 {
-"title": "string",
-"body": "string",
-"groupId": "string"
+  "title": "title",
+  "body": "body",
+  "group_id": 1,
+  "user_id": 5
 }
 ```
 - **Ответ**:
@@ -206,8 +217,7 @@
 - **Тело запроса**:
 ```json
 {
-"title": "string",
-"body": "string"
+  "title": "newTitle"
 }
 ```
 - **Ответ**:
@@ -225,14 +235,17 @@
 - **Тело запроса**:
 ```json
 {
-"groupId": "string",
-"dayOfWeek": "string",
-"subject": "string",
-"teacher": "string"
+  "group_id": 1,
+  "day_of_week": 1,
+  "start_time": "04:05:06",
+  "end_time": "06:00:00",
+  "subject_id": 1,
+  "teacher_id": 3,
+  "location": "Room 101"
 }
 ```
 - **Ответ**:
-- **Успех**: `201 Created` с данными нового расписания.
+- **Успех**: `201 Created`
 - **Ошибка**: `400 Bad Request` при некорректных данных.
 
 #### 6.2 Получение всех расписаний

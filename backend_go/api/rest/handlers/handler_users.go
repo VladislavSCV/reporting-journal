@@ -73,6 +73,8 @@ func (sh *userHandler) Login(c *gin.Context) error {
 		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
+	sh.servicePostgresql.UpdateToken(userDB.ID, token)
+
 	// Успешная аутентификация
 	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
 	return nil
@@ -92,7 +94,8 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 
 	fmt.Println(user)
 
-	if err := sh.servicePostgresql.CreateUser(&user); err != nil {
+	token, err := sh.servicePostgresql.CreateUser(&user)
+	if err != nil {
 		sh.logger.Error("failed to create user",
 			zap.Int("id", user.ID),
 			zap.String("login", user.Login),
@@ -100,16 +103,6 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 		)
 		c.Status(http.StatusInternalServerError)
 		return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
-	}
-
-	token, err := pkg.GenerateJWT(user.ID)
-	if err != nil {
-		sh.logger.Error("failed to generate token",
-			zap.Int("id", user.ID),
-			zap.Error(err),
-		)
-		c.Status(http.StatusInternalServerError)
-		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
@@ -145,6 +138,44 @@ func (sh *userHandler) GetUser(c *gin.Context) error {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
+	return nil
+}
+
+func (sh *userHandler) GetUserByToken(c *gin.Context) error {
+	type BindToken struct {
+		Token string `json:"token"`
+	}
+	var token BindToken
+	//var user models.User
+	err := c.ShouldBindJSON(&token)
+	if err != nil {
+		sh.logger.Error("failed to bind token",
+			zap.String("token", token.Token),
+			zap.Error(err),
+		)
+		return err
+	}
+
+	// было бы идеально проверять,
+	// что токен действителен и потом проводить поиск по redis,
+	// если токен не действителен, то возвращать ошибку или идем в бд
+
+	userFromDB, err := sh.servicePostgresql.GetUserByToken(token.Token)
+	if err != nil {
+		sh.logger.Error("failed to retrieve user from PostgreSQL",
+			zap.String("token", token.Token),
+			zap.Error(err),
+		)
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": userFromDB})
+	sh.logger.Info("successfully retrieved user from the database",
+		zap.String("token", token.Token),
+	)
+
 	return nil
 }
 

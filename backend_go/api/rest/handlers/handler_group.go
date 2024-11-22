@@ -13,6 +13,22 @@ type groupHandler struct {
 	dbAndTx groups.GroupPostgresRepository
 }
 
+func (gh *groupHandler) GetGroupByID(c *gin.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid group ID"})
+		return err
+	}
+
+	group, err := gh.dbAndTx.GetGroupByID(id)
+	if err != nil {
+		return err
+	}
+
+	c.JSON(http.StatusOK, group)
+	return nil
+}
+
 // Создаёт новую группу
 func (gh *groupHandler) CreateGroup(c *gin.Context) error {
 	var group models.Group
@@ -82,7 +98,7 @@ func (gh *groupHandler) DeleteGroup(c *gin.Context) error {
 	return nil
 }
 
-// Функция для создания нового GroupHandler
+// NewGroupHandler Функция для создания нового GroupHandler
 func NewGroupHandler(db groups.GroupPostgresRepository) *groupHandler {
 	return &groupHandler{dbAndTx: db}
 }

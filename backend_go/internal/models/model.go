@@ -25,10 +25,11 @@ type User struct {
 	MiddleName string `json:"middle_name"`
 	LastName   string `json:"last_name"`
 	RoleID     int    `json:"role_id"`
-	GroupID    *int   `json:"group_id"`
+	GroupID    int    `json:"group_id"`
 	Login      string `json:"login"`
 	Hash       string `json:"password"`
 	Salt       string `json:"salt"`
+	Token      string `json:"token"`
 }
 
 type Role struct {
@@ -50,15 +51,19 @@ type Group struct {
 }
 
 type Schedule struct {
-	ID         int    `json:"id"`
-	GroupID    int    `json:"group_id"`
-	DayOfWeek  int    `json:"day_of_week"`
-	StartTime  string `json:"start_time"`
-	EndTime    string `json:"end_time"`
-	Subject    string `json:"subject"`
-	TeacherID  int    `json:"teacher_id"`
-	Location   string `json:"location"`
-	Recurrence string `json:"recurrence"`
+	ID        int    `json:"id"`
+	GroupID   int    `json:"group_id"`
+	DayOfWeek int    `json:"day_of_week"`
+	StartTime string `json:"start_time"`
+	EndTime   string `json:"end_time"`
+	SubjectID int    `json:"subject_id"`
+	TeacherID int    `json:"teacher_id"`
+	Location  string `json:"location"`
+}
+
+type Subject struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 // Execer интерфейс для работы с транзакцией или базой данных.
