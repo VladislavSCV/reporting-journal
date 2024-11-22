@@ -94,19 +94,35 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 
 	fmt.Println(user)
 
-	token, err := sh.servicePostgresql.CreateUser(&user)
-	if err != nil {
-		sh.logger.Error("failed to create user",
-			zap.Int("id", user.ID),
-			zap.String("login", user.Login),
-			zap.Error(err),
-		)
-		c.Status(http.StatusInternalServerError)
-		return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
-	}
+	if user.RoleID == 1 {
+		token, err := sh.servicePostgresql.CreateStudent(&user)
+		if err != nil {
+			sh.logger.Error("failed to create user",
+				zap.Int("id", user.ID),
+				zap.String("login", user.Login),
+				zap.Error(err),
+			)
+			c.Status(http.StatusInternalServerError)
+			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
+		}
 
-	c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
-	return nil
+		c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
+		return nil
+	} else {
+		token, err := sh.servicePostgresql.CreateTeacher(&user)
+		if err != nil {
+			sh.logger.Error("failed to create user",
+				zap.Int("id", user.ID),
+				zap.String("login", user.Login),
+				zap.Error(err),
+			)
+			c.Status(http.StatusInternalServerError)
+			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
+		}
+
+		c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
+		return nil
+	}
 }
 
 // GetUsers возвращает список всех студентов

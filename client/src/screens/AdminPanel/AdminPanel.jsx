@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./adminPanel.scss";
 import UserCard from "../../components/UserCard/UserCard";
 import del from "../../assets/AdminPanel/delete.svg";
+import registerUser from "../../actions/api";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [group, setGroup] = useState("");
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
@@ -17,20 +19,19 @@ const AdminPanel = () => {
   // Fetch users and roles
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const userResponse = (await fetch("http://127.0.0.1:8000/api/user", {
-        }))
-        if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
-        const userData = await userResponse.json();
-        setUsers(userData.users);
-
-        const roleResponse = await fetch("http://127.0.0.1:8000/api/role");
-        if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
-        const roleData = await roleResponse.json();
-        setRoleList(roleData.roles);
-      } catch (error) {
-        console.error("Ошибка загрузки данных:", error);
-      }
+      // try {
+      //   const userResponse = (await fetch("http://localhost:8000/api/user", {}))
+      //   if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
+      //   const userData = await userResponse.json();
+      //   setUsers(userData.users);
+      //
+      //   const roleResponse = await fetch("http://localhost:8000/api/role");
+      //   if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
+      //   const roleData = await roleResponse.json();
+      //   setRoleList(roleData.roles);
+      // } catch (error) {
+      //   console.error("Ошибка загрузки данных:", error);
+      // }
     };
     fetchData();
   }, []);
@@ -38,69 +39,79 @@ const AdminPanel = () => {
   // Add user
   const addUser = async (e) => {
     e.preventDefault();
-    if (!firstName || !middleName || !login || !password || !role) {
+    if (!firstName || !middleName || !lastName || !login || !password || !role || group) {
       alert("Пожалуйста, заполните все поля.");
       return;
     }
+    console.log("I AM HERE!")
+    registerUser(firstName, middleName, lastName, role, group, login, password);
+  }
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/registration", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ first_name: firstName, middle_name: middleName, last_name: lastName, login, password, role_id: 1 }),
-      });
-      if (!response.ok) {
-        throw new Error(`Ошибка запроса: ${response.status}`);
-      }
-      const data = await response.json();
-      setUsers([...users, data]);
-      clearForm();
-    } catch (error) {
-      console.error("Ошибка при добавлении пользователя:", error);
-    }
-  };
+
+    // try {
+  //     const response = await fetch("http://localhost:8000/api/auth/registration", {
+  //       method: "POST",
+  //       credentials: "include",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         first_name: firstName,
+  //         middle_name: middleName,
+  //         last_name: lastName,
+  //         login,
+  //         password,
+  //         role_id: 1,
+  //       }),
+  //     });
+  //
+  //     if (!response.ok) {
+  //       throw new Error(`Ошибка запроса: ${response.status}`);
+  //     }
+  //     const data = await response.json();
+  //     setUsers([...users, data]);
+  //     clearForm();
+  //   } catch (error) {
+  //     console.error("Ошибка при добавлении пользователя:", error);
+  //   }
+  // };
 
   // Add role
   const addRole = async (e) => {
-    e.preventDefault();
-    if (!value) {
-      alert("Пожалуйста, введите название роли.");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/role", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ value }),
-      });
-      if (!response.ok) {
-        throw new Error(`Ошибка запроса: ${response.status}`);
-      }
-      const data = await response.json();
-      setRoleList([...roleList, data]);
-      setValue("");  // Clear the input after adding
-    } catch (error) {
-      console.error("Ошибка при добавлении роли:", error);
-    }
+  //   e.preventDefault();
+  //   if (!value) {
+  //     alert("Пожалуйста, введите название роли.");
+  //     return;
+  //   }
+  //
+  //   try {
+  //     const response = await fetch("http://localhost:8000/api/auth/role", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ value }),
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error(`Ошибка запроса: ${response.status}`);
+  //     }
+  //     const data = await response.json();
+  //     setRoleList([...roleList, data]);
+  //     setValue("");  // Clear the input after adding
+  //   } catch (error) {
+  //     console.error("Ошибка при добавлении роли:", error);
+  //   }
   };
 
   // Delete role
   const deleteRole = async (roleId) => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/auth/role/${roleId}`, {
-        method: "DELETE",
-        mode: "no-cors"
-      });
-      if (!response.ok) {
-        throw new Error(`Ошибка запроса: ${response.status}`);
-      }
-      setRoleList(roleList.filter((role) => role.id !== roleId));
-    } catch (error) {
-      console.error("Ошибка при удалении роли:", error);
-    }
+  //   try {
+  //     const response = await fetch(`http://localhost:8000/api/auth/role/${roleId}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error(`Ошибка запроса: ${response.status}`);
+  //     }
+  //     setRoleList(roleList.filter((role) => role.id !== roleId));
+  //   } catch (error) {
+  //     console.error("Ошибка при удалении роли:", error);
+  //   }
   };
 
   // Clear user form after adding
@@ -118,9 +129,9 @@ const AdminPanel = () => {
         <div className="adminPanel__container">
           <h1 className="adminPanel__title">Панель управления</h1>
           <div className="adminPanel__usersControl">
-            <form className="adminPanel__usersControl-form" onSubmit={addUser}>
+            <form action="">
               <div className="">
-                <label className="adminPanel__usersControl-label">Фамилия:</label>
+                <label className="adminPanel__usersControl-label">*Фамилия:</label>
                 <input
                     onChange={(e) => setFirstName(e.target.value)}
                     value={firstName}
@@ -129,7 +140,7 @@ const AdminPanel = () => {
                 />
               </div>
               <div className="">
-                <label className="adminPanel__usersControl-label">Имя:</label>
+                <label className="adminPanel__usersControl-label">*Имя:</label>
                 <input
                     onChange={(e) => setMiddleName(e.target.value)}
                     value={middleName}
@@ -138,7 +149,7 @@ const AdminPanel = () => {
                 />
               </div>
               <div className="">
-                <label className="adminPanel__usersControl-label">Отчество:</label>
+                <label className="adminPanel__usersControl-label">*Отчество:</label>
                 <input
                     onChange={(e) => setLastName(e.target.value)}
                     value={lastName}
@@ -147,7 +158,22 @@ const AdminPanel = () => {
                 />
               </div>
               <div>
-                <label className="adminPanel__usersControl-label">Логин пользователя:</label>
+                <label className="adminPanel__usersControl-label">Группа:</label>
+                <select
+                    className="adminPanel__usersControl-input"
+                    onChange={(e) => setGroup(e.target.value)}
+                    value={role}
+                >
+                  <option value="">Выберите роль</option>
+                  {roleList.map((role) => (
+                      <option value={role.id} key={role.id}>
+                        {role.value}
+                      </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="adminPanel__usersControl-label">*Логин пользователя:</label>
                 <input
                     onChange={(e) => setLogin(e.target.value)}
                     value={login}
@@ -156,7 +182,7 @@ const AdminPanel = () => {
                 />
               </div>
               <div>
-                <label className="adminPanel__usersControl-label">Пароль пользователя:</label>
+                <label className="adminPanel__usersControl-label">*Пароль пользователя:</label>
                 <input
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
@@ -165,7 +191,7 @@ const AdminPanel = () => {
                 />
               </div>
               <div>
-                <label className="adminPanel__usersControl-label">Роль пользователя:</label>
+                <label className="adminPanel__usersControl-label">*Роль:</label>
                 <select
                     className="adminPanel__usersControl-input"
                     onChange={(e) => setRole(e.target.value)}
@@ -179,7 +205,10 @@ const AdminPanel = () => {
                   ))}
                 </select>
               </div>
-              <button type="submit" className="adminPanel__usersControl-button">
+              <button
+                  className="adminPanel__usersControl-button"
+                  onClick={() => registerUser(firstName, middleName, lastName, login, password, role)}
+              >
                 Добавить
               </button>
             </form>

@@ -173,3 +173,64 @@ ERROR: 2024/11/21 20:20:19 error-handler.go:34: successfully retrieved all users
 ERROR: 2024/11/21 20:21:59 error-handler.go:34: sql: no rows in result set
 ERROR: 2024/11/21 20:25:36 error-handler.go:34: pq: column "name" of relation "users" does not exist
 ERROR: 2024/11/21 20:26:28 error-handler.go:34: pq: could not determine data type of parameter $2
+ERROR: 2024/11/22 11:58:55 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 11:58:56 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/22 12:07:30 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 12:07:30 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/22 12:15:41 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 12:15:41 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/22 12:38:07 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 12:38:07 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/22 12:49:58 error-handler.go:34: successfully generated hash with salt for user wafwaf
+ERROR: 2024/11/22 12:49:58 error-handler.go:34: successfully checked if user wafwaf already exists
+ERROR: 2024/11/22 12:49:58 error-handler.go:34: user wafwaf does not exist, so creating new user
+ERROR: 2024/11/22 12:49:59 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/22 12:49:59 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 12:54:14 error-handler.go:34: successfully generated hash with salt for user ewqew
+ERROR: 2024/11/22 12:54:14 error-handler.go:34: successfully checked if user ewqew already exists
+ERROR: 2024/11/22 12:54:14 error-handler.go:34: user ewqew does not exist, so creating new user
+ERROR: 2024/11/22 12:54:15 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/22 12:54:15 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:02:39 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/22 13:02:39 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/22 13:02:39 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:02:50 error-handler.go:34: invalid input
+ERROR: 2024/11/22 13:02:57 error-handler.go:34: successfully generated hash with salt for user Login
+ERROR: 2024/11/22 13:02:58 error-handler.go:34: successfully checked if user Login already exists
+ERROR: 2024/11/22 13:02:58 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:11:22 error-handler.go:34: successfully generated hash with salt for user RWQ
+ERROR: 2024/11/22 13:11:22 error-handler.go:34: successfully checked if user RWQ already exists
+ERROR: 2024/11/22 13:11:22 error-handler.go:34: user RWQ does not exist, so creating new user
+ERROR: 2024/11/22 13:11:23 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/11/22 13:11:23 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:11:51 error-handler.go:34: invalid input
+ERROR: 2024/11/22 13:11:57 error-handler.go:34: successfully generated hash with salt for user RWQ
+ERROR: 2024/11/22 13:11:57 error-handler.go:34: successfully checked if user RWQ already exists
+ERROR: 2024/11/22 13:11:57 error-handler.go:34: user RWQ does not exist, so creating new user
+ERROR: 2024/11/22 13:11:58 error-handler.go:34: successfully created user RWQ
+ERROR: 2024/11/22 13:12:04 error-handler.go:34: successfully generated hash with salt for user RWQ
+ERROR: 2024/11/22 13:12:05 error-handler.go:34: successfully checked if user RWQ already exists
+ERROR: 2024/11/22 13:12:05 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:12:32 error-handler.go:34: successfully generated hash with salt for user RWQ
+ERROR: 2024/11/22 13:12:33 error-handler.go:34: successfully checked if user RWQ already exists
+ERROR: 2024/11/22 13:12:33 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:12:54 error-handler.go:34: successfully generated hash with salt for user RWQtew
+ERROR: 2024/11/22 13:12:54 error-handler.go:34: successfully checked if user RWQtew already exists
+ERROR: 2024/11/22 13:12:54 error-handler.go:34: user RWQtew does not exist, so creating new user
+ERROR: 2024/11/22 13:12:55 error-handler.go:34: successfully created user RWQtew
+ERROR: 2024/11/22 13:13:10 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 13:13:10 error-handler.go:34: failed to scan user from row: sql: Scan error on column index 5, name "group_id": converting NULL to int is unsupported
+ERROR: 2024/11/22 13:13:10 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/22 13:13:49 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/22 13:13:49 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/22 13:14:08 error-handler.go:34: successfully generated hash with salt for user RWQtgseew
+ERROR: 2024/11/22 13:14:09 error-handler.go:34: successfully checked if user RWQtgseew already exists
+ERROR: 2024/11/22 13:14:09 error-handler.go:34: user RWQtgseew does not exist, so creating new user
+ERROR: 2024/11/22 13:14:10 error-handler.go:34: successfully created user RWQtgseew
+ERROR: 2024/11/22 13:14:23 error-handler.go:34: successfully generated hash with salt for user RWQtgseew
+ERROR: 2024/11/22 13:14:24 error-handler.go:34: successfully checked if user RWQtgseew already exists
+ERROR: 2024/11/22 13:14:24 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 13:14:31 error-handler.go:34: successfully generated hash with salt for user RWQtgseeew
+ERROR: 2024/11/22 13:14:32 error-handler.go:34: successfully checked if user RWQtgseeew already exists
+ERROR: 2024/11/22 13:14:32 error-handler.go:34: user RWQtgseeew does not exist, so creating new user
+ERROR: 2024/11/22 13:14:32 error-handler.go:34: successfully created user RWQtgseeew

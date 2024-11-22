@@ -1,8 +1,10 @@
-async function registerUser(login, password) {
-  const response = await fetch('http://127.0.0.1:8000/api/auth/registration', {
+export default async function registerUser(first_name, middle_name, last_name, login, password, role_id) {
+  role_id = 1
+  console.log(JSON.stringify({ first_name, middle_name, last_name, login, password, role_id }));
+  const response = await fetch('http://localhost:8000/api/auth/registration', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ login, password })
+    body: JSON.stringify({ first_name, middle_name, last_name, login, password, role_id })
   });
   localStorage.setItem("token", response.json().token);
   return response.json();
@@ -16,7 +18,7 @@ async function registerUser(login, password) {
 //   }
 //
 //   try {
-//     const response = await fetch('http://127.0.0.1:8000/api/auth/verify', {
+//     const response = await fetch('http://localhost:8000/api/auth/verify', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',
@@ -41,7 +43,7 @@ async function registerUser(login, password) {
 export async function loginUser(login, password) {
   console.log(login, password);
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
+    const response = await fetch('http://localhost:8000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password })
@@ -70,7 +72,7 @@ export async function loginUser(login, password) {
 
 async function getCurrentUser() {
   const token = localStorage.getItem('token');
-  const response = await fetch('http://127.0.0.1:8000/api/auth', {
+  const response = await fetch('http://localhost:8000/api/auth', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${token}` }
   });
@@ -78,7 +80,7 @@ async function getCurrentUser() {
 }
 
 async function getUsers() {
-  const response = await fetch('http://127.0.0.1:8000/api/user', {
+  const response = await fetch('http://localhost:8000/api/user', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -86,7 +88,7 @@ async function getUsers() {
 }
 
 async function getUserById(userId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}`, {
+  const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -94,7 +96,7 @@ async function getUserById(userId) {
 }
 
 async function deleteUser(userId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/user/${userId}`, {
+  const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -102,7 +104,7 @@ async function deleteUser(userId) {
 }
 
 async function createRole(value) {
-  const response = await fetch('http://127.0.0.1:8000/api/role', {
+  const response = await fetch('http://localhost:8000/api/role', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ async function createRole(value) {
 }
 
 async function getRoles() {
-  const response = await fetch('http://127.0.0.1:8000/api/role', {
+  const response = await fetch('http://localhost:8000/api/role', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -122,7 +124,7 @@ async function getRoles() {
 }
 
 async function deleteRole(roleId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/role/${roleId}`, {
+  const response = await fetch(`http://localhost:8000/api/role/${roleId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -130,7 +132,7 @@ async function deleteRole(roleId) {
 }
 
 async function addGroup(name, body) {
-  const response = await fetch('http://127.0.0.1:8000/api/groups', {
+  const response = await fetch('http://localhost:8000/api/groups', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -142,7 +144,7 @@ async function addGroup(name, body) {
 }
 
 async function getGroups() {
-  const response = await fetch('http://127.0.0.1:8000/api/groups', {
+  const response = await fetch('http://localhost:8000/api/groups', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -150,7 +152,7 @@ async function getGroups() {
 }
 
 async function deleteGroup(groupId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/groups/${groupId}`, {
+  const response = await fetch(`http://localhost:8000/api/groups/${groupId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -158,7 +160,7 @@ async function deleteGroup(groupId) {
 }
 
 async function updateGroup(groupId, name, body) {
-  const response = await fetch(`http://127.0.0.1:8000/api/groups/${groupId}`, {
+  const response = await fetch(`http://localhost:8000/api/groups/${groupId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -170,7 +172,7 @@ async function updateGroup(groupId, name, body) {
 }
 
 async function addNote(title, body, groupId) {
-  const response = await fetch('http://127.0.0.1:8000/api/notes', {
+  const response = await fetch('http://localhost:8000/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -182,7 +184,7 @@ async function addNote(title, body, groupId) {
 }
 
 async function getNotes() {
-  const response = await fetch('http://127.0.0.1:8000/api/notes', {
+  const response = await fetch('http://localhost:8000/api/notes', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -190,7 +192,7 @@ async function getNotes() {
 }
 
 async function deleteNote(noteId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/notes/${noteId}`, {
+  const response = await fetch(`http://localhost:8000/api/notes/${noteId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -198,7 +200,7 @@ async function deleteNote(noteId) {
 }
 
 async function updateNote(noteId, title, body) {
-  const response = await fetch(`http://127.0.0.1:8000/api/notes/${noteId}`, {
+  const response = await fetch(`http://localhost:8000/api/notes/${noteId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -210,7 +212,7 @@ async function updateNote(noteId, title, body) {
 }
 
 async function addSchedule(groupId, dayOfWeek, subject, teacher) {
-  const response = await fetch('http://127.0.0.1:8000/api/schedule', {
+  const response = await fetch('http://localhost:8000/api/schedule', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -222,7 +224,7 @@ async function addSchedule(groupId, dayOfWeek, subject, teacher) {
 }
 
 async function getSchedules() {
-  const response = await fetch('http://127.0.0.1:8000/api/schedule', {
+  const response = await fetch('http://localhost:8000/api/schedule', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -230,7 +232,7 @@ async function getSchedules() {
 }
 
 async function deleteSchedule(scheduleId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/schedule/${scheduleId}`, {
+  const response = await fetch(`http://localhost:8000/api/schedule/${scheduleId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -238,7 +240,7 @@ async function deleteSchedule(scheduleId) {
 }
 
 async function updateSchedule(scheduleId, groupId, dayOfWeek, subject, teacher) {
-  const response = await fetch(`http://127.0.0.1:8000/api/schedule/${scheduleId}`, {
+  const response = await fetch(`http://localhost:8000/api/schedule/${scheduleId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -250,7 +252,7 @@ async function updateSchedule(scheduleId, groupId, dayOfWeek, subject, teacher) 
 }
 
 async function addStudent(name, groupId, role) {
-  const response = await fetch('http://127.0.0.1:8000/api/students', {
+  const response = await fetch('http://localhost:8000/api/students', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -262,7 +264,7 @@ async function addStudent(name, groupId, role) {
 }
 
 async function getStudents() {
-  const response = await fetch('http://127.0.0.1:8000/api/students', {
+  const response = await fetch('http://localhost:8000/api/students', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -270,7 +272,7 @@ async function getStudents() {
 }
 
 async function deleteStudent(studentId) {
-  const response = await fetch(`http://127.0.0.1:8000/api/students/${studentId}`, {
+  const response = await fetch(`http://localhost:8000/api/students/${studentId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
@@ -278,7 +280,7 @@ async function deleteStudent(studentId) {
 }
 
 async function updateStudent(studentId, name, groupId, role) {
-  const response = await fetch(`http://127.0.0.1:8000/api/students/${studentId}`, {
+  const response = await fetch(`http://localhost:8000/api/students/${studentId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

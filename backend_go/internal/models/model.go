@@ -25,7 +25,7 @@ type User struct {
 	MiddleName string `json:"middle_name"`
 	LastName   string `json:"last_name"`
 	RoleID     int    `json:"role_id"`
-	GroupID    int    `json:"group_id"`
+	GroupID    *int   `json:"group_id"`
 	Login      string `json:"login"`
 	Hash       string `json:"password"`
 	Salt       string `json:"salt"`

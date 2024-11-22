@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	"github.com/VladislavSCV/api/middleware"
 	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/note"
 	"github.com/VladislavSCV/internal/subjects"
-	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
 	"os"
@@ -46,17 +46,14 @@ func (e *ValidationError) Error() string {
 
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
-	// Настроим CORS
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"}, // Check this URL carefully
-		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
-		AllowCredentials: true,
-	}))
-
+	r.Use(middleware.CORSMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	r.Use(func(c *gin.Context) {
+		log.Printf("Request headers: %v", c.Request.Header)
+		c.Next()
+	})
 
 	authRoutes := r.Group("/api/auth")
 	{
@@ -156,7 +153,7 @@ func main() {
 	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles, GroupApi: apiGroups, NoteApi: apiNotes, ScheduleApi: apiSchedules, SubjectApi: apiSubjects}
 	router := SetupRouter(api)
 	srv := &http.Server{
-		Addr:    ":8000",
+		Addr:    "localhost:8000",
 		Handler: router,
 	}
 
