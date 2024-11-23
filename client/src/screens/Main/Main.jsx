@@ -58,7 +58,7 @@ const main = () => {
                     />
                     <button
                         className="main__loginBlock-button"
-                        onClick={() => loginUser(login, password)}
+                        onClick={() => loginUser(login, password, navigate)}
                     >
                       Войти
                     </button>

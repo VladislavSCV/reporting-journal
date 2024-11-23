@@ -10,38 +10,47 @@ const StudentsList = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/students");
-        setStudents(response.data);
+        const response = await axios.get("/api/user/students", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        console.log(response.data);
+        setStudents(response.data.students || []);
       } catch (error) {
-        console.error(error);
+        console.error("Ошибка при запросе студентов:", error);
       }
     };
-
     fetchStudents();
   }, []);
+
+
 
   return (
     <div className="studentsList">
       <div className="studentsList__container" id="studentList">
-        {students.map((stundet) => {
-          if (stundet.groupId === groupId) {
-            return (
-              <StudentCard
-                name={stundet.name}
-                role={stundet.role}
-                key={stundet.id}
-                id={stundet.id}
-              />
-            );
-          }
-        })}
-        <div
-          className="studentsList__add"
-          data-modal="ModalStudentAdd"
-          data-id={groupId}
-        >
-          <img src={add} alt="" className="studentsList__add-img" />
-        </div>
+        {students
+            .filter(student => groupId ? student.group_id === groupId : true)
+            .map(student => (
+                <StudentCard
+                    first_name={student.first_name + " " + student.middle_name + " " + student.last_name}
+                    // middle_name={student.middle_name}
+                    // last_name={student.last_name}
+                    role={student.role_id}
+                    key={student.id}
+                    id={student.id}
+                />
+            ))}
+
+        {/*<div*/}
+        {/*  className="studentsList__add"*/}
+        {/*  data-modal="ModalStudentAdd"*/}
+        {/*  data-id={typeof groupId === "number" ? groupId.toString() : ""}*/}
+
+        {/*  // data-id={groupId}*/}
+        {/*>*/}
+        {/*  /!*<img src={add} alt="" className="studentsList__add-img" />*!/*/}
+        {/*</div>*/}
       </div>
     </div>
   );

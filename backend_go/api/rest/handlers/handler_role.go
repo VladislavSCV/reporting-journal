@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -32,12 +33,16 @@ func (rh *roleHandler) CreateRole(c *gin.Context) error {
 }
 
 func (rh *roleHandler) GetRoles(c *gin.Context) error {
+	if rh.servicePostgresql == nil {
+		c.Status(http.StatusInternalServerError)
+		return pkg.LogWriteFileReturnError(errors.New("servicePostgresql is nil"))
+	}
 	roles, err := rh.servicePostgresql.GetRoles()
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 		return pkg.LogWriteFileReturnError(err)
 	}
-	c.JSON(http.StatusOK, roles)
+	c.JSON(http.StatusOK, gin.H{"roles": roles})
 	return nil
 }
 

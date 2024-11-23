@@ -30,6 +30,9 @@ type User struct {
 	Hash       string `json:"password"`
 	Salt       string `json:"salt"`
 	Token      string `json:"token"`
+
+	Role  string `json:"role"`
+	Group string `json:"group"`
 }
 
 type Role struct {

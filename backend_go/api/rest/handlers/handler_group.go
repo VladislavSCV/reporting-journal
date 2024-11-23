@@ -56,7 +56,7 @@ func (gh *groupHandler) GetGroups(c *gin.Context) error {
 		return err
 	}
 
-	c.JSON(http.StatusOK, groupList)
+	c.JSON(http.StatusOK, gin.H{"groups": groupList})
 	return nil
 }
 

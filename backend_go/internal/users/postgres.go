@@ -34,6 +34,8 @@ func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
 	for rows.Next() {
 		user := models.User{}
 		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt, &user.Token)
+		uhp.dbAndTx.QueryRow("SELECT value FROM roles WHERE id = $1", user.RoleID).Scan(&user.Role)
+		uhp.dbAndTx.QueryRow("SELECT value FROM groups WHERE id = $1", user.GroupID).Scan(&user.Group)
 		if err != nil {
 			errMsg := fmt.Errorf("failed to scan user from row: %w", err)
 			pkg.LogWriteFileReturnError(errMsg)
@@ -42,6 +44,44 @@ func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
 		users = append(users, user)
 	}
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully retrieved all users from PostgreSQL"))
+	return users, nil
+}
+
+func (uhp *userHandlerDB) GetStudents() ([]models.User, error) {
+	var users []models.User
+	rows, err := uhp.dbAndTx.Query("SELECT id, first_name, middle_name, last_name, role_id, group_id, login FROM users WHERE role_id = 1")
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		user := models.User{}
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+		log.Printf("%+v\n", user)
+	}
+	return users, nil
+}
+
+func (uhp *userHandlerDB) GetTeachers() ([]models.User, error) {
+	var users []models.User
+	rows, err := uhp.dbAndTx.Query("SELECT id, first_name, middle_name, last_name, role_id, group_id, login FROM users WHERE role_id = 2")
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		user := models.User{}
+		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+		log.Printf("%+v\n", user)
+	}
 	return users, nil
 }
 
@@ -308,10 +348,17 @@ func (uhp *userHandlerDB) UpdateUser(id int, updates map[string]string) error {
 //
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) DeleteUser(id int) error {
+	if uhp == nil {
+		return fmt.Errorf("nil pointer to userHandlerDB")
+	}
+
+	//uhp.logger.Info("attempting to delete user", zap.Int("user_id", id))
 	_, err := uhp.dbAndTx.Exec(`DELETE FROM users WHERE id = $1`, id)
 	if err != nil {
+		//uhp.logger.Error("failed to delete user", zap.Int("user_id", id), zap.Error(err))
 		return pkg.LogWriteFileReturnError(err)
 	}
+	//uhp.logger.Info("successfully deleted user", zap.Int("user_id", id))
 	return nil
 }
 

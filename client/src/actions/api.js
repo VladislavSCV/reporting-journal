@@ -1,49 +1,37 @@
-export default async function registerUser(first_name, middle_name, last_name, login, password, role_id) {
-  role_id = 1
-  console.log(JSON.stringify({ first_name, middle_name, last_name, login, password, role_id }));
-  const response = await fetch('http://localhost:8000/api/auth/registration', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ first_name, middle_name, last_name, login, password, role_id })
-  });
-  localStorage.setItem("token", response.json().token);
-  return response.json();
+import {useNavigate} from "react-router-dom";
+
+export async function registerUser(first_name, middle_name, last_name, login, password, role_id) {
+  role_id=1
+  try {
+    const response = await fetch('/api/auth/registration', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ first_name, middle_name, last_name, login, password, role_id }),
+    });
+
+    // Проверка статуса ответа
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Ошибка регистрации');
+    }
+
+    // Извлечение данных
+    const res = await response.json();
+
+    // Сохранение токена
+    localStorage.setItem("token", res.token);
+
+    return res; // Возврат данных
+  } catch (error) {
+    console.error('Ошибка регистрации:', error.message);
+    throw error; // Проброс ошибки для обработки в вызывающем коде
+  }
 }
 
-// export async function auth() {
-//   const token = localStorage.getItem('token');
-//
-//   if (!token) {
-//     throw new Error('No token found');
-//   }
-//
-//   try {
-//     const response = await fetch('http://localhost:8000/api/auth/verify', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ token }) // Отправка токена в теле запроса
-//     });
-//
-//     if (!response.ok) {
-//       throw new Error('Token verification failed');
-//     }
-//
-//     return await response.json(); // Возвращает данные пользователя, если токен действителен
-//   } catch (error) {
-//     console.error('Token verification error:', error);
-//     localStorage.removeItem('token'); // Удаление токена, если он недействителен
-//     throw error;
-//   }
-// }
-
-
-
-export async function loginUser(login, password) {
+export async function loginUser(login, password, navigate) {
   console.log(login, password);
   try {
-    const response = await fetch('http://localhost:8000/api/auth/login', {
+    const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ login, password })
@@ -58,6 +46,7 @@ export async function loginUser(login, password) {
     if (data.token) {
       console.log(data.token);
       localStorage.setItem('token', data.token); // Сохраняем JWT токен
+      navigate("/mainPage")
     } else {
       throw new Error('Token is missing in the response');
     }
@@ -95,16 +84,26 @@ async function getUserById(userId) {
   return response.json();
 }
 
-async function deleteUser(userId) {
-  const response = await fetch(`http://localhost:8000/api/user/${userId}`, {
-    method: 'DELETE',
-    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-  });
-  return response.ok;
+export async function deleteUser(userId) {
+  try {
+    const response = await fetch(`/api/user/${userId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error deleting user:', errorData);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Request failed:', error);
+    return false;
+  }
 }
 
-async function createRole(value) {
-  const response = await fetch('http://localhost:8000/api/role', {
+export async function createRole(value) {
+  const response = await fetch('/api/role', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -131,7 +130,7 @@ async function deleteRole(roleId) {
   return response.ok;
 }
 
-async function addGroup(name, body) {
+export async function addGroup(name, body) {
   const response = await fetch('http://localhost:8000/api/groups', {
     method: 'POST',
     headers: {
@@ -143,8 +142,8 @@ async function addGroup(name, body) {
   return response.json();
 }
 
-async function getGroups() {
-  const response = await fetch('http://localhost:8000/api/groups', {
+export async function getGroups() {
+  const response = await fetch('/api/group', {
     method: 'GET',
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });

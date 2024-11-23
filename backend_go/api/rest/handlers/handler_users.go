@@ -157,6 +157,28 @@ func (sh *userHandler) GetUser(c *gin.Context) error {
 	return nil
 }
 
+func (sh *userHandler) GetStudents(c *gin.Context) error {
+	students, err := sh.servicePostgresql.GetStudents()
+	if err != nil {
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
+		return err
+	}
+	c.JSON(http.StatusOK, gin.H{"students": students})
+	return err
+}
+
+func (sh *userHandler) GetTeachers(c *gin.Context) error {
+	teachers, err := sh.servicePostgresql.GetTeachers()
+	if err != nil {
+		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
+		return err
+	}
+	c.JSON(http.StatusOK, gin.H{"teachers": teachers})
+	return err
+}
+
 func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 	type BindToken struct {
 		Token string `json:"token"`
@@ -245,15 +267,31 @@ func (sh *userHandler) UpdateUser(c *gin.Context) error {
 
 // DeleteUser удаляет студента по ID
 func (sh *userHandler) DeleteUser(c *gin.Context) error {
+	if sh.logger == nil {
+		return errors.New("logger is nil")
+	}
+
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
+
 	if err != nil {
+		sh.logger.Error("invalid user ID format", zap.Error(err))
 		return pkg.LogWriteFileReturnError(errors.New("invalid id"))
 	}
+
+	if sh.servicePostgresql == nil {
+		sh.logger.Error("nil servicePostgresql")
+		return pkg.LogWriteFileReturnError(errors.New("nil servicePostgresql"))
+	}
+
+	sh.logger.Info("deleting user", zap.Int("user_id", id))
+
 	if err := sh.servicePostgresql.DeleteUser(id); err != nil {
+		sh.logger.Error("failed to delete user", zap.Int("user_id", id), zap.Error(err))
 		return pkg.LogWriteFileReturnError(errors.New("failed to delete user"))
 	}
 
+	sh.logger.Info("successfully deleted user", zap.Int("user_id", id))
 	c.JSON(http.StatusOK, gin.H{"status": "deleted"})
 	return nil
 }

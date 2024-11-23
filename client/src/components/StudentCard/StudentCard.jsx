@@ -1,26 +1,22 @@
 import React from "react";
 import settingsUser from "./../../assets/StudentCard/settings.svg";
-import deleteUser from "./../../assets/StudentCard/delete.svg";
+import deleteUserSVG from "./../../assets/StudentCard/delete.svg";
 import "./studentCard.scss";
-import axios from "axios";
+import {deleteUser} from "../../actions/api";
+
 const StudentCard = (obj) => {
-  const deleteStudent = async (key) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/students/${key}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <div className="studentCard" key={obj.id}>
       <div className="studentCard__color-block"></div>
       <div className="studentCard__container">
         <div className="studentCard__student">
-          <p className="studentCard__student-name">{obj.name}</p>
-          <p className="studentCard__student-role">Роль: {obj.role}</p>
+          <p className="studentCard__student-name">{obj.first_name}</p>
+          {/*<p className="studentCard__student-name">{obj.middle_name}</p>*/}
+          {/*<p className="studentCard__student-name">{obj.last_name}</p>*/}
+          <p className="studentCard__student-role">Роль: {obj.role_id}</p>
         </div>
         <div className="studentCard__buttons">
-          <img
+        <img
             src={settingsUser}
             alt=""
             className="studentCard__buttons-settings"
@@ -29,10 +25,10 @@ const StudentCard = (obj) => {
           />
 
           <img
-            src={deleteUser}
+            src={deleteUserSVG}
             alt=""
             // data-modal="ModalStudentDelete"
-            onClick={() => deleteStudent(obj.id)}
+            onClick={() => deleteUser(obj.id)}
             className="studentCard__buttons-delete"
           />
         </div>

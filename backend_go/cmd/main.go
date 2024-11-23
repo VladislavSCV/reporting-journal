@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/VladislavSCV/api/middleware"
 	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/note"
 	"github.com/VladislavSCV/internal/subjects"
+	"github.com/gin-contrib/cors"
 	"log"
 	"net/http"
 	"os"
@@ -46,7 +46,14 @@ func (e *ValidationError) Error() string {
 
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
-	r.Use(middleware.CORSMiddleware())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5137"},                   // Разрешаем запросы только с фронтенда Vite
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},            // Разрешенные HTTP методы
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Разрешенные заголовки
+		AllowCredentials: true,                                                // Разрешаем передачу куки и авторизационных заголовков
+	}))
+	//r.Use(middleware.AuthMiddleware())
+	//r.Use(middleware.CORSMiddleware())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
@@ -66,6 +73,8 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 	userRoutes := r.Group("/api/user")
 	{
 		userRoutes.GET("/", errorHandler(api.UserApi.GetUsers))
+		userRoutes.GET("/students", errorHandler(api.UserApi.GetStudents))
+		userRoutes.GET("/teachers", errorHandler(api.UserApi.GetTeachers))
 		userRoutes.GET("/:id", errorHandler(api.UserApi.GetUser))
 		userRoutes.PUT("/:id", errorHandler(api.UserApi.UpdateUser))
 		userRoutes.DELETE("/:id", errorHandler(api.UserApi.DeleteUser))
@@ -193,7 +202,6 @@ func errorHandler(handler func(c *gin.Context) error) gin.HandlerFunc {
 				statusCode = http.StatusInternalServerError
 				message = "Internal Server Error"
 			}
-
 			// Respond with the appropriate error message
 			c.JSON(statusCode, gin.H{"error": message})
 		}

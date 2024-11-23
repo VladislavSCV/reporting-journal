@@ -234,3 +234,176 @@ ERROR: 2024/11/22 13:14:31 error-handler.go:34: successfully generated hash with
 ERROR: 2024/11/22 13:14:32 error-handler.go:34: successfully checked if user RWQtgseeew already exists
 ERROR: 2024/11/22 13:14:32 error-handler.go:34: user RWQtgseeew does not exist, so creating new user
 ERROR: 2024/11/22 13:14:32 error-handler.go:34: successfully created user RWQtgseeew
+ERROR: 2024/11/22 19:05:15 error-handler.go:34: successfully generated hash with salt for user fsafsaf
+ERROR: 2024/11/22 19:05:16 error-handler.go:34: successfully checked if user fsafsaf already exists
+ERROR: 2024/11/22 19:05:16 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 19:05:26 error-handler.go:34: successfully generated hash with salt for user fsafsafdaD
+ERROR: 2024/11/22 19:05:26 error-handler.go:34: successfully checked if user fsafsafdaD already exists
+ERROR: 2024/11/22 19:05:26 error-handler.go:34: user fsafsafdaD does not exist, so creating new user
+ERROR: 2024/11/22 19:05:27 error-handler.go:34: successfully created user fsafsafdaD
+ERROR: 2024/11/22 19:06:59 error-handler.go:34: successfully generated hash with salt for user dsg
+ERROR: 2024/11/22 19:07:00 error-handler.go:34: successfully checked if user dsg already exists
+ERROR: 2024/11/22 19:07:00 error-handler.go:34: user dsg does not exist, so creating new user
+ERROR: 2024/11/22 19:07:00 error-handler.go:34: successfully created user dsg
+ERROR: 2024/11/22 19:07:42 error-handler.go:34: successfully generated hash with salt for user fsaf
+ERROR: 2024/11/22 19:07:43 error-handler.go:34: successfully checked if user fsaf already exists
+ERROR: 2024/11/22 19:07:43 error-handler.go:34: user fsaf does not exist, so creating new user
+ERROR: 2024/11/22 19:07:43 error-handler.go:34: successfully created user fsaf
+ERROR: 2024/11/22 19:07:58 error-handler.go:34: successfully generated hash with salt for user afsa
+ERROR: 2024/11/22 19:07:59 error-handler.go:34: successfully checked if user afsa already exists
+ERROR: 2024/11/22 19:07:59 error-handler.go:34: user afsa does not exist, so creating new user
+ERROR: 2024/11/22 19:08:00 error-handler.go:34: successfully created user afsa
+ERROR: 2024/11/22 19:09:29 error-handler.go:34: successfully generated hash with salt for user awrwar
+ERROR: 2024/11/22 19:09:30 error-handler.go:34: successfully checked if user awrwar already exists
+ERROR: 2024/11/22 19:09:30 error-handler.go:34: user awrwar does not exist, so creating new user
+ERROR: 2024/11/22 19:09:30 error-handler.go:34: successfully created user awrwar
+ERROR: 2024/11/22 19:10:51 error-handler.go:34: successfully generated hash with salt for user fesf
+ERROR: 2024/11/22 19:10:52 error-handler.go:34: successfully checked if user fesf already exists
+ERROR: 2024/11/22 19:10:52 error-handler.go:34: user fesf does not exist, so creating new user
+ERROR: 2024/11/22 19:10:52 error-handler.go:34: successfully created user fesf
+ERROR: 2024/11/22 19:10:55 error-handler.go:34: successfully generated hash with salt for user fesf
+ERROR: 2024/11/22 19:10:55 error-handler.go:34: successfully checked if user fesf already exists
+ERROR: 2024/11/22 19:10:55 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 19:12:48 error-handler.go:34: invalid input
+ERROR: 2024/11/22 19:13:03 error-handler.go:34: invalid input
+ERROR: 2024/11/22 19:14:03 error-handler.go:34: invalid input
+ERROR: 2024/11/22 19:15:23 error-handler.go:34: successfully generated hash with salt for user fsaf
+ERROR: 2024/11/22 19:15:23 error-handler.go:34: successfully checked if user fsaf already exists
+ERROR: 2024/11/22 19:15:23 error-handler.go:34: failed to create user
+ERROR: 2024/11/22 19:15:34 error-handler.go:34: successfully generated hash with salt for user fsafdsgdgdg
+ERROR: 2024/11/22 19:15:34 error-handler.go:34: successfully checked if user fsafdsgdgdg already exists
+ERROR: 2024/11/22 19:15:34 error-handler.go:34: user fsafdsgdgdg does not exist, so creating new user
+ERROR: 2024/11/22 19:15:35 error-handler.go:34: successfully created user fsafdsgdgdg
+ERROR: 2024/11/22 19:19:33 error-handler.go:34: user testLogin not found
+ERROR: 2024/11/22 19:19:33 error-handler.go:34: failed to get user
+ERROR: 2024/11/22 19:19:52 error-handler.go:34: successfully retrieved user loginTest from PostgreSQL
+ERROR: 2024/11/22 19:24:31 error-handler.go:34: successfully retrieved user loginTest from PostgreSQL
+ERROR: 2024/11/22 19:51:10 error-handler.go:34: dial tcp: lookup oregon-redis.render.com: i/o timeout
+ERROR: 2024/11/23 12:01:24 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 12:01:24 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 12:11:40 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 12:11:40 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:04:19 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:04:19 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:06:15 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:06:16 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:06:16 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:06:16 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:19:22 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:19:22 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:19:22 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:19:22 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:20:41 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:20:41 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:20:41 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:20:42 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:21:10 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:21:10 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:22:48 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:22:48 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:22:48 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:22:48 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:24:46 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:24:46 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:24:46 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:24:47 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:14 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:14 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:14 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:15 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:47 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:47 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:47 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:47 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:58 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:58 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:26:58 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:26:59 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:29:10 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:29:10 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:29:10 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:29:10 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:31:50 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:31:56 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:32:03 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:32:07 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:32:10 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:32:20 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:32:20 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:32:31 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:34:21 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:34:34 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:34:34 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:34:45 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:36:06 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:36:17 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:36:17 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:36:27 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:37:01 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:37:10 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:37:10 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:37:20 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:38:16 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:38:29 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:38:29 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:38:39 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:41:02 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:41:16 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:41:16 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:41:27 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:42:35 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:42:46 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:42:46 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:42:55 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:43:19 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:43:29 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:43:29 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:43:40 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:46:32 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:46:45 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:46:45 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:47:03 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:49:00 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:49:01 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:49:11 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:49:17 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:49:17 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:49:29 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:50:28 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:50:29 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:50:30 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:50:32 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:50:39 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:50:44 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:50:44 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:50:46 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:50:46 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:50:58 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:53:03 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:53:14 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:53:14 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:53:26 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:54:55 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:55:08 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:55:08 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:55:19 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:55:51 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:56:04 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:56:04 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:56:15 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:56:46 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:56:57 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:56:57 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:57:09 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:58:58 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:59:08 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:59:09 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:59:09 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:59:21 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:59:21 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 13:59:23 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 13:59:34 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 14:00:09 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 14:00:21 error-handler.go:34: successfully retrieved all users from PostgreSQL
+ERROR: 2024/11/23 14:00:21 error-handler.go:34: attempting to retrieve all users from PostgreSQL
+ERROR: 2024/11/23 14:00:32 error-handler.go:34: successfully retrieved all users from PostgreSQL

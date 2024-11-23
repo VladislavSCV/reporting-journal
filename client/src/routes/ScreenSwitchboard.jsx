@@ -26,7 +26,7 @@ const ScreenSwitchboard = () => {
   }
   return (
       <>
-        {!isAuth ? (
+        {isAuth === null ? (
             <Routes>
               <Route path="/main" element={<Main />} />
               <Route path="/" element={<Navigate to="/main" />} />

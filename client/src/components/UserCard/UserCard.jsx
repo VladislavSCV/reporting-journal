@@ -6,8 +6,8 @@ import axios from "axios";
 const UserCard = (obj) => {
   const deleteUser = async (key) => {
     try {
-      await axios.delete(`http://localhost:5001/api/auth/user/${key}`);
-    } catch {
+      await axios.delete(`/api/user/${key}`);
+    } catch (error) {
       console.error(error);
     }
   };

@@ -19,6 +19,8 @@ type Schedule struct {
 
 type UserPostgresRepository interface {
 	GetUsers() ([]models.User, error)
+	GetStudents() ([]models.User, error)
+	GetTeachers() ([]models.User, error)
 	GetUsersByGroupID(groupID int) ([]models.User, error)
 	GetUsersByRoleID(roleID int) ([]models.User, error)
 	GetUserByToken(token string) (models.User, error)
@@ -46,6 +48,8 @@ type UserAPIRepository interface {
 	GetUserByLogin(c *gin.Context) (models.User, error)
 	GetUserByToken(c *gin.Context) error
 	GetUsers(c *gin.Context) error
+	GetStudents(c *gin.Context) error
+	GetTeachers(c *gin.Context) error
 	UpdateUser(c *gin.Context) error
 	DeleteUser(c *gin.Context) error
 }

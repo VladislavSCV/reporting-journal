@@ -1,3 +1,4 @@
+import React from "react";
 import "./groupCard.scss";
 import settings from "./../../assets/GroupCard/settings.svg";
 import del from "../../assets/GroupCard/delete.svg";
