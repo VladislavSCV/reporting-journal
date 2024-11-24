@@ -9,19 +9,22 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// Получение секретного ключа из переменной окружения (лучше для продакшена)
+// Получение секретного ключа из переменной окружения
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 // Claims - структура данных внутри токена
 type Claims struct {
 	UserID int `json:"user_id"`
+	RoleID int `json:"role_id"`
 	jwt.RegisteredClaims
 }
 
 // GenerateJWT генерирует JWT-токен для пользователя.
-func GenerateJWT(userID int) (string, error) {
+// GenerateJWT генерирует JWT-токен для пользователя с одной ролью.
+func GenerateJWT(userID, roleID int) (string, error) {
 	claims := &Claims{
 		UserID: userID,
+		RoleID: roleID, // Роль пользователя
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(72 * time.Hour)), // Токен действителен 72 часа
 			Issuer:    "exampleIssuer",
@@ -31,8 +34,7 @@ func GenerateJWT(userID int) (string, error) {
 	return token.SignedString(jwtSecret)
 }
 
-// ParseJWT проверяет JWT-токен и возвращает userID, если токен действителен.
-func ParseJWT(tokenStr string) (int, error) {
+func ParseJWT(tokenStr string) (int, int, error) {
 	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -41,15 +43,15 @@ func ParseJWT(tokenStr string) (int, error) {
 	})
 
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
-		return 0, errors.New("invalid token")
+		return 0, 0, errors.New("invalid token")
 	}
 
-	return claims.UserID, nil
+	return claims.UserID, claims.RoleID, nil
 }
 
 // VerifyToken проверяет токен и возвращает данные Claims, если токен валиден.

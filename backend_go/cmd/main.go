@@ -32,6 +32,11 @@ type ApiHandlers struct {
 	ElseApi     models.Else
 }
 
+const (
+	AdminRoleID = 1 // Администратор
+	UserRoleID  = 2 // Обычный пользователь
+)
+
 type NotFoundError struct {
 	Message string
 }
@@ -51,7 +56,6 @@ func (e *ValidationError) Error() string {
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
-	//r.Use(middleware.AuthMiddleware())
 	//r.Use(middleware.TokenAuthMiddleware())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.Use(gin.Logger())
@@ -61,6 +65,33 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		log.Printf("Request headers: %v", c.Request.Header)
 		c.Next()
 	})
+
+	//// Администраторские маршруты
+	//adminRoutes := r.Group("/admin")
+	//adminRoutes.Use(middleware.RoleMiddleware([]int{middleware.AdminRoleID})) // Доступ только для администраторов
+	//{
+	//	adminRoutes.GET("/dashboard", func(c *gin.Context) {
+	//		c.JSON(200, gin.H{"message": "Welcome to the admin dashboard!"})
+	//	})
+	//}
+	//
+	//// Пользовательские маршруты
+	//userRoutes := r.Group("/user")
+	//userRoutes.Use(middleware.RoleMiddleware([]int{middleware.UserRoleID})) // Доступ только для пользователей
+	//{
+	//	userRoutes.GET("/profile", func(c *gin.Context) {
+	//		c.JSON(200, gin.H{"message": "Welcome to your user profile!"})
+	//	})
+	//}
+	//
+	//// Универсальные маршруты (доступные и админам, и пользователям)
+	//sharedRoutes := r.Group("/shared")
+	//sharedRoutes.Use(middleware.RoleMiddleware([]int{middleware.AdminRoleID, middleware.UserRoleID})) // Доступ для обеих ролей
+	//{
+	//	sharedRoutes.GET("/info", func(c *gin.Context) {
+	//		c.JSON(200, gin.H{"message": "Shared information for all users."})
+	//	})
+	//}
 
 	authRoutes := r.Group("/api/auth")
 	{

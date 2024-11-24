@@ -229,7 +229,7 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (string, error) {
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
-	token, err := pkg.GenerateJWT(user.ID)
+	token, err := pkg.GenerateJWT(user.ID, user.RoleID)
 	if err != nil {
 		uhp.logger.Error("failed to generate token",
 			zap.Int("id", user.ID),
@@ -281,7 +281,7 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (string, error) {
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
-	token, err := pkg.GenerateJWT(user.ID)
+	token, err := pkg.GenerateJWT(user.ID, user.RoleID)
 	if err != nil {
 		uhp.logger.Error("failed to generate token",
 			zap.Int("id", user.ID),

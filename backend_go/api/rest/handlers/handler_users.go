@@ -63,7 +63,7 @@ func (sh *userHandler) Login(c *gin.Context) error {
 	}
 
 	// Генерация токена
-	token, err := pkg.GenerateJWT(userDB.ID)
+	token, err := pkg.GenerateJWT(userDB.ID, userDB.RoleID)
 	if err != nil {
 		sh.logger.Error("failed to generate token",
 			zap.Int("id", userDB.ID),
@@ -78,6 +78,15 @@ func (sh *userHandler) Login(c *gin.Context) error {
 	// Успешная аутентификация
 	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
 	return nil
+}
+
+func (sh *userHandler) GetUserRole(token string) (string, error) {
+	user, err := sh.servicePostgresql.GetUserByToken(token)
+	if err != nil {
+		return "", err
+	}
+
+	return user, nil
 }
 
 // SignUp (Регистрация) создает нового студента
@@ -310,7 +319,7 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 		return err
 	}
 
-	userId, err := pkg.ParseJWT(request.Token)
+	userId, userRoleId, err := pkg.ParseJWT(request.Token)
 	if err != nil {
 		sh.logger.Error("failed to parse JWT",
 			zap.String("token", request.Token),
@@ -331,7 +340,7 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 	sh.logger.Info("successfully parsed JWT",
 		zap.Int("user_id", userId),
 	)
-	c.JSON(http.StatusOK, gin.H{"id": userId})
+	c.JSON(http.StatusOK, gin.H{"id": userId, "role_id": userRoleId})
 	return nil
 }
 
