@@ -116,7 +116,7 @@ func checkConPostgres(dbConn *sql.DB) {
 //	@param connStr string - строка, содержащая информацию о подключении к базе
 //
 //	@return UserHandlerDB - готовый UserHandlerDB
-func NewUserPostgresHandlerDB(connStr string) SchedulePostgresRepository {
+func NewSchedulePostgresHandlerDB(connStr string) SchedulePostgresRepository {
 	db, err := ConnToDB(connStr)
 	if err != nil {
 		pkg.LogWriteFileReturnError(err)

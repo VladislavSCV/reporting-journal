@@ -14,41 +14,71 @@ const AdminPanel = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [roleList, setRoleList] = useState([]);
+  const [roleList, setRoles] = useState([]);
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Fetch users and roles
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const userResponse = await fetch("/api/user/AdminPanel");
+  //       if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
+  //       const Data = await userResponse.json();
+  //       setUsers(Data.users);
+  //       setGroups(Data.groups);
+  //       setRoles(Data.roles)
+  //       console.log('groups:', groups, 'roleList:', roleList, 'users:', users);
+  //       // const roleResponse = await fetch("/api/role");
+  //       // if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
+  //       // const roleData = await roleResponse.json();
+  //       // setRoleList(roleData.roles);
+  //       //
+  //       // const groupResponse = await fetch("/api/group", {});
+  //       // if (!groupResponse.ok) throw new Error(`Ошибка запроса: ${groupResponse.status}`);
+  //       // const groupData = await groupResponse.json();
+  //       // console.log('groupData:', groupData); // Добавьте лог для отладки
+  //       //
+  //       // if (groupData && Array.isArray(groupData.groups)) {
+  //       //   setGroups(groupData.groups);
+  //       // } else {
+  //       //   console.error("Invalid groups data structure:", groupData);
+  //       // }
+  //     } catch (error) {
+  //       console.error("Ошибка загрузки данных:", error);
+  //     }
+  //   };
+  //
+  //
+  //
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch("/api/user", {});
+        const userResponse = await fetch("/api/user/AdminPanel");
         if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
-        const userData = await userResponse.json();
-        setUsers(userData.users);
+        const database64 = await userResponse.json();
+        const data = JSON.parse(atob(database64));
 
-        const roleResponse = await fetch("/api/role");
-        if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
-        const roleData = await roleResponse.json();
-        setRoleList(roleData.roles);
-
-        const groupResponse = await fetch("/api/group", {});
-        if (!groupResponse.ok) throw new Error(`Ошибка запроса: ${groupResponse.status}`);
-        const groupData = await groupResponse.json();
-
-        // Ensure you're properly handling the structure of the response
-        if (groupData && Array.isArray(groupData.groups)) {
-          setGroups(groupData.groups);  // Ensure this is the correct path in your API response
-        } else {
-          console.error("Invalid groups data structure:", groupData);
-        }
-
+        console.log('Received data:', data); // Логируем полученные данные
+        setUsers(data.users || []);
+        setGroups(data.groups || []);
+        setRoles(data.roles || []);
       } catch (error) {
         console.error("Ошибка загрузки данных:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
+
     fetchData();
   }, []);
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
 
 
   // Add user
@@ -80,7 +110,7 @@ const AdminPanel = () => {
         throw new Error(`Ошибка запроса: ${response.status}`);
       }
       const data = await response.json();
-      setRoleList([...roleList, data]);
+      setRoles([...roleList, data]);
       setValue("");  // Clear the input after adding
     } catch (error) {
       console.error("Ошибка при добавлении роли:", error);
@@ -96,10 +126,15 @@ const AdminPanel = () => {
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.status}`);
       }
-      setRoleList(roleList.filter((role) => role.id !== roleId));
+      setRoles(roleList.filter((role) => role.id !== roleId));
     } catch (error) {
       console.error("Ошибка при удалении роли:", error);
     }
+  };
+
+  const handleChange = (e) => {
+    // Преобразуем значение в число и сохраняем в состоянии
+    setGroup(parseInt(e.target.value, 10)); // Преобразуем строку в число
   };
 
   // Clear user form after adding
@@ -112,6 +147,12 @@ const AdminPanel = () => {
     setPassword("");
     setRole("");
   };
+
+  function register()
+  {
+    clearForm()
+    registerUser(firstName, middleName, lastName, login, password, role, group)
+  }
 
   return (
       <div className="adminPanel">
@@ -150,13 +191,13 @@ const AdminPanel = () => {
                 <label className="adminPanel__usersControl-label">Группа:</label>
                 <select
                     className="adminPanel__usersControl-input"
-                    onChange={(e) => setGroup(e.target.value)}
-                    value={group}
+                    onChange={handleChange}
+                    value={group || ''}  // Если group null, то значение будет ''
                 >
                   <option value="">Выберите группу</option>
-                  {Array.isArray(groups) && groups.length > 0 ? (
+                  {groups.length > 0 ? (
                       groups.map((group) => (
-                          <option value={group.name} key={group.id}>
+                          <option value={group.id} key={group.id}>
                             {group.name}
                           </option>
                       ))
@@ -176,7 +217,7 @@ const AdminPanel = () => {
                 />
               </div>
               <div>
-              <label className="adminPanel__usersControl-label">*Пароль пользователя:</label>
+                <label className="adminPanel__usersControl-label">*Пароль пользователя:</label>
                 <input
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
@@ -201,9 +242,9 @@ const AdminPanel = () => {
               </div>
               <button
                   className="adminPanel__usersControl-button"
-                  onClick={() => registerUser(firstName, middleName, lastName, login, password, role)
+                  onClick={() => register()
 
-              }
+                  }
               >
                 Добавить
               </button>

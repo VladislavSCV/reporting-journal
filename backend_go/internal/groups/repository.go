@@ -8,7 +8,7 @@ import (
 type GroupPostgresRepository interface {
 	CreateGroup(group *models.Group) error
 	GetGroupByID(id int) (*models.Group, error)
-	GetAllGroups() ([]models.Group, error)
+	GetGroups() ([]models.Group, error)
 	UpdateGroup(group *models.Group) error
 	DeleteGroup(id int) error
 

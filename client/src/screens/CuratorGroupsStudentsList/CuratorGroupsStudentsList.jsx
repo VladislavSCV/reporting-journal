@@ -7,8 +7,12 @@ const CuratorGroupsStudentsList = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/group");
-        setGroups(response.data);
+        const response = await axios.get("/api/group", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        setGroups(response.data.groups);
       } catch (error) {
         console.error(error);
       }

@@ -1,12 +1,15 @@
 import {useNavigate} from "react-router-dom";
 
-export async function registerUser(first_name, middle_name, last_name, login, password, role_id) {
-  role_id=1
+export async function registerUser(first_name, middle_name, last_name, login, password, role_id, group_id) {
+  console.log(first_name, middle_name, last_name, login, password, role_id, group_id);
+  role_id = Number(role_id)
+  group_id = Number(group_id)
+
   try {
     const response = await fetch('/api/auth/registration', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ first_name, middle_name, last_name, login, password, role_id }),
+      body: JSON.stringify({ first_name, middle_name, last_name, login, password, role_id, group_id }),
     });
 
     // Проверка статуса ответа
@@ -56,6 +59,27 @@ export async function loginUser(login, password, navigate) {
     console.error('Error during login:', error);
     throw error; // Переброс ошибки, чтобы её можно было обработать при вызове функции
   }
+}
+
+export function Decode(Response) {
+  const database64 = Response.json();
+  const data = JSON.parse(atob(database64));
+  return data
+}
+
+async function VerifyTokenAndGetId(token) {
+    const response = await fetch('/api/auth/verify', {
+      method: 'POST',
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error verifying token:', errorData);
+      return false;
+    }
+
+    const data = await response.json();
+    return data.id
 }
 
 

@@ -50,7 +50,7 @@ func (gh *groupHandler) CreateGroup(c *gin.Context) error {
 }
 
 func (gh *groupHandler) GetGroups(c *gin.Context) error {
-	groupList, err := gh.dbAndTx.GetAllGroups()
+	groupList, err := gh.dbAndTx.GetGroups()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve groups"})
 		return err

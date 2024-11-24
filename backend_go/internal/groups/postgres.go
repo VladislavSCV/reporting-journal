@@ -35,7 +35,7 @@ func (ghp *groupHandlerDB) GetGroupByID(id int) (*models.Group, error) {
 }
 
 // GetAllGroups возвращает список всех групп
-func (ghp *groupHandlerDB) GetAllGroups() ([]models.Group, error) {
+func (ghp *groupHandlerDB) GetGroups() ([]models.Group, error) {
 	rows, err := ghp.dbAndTx.Query("SELECT id, name FROM groups")
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err) // Убедитесь, что эта функция корректно логирует ошибки

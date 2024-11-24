@@ -302,17 +302,36 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 	}
 	err := c.ShouldBindJSON(&request)
 	if err != nil {
+		sh.logger.Error("failed to bind request",
+			zap.String("token", request.Token),
+			zap.Error(err),
+		)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return err
 	}
 
-	_, err = pkg.VerifyToken(request.Token)
+	userId, err := pkg.ParseJWT(request.Token)
 	if err != nil {
+		sh.logger.Error("failed to parse JWT",
+			zap.String("token", request.Token),
+			zap.Error(err),
+		)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return pkg.LogWriteFileReturnError(errors.New("invalid token"))
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Token is valid"})
+	if userId == 0 {
+		sh.logger.Error("empty user ID from JWT",
+			zap.String("token", request.Token),
+		)
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		return pkg.LogWriteFileReturnError(errors.New("invalid token"))
+	}
+
+	sh.logger.Info("successfully parsed JWT",
+		zap.Int("user_id", userId),
+	)
+	c.JSON(http.StatusOK, gin.H{"id": userId})
 	return nil
 }
 

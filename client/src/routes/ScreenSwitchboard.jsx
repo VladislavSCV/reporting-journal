@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import {Route, Routes, Navigate} from "react-router-dom";
 
 import Groups from "../screens/Groups/Groups";
 import StudentsList from "../screens/StudentsList/StudentsList";
@@ -16,7 +16,7 @@ import CuratorGroupsSchedule from "../screens/CuratorGroupsSchedule/CuratorGroup
 import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/CuratorGroupsStudentsList";
 import AdminPanel from "../screens/AdminPanel/AdminPanel";
 import MainPage from "../screens/MainPage/MainPage.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const ScreenSwitchboard = () => {
   const isAuth = localStorage.getItem("token");
@@ -28,36 +28,36 @@ const ScreenSwitchboard = () => {
       <>
         {isAuth === null ? (
             <Routes>
-              <Route path="/main" element={<Main />} />
-              <Route path="/" element={<Navigate to="/main" />} />
+              <Route path="/main" element={<Main/>}/>
+              <Route path="/" element={<Navigate to="/main"/>}/>
             </Routes>
         ) : (
             <Routes>
-              <Route path="/main" element={<Main />} />
-              <Route path="*" element={<MainPage />} />
-              <Route path="/mainPage" element={<MainPage />} />
-              <Route path="/groups" element={<Groups />} />
-              <Route path="/curatorgroups/*" element={<CuratorGroups />} />
-              <Route path="/studentsList" element={<StudentsList />} />
-              <Route path="/schedule" element={<Schedule />} />
-              <Route path="/main" element={<Main />} />
-              <Route path="/studentAttendance" element={<StudentAttendance />} />
-              <Route path="/notes" element={<Notes />} />
-              <Route path="/GroupsNotes" element={<GroupsNote />} />
-              <Route path="/GroupsSchedule" element={<GroupsSchedule />} />
-              <Route path="/GroupsStudentsList" element={<GroupsStudentsList />} />
-              <Route path="/CuratorGroupsNotes" element={<CuratorGroupsNotes />} />
+              <Route path="/main" element={<Main/>}/>
+              <Route path="*" element={<MainPage/>}/>
+              <Route path="/mainPage" element={<MainPage/>}/>
+              <Route path="/groups" element={<Groups/>}/>
+              <Route path="/curatorgroups/*" element={<CuratorGroups/>}/>
+              <Route path="/studentsList" element={<StudentsList/>}/>
+              <Route path="/schedule" element={<Schedule/>}/>
+              <Route path="/main" element={<Main/>}/>
+              <Route path="/studentAttendance" element={<StudentAttendance/>}/>
+              <Route path="/notes" element={<Notes/>}/>
+              <Route path="/GroupsNotes" element={<GroupsNote/>}/>
+              <Route path="/GroupsSchedule" element={<GroupsSchedule/>}/>
+              <Route path="/GroupsStudentsList" element={<GroupsStudentsList/>}/>
+              <Route path="/CuratorGroupsNotes" element={<CuratorGroupsNotes/>}/>
               <Route
                   path="/CuratorGroupsSchedule"
-                  element={<CuratorGroupsSchedule />}
+                  element={<CuratorGroupsSchedule/>}
               />
               <Route
                   path="/CuratorGroupsStudentsList"
-                  element={<CuratorGroupsStudentsList />}
+                  element={<CuratorGroupsStudentsList/>}
               />
               <Route
                   path="/AdminPanel"
-                  element={<AdminPanel />}
+                  element={<AdminPanel/>}
               />
             </Routes>
         )}
@@ -66,3 +66,4 @@ const ScreenSwitchboard = () => {
 };
 
 export default ScreenSwitchboard;
+

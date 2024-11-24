@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -74,4 +75,8 @@ type Execer interface {
 	Exec(query string, args ...interface{}) (sql.Result, error)
 	QueryRow(query string, args ...interface{}) *sql.Row
 	Query(query string, args ...interface{}) (*sql.Rows, error)
+}
+
+type Else interface {
+	GetAdminPanelData(c *gin.Context) error
 }

@@ -23,7 +23,7 @@ type UserPostgresRepository interface {
 	GetTeachers() ([]models.User, error)
 	GetUsersByGroupID(groupID int) ([]models.User, error)
 	GetUsersByRoleID(roleID int) ([]models.User, error)
-	GetUserByToken(token string) (models.User, error)
+	GetUserByToken(token string) (string, error)
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
 	CreateStudent(user *models.User) (string, error)

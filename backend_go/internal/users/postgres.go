@@ -16,34 +16,38 @@ type userHandlerDB struct {
 	logger  zap.Logger
 }
 
-// GetUsers возвращает список всех пользователей
-//
-//	@return []models.User - список пользователей
-//	@return error - ошибка, если она возникла
+// Структура для передачи результата
+type Result struct {
+	Users []models.User
+	Err   error
+}
+
 func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
-	pkg.LogWriteFileReturnError(fmt.Errorf("attempting to retrieve all users from PostgreSQL"))
-	rows, err := uhp.dbAndTx.Query("SELECT * FROM users")
+	rows, err := uhp.dbAndTx.Query(`
+        SELECT u.id, u.first_name, u.middle_name, u.last_name, u.role_id, u.group_id, u.login, u.password, u.salt, u.token, 
+               r.value AS role, 
+               COALESCE(g.name, 'Не указана группа') AS group_name  -- Используем COALESCE для замены NULL на строку
+FROM users u
+LEFT JOIN roles r ON u.role_id = r.id
+LEFT JOIN groups g ON u.group_id = g.id;
+
+    `)
 	if err != nil {
-		errMsg := fmt.Errorf("failed to get all users from PostgreSQL: %w", err)
-		pkg.LogWriteFileReturnError(errMsg)
-		return nil, errMsg
+		return nil, pkg.LogWriteFileReturnError(err)
 	}
 	defer rows.Close()
 
 	var users []models.User
 	for rows.Next() {
 		user := models.User{}
-		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt, &user.Token)
-		uhp.dbAndTx.QueryRow("SELECT value FROM roles WHERE id = $1", user.RoleID).Scan(&user.Role)
-		uhp.dbAndTx.QueryRow("SELECT value FROM groups WHERE id = $1", user.GroupID).Scan(&user.Group)
-		if err != nil {
-			errMsg := fmt.Errorf("failed to scan user from row: %w", err)
-			pkg.LogWriteFileReturnError(errMsg)
-			return nil, errMsg
+		if err := rows.Scan(
+			&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID,
+			&user.Login, &user.Hash, &user.Salt, &user.Token, &user.Role, &user.Group,
+		); err != nil {
+			return nil, pkg.LogWriteFileReturnError(err)
 		}
 		users = append(users, user)
 	}
-	pkg.LogWriteFileReturnError(fmt.Errorf("successfully retrieved all users from PostgreSQL"))
 	return users, nil
 }
 
@@ -157,16 +161,17 @@ func (uhp *userHandlerDB) GetUsersByRoleID(roleID int) ([]models.User, error) {
 	return users, nil
 }
 
-func (uhp *userHandlerDB) GetUserByToken(token string) (models.User, error) {
-	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE token = $1`, token)
-	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+func (uhp *userHandlerDB) GetUserByToken(token string) (string, error) {
+	//var user models.User
+	var role models.Role
+	row := uhp.dbAndTx.QueryRow(`SELECT r.value as role FROM users as u JOIN roles as r ON u.role_id = r.id WHERE u.token = $1`, token)
+	err := row.Scan(&role.Value)
 	if err == sql.ErrNoRows {
-		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
+		return "", pkg.LogWriteFileReturnError(errors.New("User is not found"))
 	} else if err != nil {
-		return models.User{}, pkg.LogWriteFileReturnError(err)
+		return "", pkg.LogWriteFileReturnError(err)
 	}
-	return user, nil
+	return role.Value, nil
 }
 
 // GetUserById возвращает пользователя по его ID

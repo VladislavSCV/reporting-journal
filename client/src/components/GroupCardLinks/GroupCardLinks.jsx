@@ -1,3 +1,4 @@
+import React from "react";
 import "./groupCardLinks.scss";
 import add from "./../../assets/GroupCard/Add.svg";
 import settings from "./../../assets/GroupCard/settings.svg";

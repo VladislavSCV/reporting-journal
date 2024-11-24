@@ -25,6 +25,29 @@ CREATE TABLE users (
                        token TEXT NOT NULL -- Токен для авторизации
 );
 
+----------------------------------------
+-- Получение групп, которые ведет преподаватель
+SELECT g.name AS group_name
+FROM groups g
+         JOIN teacher_groups tg ON g.id = tg.group_id
+WHERE tg.teacher_id = 1;
+
+-- Получение преподавателей группы
+SELECT u.first_name, u.last_name
+FROM users u
+         JOIN teacher_groups tg ON u.id = tg.teacher_id
+WHERE tg.group_id = 1;
+----------------------------------------
+
+-- Таблица для связи преподавателей и групп
+CREATE TABLE teacher_groups (
+                                id SERIAL PRIMARY KEY,  -- Уникальный идентификатор записи
+                                teacher_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- ID преподавателя
+                                group_id INT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,  -- ID группы
+                                UNIQUE (teacher_id, group_id)  -- Уникальная пара преподаватель-группа
+);
+
+
 -- Заметки
 create table notes (
                        id serial primary key,
@@ -67,3 +90,5 @@ INSERT INTO subjects (name) VALUES ('Математика');
 INSERT INTO subjects (name) VALUES ('Физика');
 INSERT INTO subjects (name) VALUES ('Программирование');
 -- Добавление предметов по мере необходимости
+
+

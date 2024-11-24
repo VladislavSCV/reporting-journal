@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"github.com/VladislavSCV/internal/config"
+	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/note"
 	"github.com/VladislavSCV/internal/subjects"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/gzip"
 	"log"
 	"net/http"
 	"os"
@@ -17,6 +19,7 @@ import (
 	"github.com/VladislavSCV/internal/schedules"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/gin-gonic/gin"
+	_ "net/http/pprof"
 )
 
 type ApiHandlers struct {
@@ -26,6 +29,7 @@ type ApiHandlers struct {
 	NoteApi     note.NoteApiRepository
 	ScheduleApi schedules.ScheduleApiRepository
 	SubjectApi  subjects.SubjectApiRepository
+	ElseApi     models.Else
 }
 
 type NotFoundError struct {
@@ -46,14 +50,10 @@ func (e *ValidationError) Error() string {
 
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5137"},                   // Разрешаем запросы только с фронтенда Vite
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},            // Разрешенные HTTP методы
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Разрешенные заголовки
-		AllowCredentials: true,                                                // Разрешаем передачу куки и авторизационных заголовков
-	}))
+	r.Use(cors.Default())
 	//r.Use(middleware.AuthMiddleware())
-	//r.Use(middleware.CORSMiddleware())
+	//r.Use(middleware.TokenAuthMiddleware())
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
@@ -72,6 +72,8 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 
 	userRoutes := r.Group("/api/user")
 	{
+		userRoutes.GET("/AdminPanel", errorHandler(api.ElseApi.GetAdminPanelData))
+
 		userRoutes.GET("/", errorHandler(api.UserApi.GetUsers))
 		userRoutes.GET("/students", errorHandler(api.UserApi.GetStudents))
 		userRoutes.GET("/teachers", errorHandler(api.UserApi.GetTeachers))
@@ -140,6 +142,13 @@ func main() {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")
 	}
 
+	//// Создаем пул соединений для PostgreSQL
+	//dbPool, err := pgxpool.Connect(context.Background(), connToDb)
+	//if err != nil {
+	//	log.Fatal("Unable to connect to database:", err)
+	//}
+	//defer dbPool.Close()
+
 	dbpu := users.NewUserPostgresHandlerDB(connToDb)
 	dbru := users.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
 	apiUsers := handlers.NewUserHandler(dbpu, dbru)
@@ -153,13 +162,19 @@ func main() {
 	dbpn := note.NewNotePostgresHandlerDB(connToDb)
 	apiNotes := handlers.NewNoteHandler(dbpn)
 
-	dbps := schedules.NewUserPostgresHandlerDB(connToDb)
+	dbps := schedules.NewSchedulePostgresHandlerDB(connToDb)
 	apiSchedules := handlers.NewScheduleHandler(dbps)
 
 	dbpsu := subjects.NewSubjectPostgresHandlerDB(connToDb)
 	apiSubjects := handlers.NewSubjectHandler(dbpsu)
 
-	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles, GroupApi: apiGroups, NoteApi: apiNotes, ScheduleApi: apiSchedules, SubjectApi: apiSubjects}
+	apiElse := handlers.NewElseHandler(dbpu, dbpg, dbpr)
+
+	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles,
+		GroupApi: apiGroups, NoteApi: apiNotes,
+		ScheduleApi: apiSchedules, SubjectApi: apiSubjects,
+		ElseApi: apiElse}
+
 	router := SetupRouter(api)
 	srv := &http.Server{
 		Addr:    "localhost:8000",
@@ -170,6 +185,10 @@ func main() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
+	}()
+
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
 	}()
 
 	// Handle graceful shutdown
