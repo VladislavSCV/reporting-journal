@@ -21,9 +21,6 @@ export async function registerUser(first_name, middle_name, last_name, login, pa
     // Извлечение данных
     const res = await response.json();
 
-    // Сохранение токена
-    localStorage.setItem("token", res.token);
-
     return res; // Возврат данных
   } catch (error) {
     console.error('Ошибка регистрации:', error.message);
@@ -32,12 +29,11 @@ export async function registerUser(first_name, middle_name, last_name, login, pa
 }
 
 export async function loginUser(login, password, navigate) {
-  console.log(login, password);
   try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ login, password })
+      body: JSON.stringify({ login, password }),
     });
 
     if (!response.ok) {
@@ -46,20 +42,24 @@ export async function loginUser(login, password, navigate) {
     }
 
     const data = await response.json();
-    if (data.token) {
-      console.log(data.token);
-      localStorage.setItem('token', data.token); // Сохраняем JWT токен
-      navigate("/mainPage")
+
+    if (data.token ) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user_id", data.user.id);
+      localStorage.setItem("group_id", data.user.group_id);
+      console.log("Login successful:", data);
+      navigate("/mainPage");
     } else {
-      throw new Error('Token is missing in the response');
+      throw new Error('Invalid response data: missing token, id, or group_id');
     }
-
-
   } catch (error) {
     console.error('Error during login:', error);
-    throw error; // Переброс ошибки, чтобы её можно было обработать при вызове функции
+    alert(error.message || 'Login failed. Please try again.');
+    throw error; // Если требуется переброс ошибки выше
   }
+
 }
+
 
 export function Decode(Response) {
   const database64 = Response.json();

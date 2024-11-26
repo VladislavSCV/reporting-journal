@@ -1,21 +1,27 @@
 package handlers
 
 import (
+	"errors"
+	"github.com/VladislavSCV/internal/attendance"
 	"github.com/VladislavSCV/internal/groups"
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/role"
 	"github.com/VladislavSCV/internal/users"
+	"github.com/VladislavSCV/pkg"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 	"sync"
 )
 
 type elseHandler struct {
-	usersPostgres users.UserPostgresRepository
-	groupPostgres groups.GroupPostgresRepository
-	rolePostgres  role.RolePostgresRepository
+	usersPostgres      users.UserPostgresRepository
+	groupPostgres      groups.GroupPostgresRepository
+	rolePostgres       role.RolePostgresRepository
+	attendancePostgres attendance.AttendancePostgresRepository
 }
 
 type AdminPanelData struct {
@@ -93,10 +99,101 @@ func (h *elseHandler) GetAdminPanelData(c *gin.Context) error {
 	return nil
 }
 
-func NewElseHandler(usersPostgres users.UserPostgresRepository, groupPostgres groups.GroupPostgresRepository, rolePostgres role.RolePostgresRepository) models.Else {
+func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
+	// Извлечение токена из заголовка Authorization
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		//sh.logger.Error("missing Authorization header")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
+		return errors.New("missing Authorization header")
+	}
+
+	// Проверка формата заголовка, например: "Bearer <token>"
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+		//sh.logger.Error("invalid Authorization header format")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
+		return errors.New("invalid Authorization header format")
+	}
+	token := parts[1]
+
+	id, roleId, err := pkg.ParseJWT(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		return err
+	}
+
+	if roleId != 2 && roleId != 3 {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied"})
+		return errors.New("access denied")
+	}
+
+	//groups, err := h.groupPostgres.GetGroups()
+	//if err != nil {
+	//	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get groups"})
+	//	return err
+	//}
+
+	groups, err := h.groupPostgres.GetCuratorGroups(id)
+	if err != nil {
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"groups": groups})
+
+	return nil
+}
+func (h *elseHandler) StudentsAttendance(c *gin.Context) error {
+	strId := c.Param("id")
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid group ID"})
+		return err
+	}
+
+	users, err := h.usersPostgres.GetUsersByGroupID(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"users": users})
+	return nil
+}
+
+type UpdateAttendanceRequest struct {
+	StudentId int    `json:"studentId"`
+	Status    string `json:"status"`
+}
+
+func (h *elseHandler) UpdateAttendance(c *gin.Context) error {
+	var updateAttendanceRequest UpdateAttendanceRequest
+	err := c.ShouldBindJSON(&updateAttendanceRequest)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return err
+	}
+
+	err = h.attendancePostgres.UpdateAttendance(updateAttendanceRequest.StudentId, updateAttendanceRequest.Status)
+	if err != nil {
+		err = h.attendancePostgres.AddAttendance(updateAttendanceRequest.StudentId, updateAttendanceRequest.Status)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update attendance"})
+			return err
+		}
+		log.Println("hello")
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Attendance updated successfully"})
+	return nil
+
+}
+
+func NewElseHandler(usersPostgres users.UserPostgresRepository, groupPostgres groups.GroupPostgresRepository, rolePostgres role.RolePostgresRepository, attendancePostgres attendance.AttendancePostgresRepository) models.Else {
 	return &elseHandler{
-		usersPostgres: usersPostgres,
-		groupPostgres: groupPostgres,
-		rolePostgres:  rolePostgres,
+		usersPostgres:      usersPostgres,
+		groupPostgres:      groupPostgres,
+		rolePostgres:       rolePostgres,
+		attendancePostgres: attendancePostgres,
 	}
 }

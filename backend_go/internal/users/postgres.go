@@ -24,7 +24,7 @@ type Result struct {
 
 func (uhp *userHandlerDB) GetUsers() ([]models.User, error) {
 	rows, err := uhp.dbAndTx.Query(`
-        SELECT u.id, u.first_name, u.middle_name, u.last_name, u.role_id, u.group_id, u.login, u.password, u.salt, u.token, 
+        SELECT u.id, u.first_name, u.middle_name, u.last_name, u.role_id, u.group_id, u.login, u.password, u.salt,
                r.value AS role, 
                COALESCE(g.name, 'Не указана группа') AS group_name  -- Используем COALESCE для замены NULL на строку
 FROM users u
@@ -42,7 +42,7 @@ LEFT JOIN groups g ON u.group_id = g.id;
 		user := models.User{}
 		if err := rows.Scan(
 			&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID,
-			&user.Login, &user.Hash, &user.Salt, &user.Token, &user.Role, &user.Group,
+			&user.Login, &user.Hash, &user.Salt, &user.Role, &user.Group,
 		); err != nil {
 			return nil, pkg.LogWriteFileReturnError(err)
 		}
@@ -53,20 +53,60 @@ LEFT JOIN groups g ON u.group_id = g.id;
 
 func (uhp *userHandlerDB) GetStudents() ([]models.User, error) {
 	var users []models.User
-	rows, err := uhp.dbAndTx.Query("SELECT id, first_name, middle_name, last_name, role_id, group_id, login FROM users WHERE role_id = 1")
+
+	query := `
+        SELECT 
+            u.id, 
+            u.first_name, 
+            u.middle_name, 
+            u.last_name, 
+            u.role_id, 
+            u.group_id, 
+            u.login, 
+            COALESCE(r.value, 'Неизвестная роль') AS role_name, 
+            COALESCE(g.name, 'Не указана группа') AS group_name
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        LEFT JOIN groups g ON u.group_id = g.id
+        WHERE u.role_id = 1;`
+
+	rows, err := uhp.dbAndTx.Query(query)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("ошибка выполнения запроса: %w", err)
 	}
+	defer rows.Close()
 
 	for rows.Next() {
-		user := models.User{}
-		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login)
+		var user models.User
+		var roleName, groupName string
+
+		err = rows.Scan(
+			&user.ID,
+			&user.FirstName,
+			&user.MiddleName,
+			&user.LastName,
+			&user.RoleID,
+			&user.GroupID,
+			&user.Login,
+			&roleName,
+			&groupName,
+		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("ошибка при чтении строки: %w", err)
 		}
+
+		user.Role = roleName
+		user.Group = groupName
+
 		users = append(users, user)
 		log.Printf("%+v\n", user)
 	}
+
+	// Проверяем ошибки, если произошли при итерировании строк
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("ошибка итерации строк: %w", err)
+	}
+
 	return users, nil
 }
 
@@ -105,8 +145,8 @@ func (uhp *userHandlerDB) UpdateToken(id int, token string) error {
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password, salt FROM users WHERE login = $1`, login)
-	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
+	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login FROM users WHERE login = $1`, login)
+	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login)
 	if errors.Is(err, sql.ErrNoRows) {
 		errMsg := fmt.Errorf("user %s not found", login)
 		pkg.LogWriteFileReturnError(errMsg)
@@ -124,7 +164,21 @@ func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 }
 
 func (uhp *userHandlerDB) GetUsersByGroupID(groupID int) ([]models.User, error) {
-	rows, err := uhp.dbAndTx.Query(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE group_id = $1`, groupID)
+	rows, err := uhp.dbAndTx.Query(`SELECT 
+            u.id, 
+            u.first_name, 
+            u.middle_name, 
+            u.last_name, 
+            u.role_id, 
+            u.group_id, 
+            u.login, 
+            COALESCE(r.value, 'Неизвестная роль') AS role_name, 
+            COALESCE(g.name, 'Не указана группа') AS group_name
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        LEFT JOIN groups g ON u.group_id = g.id
+        WHERE u.group_id = $1;
+`, groupID)
 	if err != nil {
 		return nil, pkg.LogWriteFileReturnError(err)
 	}
@@ -132,12 +186,29 @@ func (uhp *userHandlerDB) GetUsersByGroupID(groupID int) ([]models.User, error) 
 
 	var users []models.User
 	for rows.Next() {
-		user := models.User{}
-		err = rows.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+		var user models.User
+		var roleName, groupName string
+
+		err = rows.Scan(
+			&user.ID,
+			&user.FirstName,
+			&user.MiddleName,
+			&user.LastName,
+			&user.RoleID,
+			&user.GroupID,
+			&user.Login,
+			&roleName,
+			&groupName,
+		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("ошибка при чтении строки: %w", err)
 		}
+
+		user.Role = roleName
+		user.Group = groupName
+
 		users = append(users, user)
+		log.Printf("%+v\n", user)
 	}
 	return users, nil
 }
@@ -200,12 +271,12 @@ func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 //	@param user *models.User - пользователь, который будет создан
 //
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) CreateStudent(user *models.User) (string, error) {
+func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) {
 	log.Println("STUDENT")
 	// Генерация соли и хеш пароля
 	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -215,7 +286,7 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (string, error) {
 	var count int
 	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -223,41 +294,44 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (string, error) {
 
 	if count > 0 {
 		// Если такой логин уже существует, возвращаем ошибку
-		return "", fmt.Errorf("пользователь с таким логином уже существует")
+		return 0, "", fmt.Errorf("пользователь с таким логином уже существует")
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
-	token, err := pkg.GenerateJWT(user.ID, user.RoleID)
+	// Сохранение пользователя с солью и хешем пароля
+	var insertId int
+	err = uhp.dbAndTx.QueryRow(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt) 
+                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.GroupID, user.Login, hashResult.Hash, hashResult.Salt).
+		Scan(&insertId)
 	if err != nil {
-		uhp.logger.Error("failed to generate token",
-			zap.Int("id", user.ID),
-			zap.Error(err),
-		)
-		return "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
-	// Сохранение пользователя с солью и хешем пароля
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt, token) 
-                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.GroupID, user.Login, hashResult.Hash, hashResult.Salt, token)
+	// Генерация токена
+	token, err := pkg.GenerateJWT(insertId, user.RoleID)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		uhp.logger.Error("failed to generate token",
+			zap.Int("id", insertId),
+			zap.Error(err),
+		)
+		return 0, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
-	return token, nil
+	return insertId, token, nil
 }
 
-func (uhp *userHandlerDB) CreateTeacher(user *models.User) (string, error) {
+func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) {
 	log.Println("TEACHER")
 	// Генерация соли и хеш пароля
 	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -267,7 +341,7 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (string, error) {
 	var count int
 	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -275,33 +349,54 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (string, error) {
 
 	if count > 0 {
 		// Если такой логин уже существует, возвращаем ошибку
-		return "", fmt.Errorf("пользователь с таким логином уже существует")
+		return 0, "", fmt.Errorf("пользователь с таким логином уже существует")
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("user %s does not exist, so creating new user", user.Login))
 
-	token, err := pkg.GenerateJWT(user.ID, user.RoleID)
+	// Сохранение пользователя с солью и хешем пароля
+	var insertId int
+	err = uhp.dbAndTx.QueryRow(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt) 
+                               VALUES ($1, $2, $3, $4, NULL, $5, $6, $7) RETURNING id`,
+		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt).Scan(&insertId)
 	if err != nil {
-		uhp.logger.Error("failed to generate token",
-			zap.Int("id", user.ID),
-			zap.Error(err),
-		)
-		return "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+		return 0, "", pkg.LogWriteFileReturnError(err)
 	}
 
-	// Сохранение пользователя с солью и хешем пароля
-	_, err = uhp.dbAndTx.Exec(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt, token) 
-                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-		user.FirstName, user.MiddleName, user.LastName, user.RoleID, sql.Null[int]{}, user.Login, hashResult.Hash, hashResult.Salt, token)
+	// Генерация токена
+	token, err := pkg.GenerateJWT(insertId, user.RoleID)
 	if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		uhp.logger.Error("failed to generate token",
+			zap.Int("id", insertId),
+			zap.Error(err),
+		)
+		return 0, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
-	return token, nil
+	return insertId, token, nil
+}
+
+func (uhp *userHandlerDB) GetCuratorGroups(id int) (models.User, error) {
+	query := `
+		SELECT 
+			g.id AS group_id,
+			g.name AS group_name
+		FROM teacher_groups tg
+		INNER JOIN groups g ON tg.group_id = g.id
+		WHERE tg.teacher_id = $1;
+	`
+
+	var user models.User
+	err := uhp.dbAndTx.QueryRow(query, id).Scan(&user.GroupID, &user.Group)
+	if err != nil {
+		return models.User{}, pkg.LogWriteFileReturnError(err)
+	}
+
+	return user, nil
 }
 
 // UpdateUser обновляет существующего пользователя

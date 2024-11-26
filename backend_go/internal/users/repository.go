@@ -26,8 +26,8 @@ type UserPostgresRepository interface {
 	GetUserByToken(token string) (string, error)
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
-	CreateStudent(user *models.User) (string, error)
-	CreateTeacher(user *models.User) (string, error)
+	CreateStudent(user *models.User) (int, string, error)
+	CreateTeacher(user *models.User) (int, string, error)
 	UpdateUser(id int, updates map[string]string) error
 	UpdateToken(id int, token string) error
 	DeleteUser(id int) error

@@ -44,13 +44,13 @@ func (sh *scheduleHandler) GetSchedule(c *gin.Context) error {
 		return pkg.LogWriteFileReturnError(err)
 	}
 
-	schedule, err := sh.repository.GetScheduleById(id)
+	schedule, err := sh.repository.GetScheduleForGroup(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Schedule not found"})
 		return pkg.LogWriteFileReturnError(err)
 	}
 
-	c.JSON(http.StatusOK, schedule)
+	c.JSON(http.StatusOK, gin.H{"schedule": schedule})
 	return nil
 }
 
@@ -60,7 +60,7 @@ func (sh *scheduleHandler) GetSchedules(c *gin.Context) error {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Scheduler not found"})
 		return err
 	}
-	c.JSON(http.StatusOK, schedulers)
+	c.JSON(http.StatusOK, gin.H{"schedulers": schedulers})
 	return nil
 }
 
@@ -103,3 +103,11 @@ func (sh *scheduleHandler) DeleteSchedule(c *gin.Context) error {
 	c.JSON(http.StatusOK, gin.H{"message": "Schedule deleted successfully"})
 	return nil
 }
+
+//func (sh *scheduleHandler) GetScheduleForGroup(c *gin.Context) error {
+//
+//	group, err := sh.repository.GetScheduleForGroup()
+//	if err != nil {
+//		return err
+//	}
+//}

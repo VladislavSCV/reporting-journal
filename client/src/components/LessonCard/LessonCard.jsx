@@ -1,3 +1,4 @@
+import React from "react";
 import "./lessonCard.scss";
 import del from "../../assets/LessonCard/delete.svg";
 import settings from "../../assets/LessonCard/settings.svg";
@@ -28,12 +29,12 @@ const LessonCard = (obj) => {
             data-modal="modalScheduleSettings"
             data-id={obj.id}
           />
-          <img
-            src={del}
-            alt=""
-            className="schedule__lesson-buttons-delete"
-            onClick={() => deleteSchedule(obj.id)}
-          />
+          {/*<img*/}
+          {/*  src={del}*/}
+          {/*  alt=""*/}
+          {/*  className="schedule__lesson-buttons-delete"*/}
+          {/*  onClick={() => deleteSchedule(obj.id)}*/}
+          {/*/>*/}
         </div>
       </div>
     </div>

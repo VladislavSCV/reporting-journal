@@ -12,6 +12,8 @@ type GroupPostgresRepository interface {
 	UpdateGroup(group *models.Group) error
 	DeleteGroup(id int) error
 
+	GetCuratorGroups(id int) ([]models.Group, error)
+
 	AddStudentToGroup(studentID, groupID int) error
 	RemoveStudentFromGroup(studentID int) error
 	GetStudentsByGroupID(groupID int) ([]*models.User, error)

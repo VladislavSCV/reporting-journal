@@ -636,3 +636,133 @@ ERROR: 2024/11/24 12:07:16 error-handler.go:34: invalid token
 ERROR: 2024/11/24 12:07:16 error-handler.go:34: invalid token
 ERROR: 2024/11/24 12:07:48 error-handler.go:34: invalid token
 ERROR: 2024/11/24 12:07:48 error-handler.go:34: invalid token
+ERROR: 2024/11/25 12:22:07 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6c73af3gm0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/11/25 12:22:07 error-handler.go:34: dial tcp: lookup oregon-redis.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/11/25 09:45:13 error-handler.go:34: invalid token
+ERROR: 2024/11/25 09:45:13 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:10:38 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:10:38 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:11:35 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:11:35 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:12:16 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:12:16 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:13:46 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:13:46 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:19:18 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:19:18 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:22:58 error-handler.go:34: invalid token
+ERROR: 2024/11/25 10:22:58 error-handler.go:34: invalid token
+ERROR: 2024/11/25 12:10:21 error-handler.go:34: invalid token
+ERROR: 2024/11/25 12:10:21 error-handler.go:34: invalid token
+ERROR: 2024/11/25 12:26:39 error-handler.go:34: invalid token
+ERROR: 2024/11/25 12:26:39 error-handler.go:34: invalid token
+ERROR: 2024/11/25 21:01:31 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:01:31 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:01:34 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:01:34 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:01:38 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:01:38 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/25 21:09:16 error-handler.go:34: i/o timeout
+ERROR: 2024/11/25 21:20:35 error-handler.go:34: successfully generated hash with salt for user vladLogin
+ERROR: 2024/11/25 21:20:35 error-handler.go:34: successfully checked if user vladLogin already exists
+ERROR: 2024/11/25 21:20:35 error-handler.go:34: user vladLogin does not exist, so creating new user
+ERROR: 2024/11/25 21:20:36 error-handler.go:34: successfully created user vladLogin
+ERROR: 2024/11/25 21:30:57 error-handler.go:34: successfully generated hash with salt for user vladLogin
+ERROR: 2024/11/25 21:30:58 error-handler.go:34: successfully checked if user vladLogin already exists
+ERROR: 2024/11/25 21:30:58 error-handler.go:34: failed to create user
+ERROR: 2024/11/25 21:31:05 error-handler.go:34: successfully generated hash with salt for user vladLogtrin
+ERROR: 2024/11/25 21:31:06 error-handler.go:34: successfully checked if user vladLogtrin already exists
+ERROR: 2024/11/25 21:31:06 error-handler.go:34: user vladLogtrin does not exist, so creating new user
+ERROR: 2024/11/25 21:31:07 error-handler.go:34: successfully created user vladLogtrin
+ERROR: 2024/11/25 21:31:53 error-handler.go:34: successfully retrieved user vladLogtrin from PostgreSQL
+ERROR: 2024/11/26 09:36:25 error-handler.go:34: successfully generated hash with salt for user vladLwogtrin
+ERROR: 2024/11/26 09:36:26 error-handler.go:34: successfully checked if user vladLwogtrin already exists
+ERROR: 2024/11/26 09:36:26 error-handler.go:34: user vladLwogtrin does not exist, so creating new user
+ERROR: 2024/11/26 09:36:27 error-handler.go:34: pq: null value in column "token" of relation "users" violates not-null constraint
+ERROR: 2024/11/26 09:36:27 error-handler.go:34: failed to create user
+ERROR: 2024/11/26 09:44:13 error-handler.go:34: successfully generated hash with salt for user vladLwewqogtrin
+ERROR: 2024/11/26 09:44:13 error-handler.go:34: successfully checked if user vladLwewqogtrin already exists
+ERROR: 2024/11/26 09:44:13 error-handler.go:34: user vladLwewqogtrin does not exist, so creating new user
+ERROR: 2024/11/26 09:44:14 error-handler.go:34: failed to create user
+ERROR: 2024/11/26 09:50:47 error-handler.go:34: successfully generated hash with salt for user vladLwewreqogtrin
+ERROR: 2024/11/26 09:50:47 error-handler.go:34: successfully checked if user vladLwewreqogtrin already exists
+ERROR: 2024/11/26 09:50:47 error-handler.go:34: user vladLwewreqogtrin does not exist, so creating new user
+ERROR: 2024/11/26 09:50:48 error-handler.go:34: successfully created user vladLwewreqogtrin
+ERROR: 2024/11/26 09:52:32 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:52:33 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:53:18 error-handler.go:34: user loginVlad not found
+ERROR: 2024/11/26 09:53:18 error-handler.go:34: failed to get user
+ERROR: 2024/11/26 09:54:14 error-handler.go:34: successfully generated hash with salt for user vladLogin1
+ERROR: 2024/11/26 09:54:15 error-handler.go:34: successfully checked if user vladLogin1 already exists
+ERROR: 2024/11/26 09:54:15 error-handler.go:34: user vladLogin1 does not exist, so creating new user
+ERROR: 2024/11/26 09:54:16 error-handler.go:34: successfully created user vladLogin1
+ERROR: 2024/11/26 09:54:34 error-handler.go:34: successfully retrieved user vladLogin1 from PostgreSQL
+ERROR: 2024/11/26 09:54:34 error-handler.go:34: invalid credentials
+ERROR: 2024/11/26 09:55:53 error-handler.go:34: successfully retrieved user vladLogin1 from PostgreSQL
+ERROR: 2024/11/26 09:55:54 error-handler.go:34: pq: column "token" of relation "users" does not exist
+ERROR: 2024/11/26 09:55:57 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:55:58 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:57:06 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:57:06 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/26 09:58:35 error-handler.go:34: sql: expected 11 destination arguments in Scan, not 12
+ERROR: 2024/11/26 09:58:35 error-handler.go:34: sql: expected 11 destination arguments in Scan, not 12
+ERROR: 2024/11/26 10:09:18 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:09:18 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:10:57 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:10:58 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:11:01 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:11:01 error-handler.go:34: failed to retrieve users from the database
+ERROR: 2024/11/26 10:51:11 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6c73af3gm0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/11/26 17:43:04 error-handler.go:34: strconv.Atoi: parsing "${groupId}": invalid syntax
+ERROR: 2024/11/26 17:43:04 error-handler.go:34: strconv.Atoi: parsing "${groupId}": invalid syntax
+ERROR: 2024/11/26 17:49:09 error-handler.go:34: strconv.Atoi: parsing "NaN": invalid syntax
+ERROR: 2024/11/26 17:49:09 error-handler.go:34: strconv.Atoi: parsing "NaN": invalid syntax
+ERROR: 2024/11/26 17:58:43 error-handler.go:34: successfully generated hash with salt for user vladislavLogin
+ERROR: 2024/11/26 17:58:44 error-handler.go:34: successfully checked if user vladislavLogin already exists
+ERROR: 2024/11/26 17:58:44 error-handler.go:34: user vladislavLogin does not exist, so creating new user
+ERROR: 2024/11/26 17:58:44 error-handler.go:34: successfully created user vladislavLogin
+ERROR: 2024/11/26 18:03:45 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:03:45 error-handler.go:34: error verifying password
+ERROR: 2024/11/26 18:04:58 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:12:53 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:12:53 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:12:59 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:12:59 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:18:12 error-handler.go:34: i/o timeout
+ERROR: 2024/11/26 18:18:22 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:18:58 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:19:48 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:22:21 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:22:54 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:23:36 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:23:53 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:24:59 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:26:30 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:26:30 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:26:34 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:26:34 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:28:13 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:28:23 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:28:23 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/26 18:28:44 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:28:44 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:28:51 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:28:51 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:29:04 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:29:04 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:30:10 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:30:10 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:30:18 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:30:18 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:30:36 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:31:48 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:31:53 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:35:00 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:38:34 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:39:15 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:40:02 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:40:05 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:40:05 error-handler.go:34: strconv.Atoi: parsing "undefined": invalid syntax
+ERROR: 2024/11/26 18:41:57 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 18:43:18 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/26 20:53:00 error-handler.go:34: i/o timeout

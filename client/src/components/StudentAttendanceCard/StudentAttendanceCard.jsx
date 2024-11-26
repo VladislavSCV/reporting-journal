@@ -1,36 +1,43 @@
 import React from "react";
 import "./StudentAttendanceCard.scss";
-const StudentAttendanceCard = (obj) => {
-  return (
-    <div className="studentCard">
-      <div className="studentCard__color-block"></div>
-      <div className="studentCard__container">
-        <div className="studentCard__student">
-          <p className="studentCard__student-name">
-            {obj.surname} {obj.name} {obj.patronymic}
-          </p>
-          <p className="studentCard__student-role">Роль: {obj.role}</p>
+
+const StudentAttendanceCard = ({ surname, name, patronymic, role, selectedValue, onChange }) => {
+    const handleSelectChange = (e) => {
+        onChange(e.target.value); // Передаем новое значение посещаемости для студента
+    };
+
+    return (
+        <div className="studentCard">
+            <div className="studentCard__color-block"></div>
+            <div className="studentCard__container">
+                <div className="studentCard__student">
+                    <p className="studentCard__student-name">
+                        {surname} {name} {patronymic}
+                    </p>
+                    <p className="studentCard__student-role">Роль: {role}</p>
+                </div>
+                <div className="studentCard__attendanceBlock">
+                    <label
+                        htmlFor={`attendance-${surname}`} // Уникальный id для каждого студента
+                        className="studentCard__attendanceBlock-label"
+                    >
+                        Посещение:{" "}
+                    </label>
+                    <select
+                        id={`attendance-${surname}`} // Уникальный id для каждого студента
+                        className="studentCard__attendanceBlock-attendance"
+                        value={selectedValue} // Привязываем состояние к ID студента
+                        onChange={handleSelectChange} // Обработчик изменений
+                    >
+                        <option value="">Выберите статус</option>
+                        <option value="Присутствует">Присутствует</option>
+                        <option value="Прогул">Прогул</option>
+                        <option value="Болеет">Болеет</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div className="studentCard__attendanceBlock">
-          <label
-            htmlFor="studentAttendance"
-            className="studentCard__attendanceBlock-label"
-          >
-            Посещение:{" "}
-          </label>
-          <select
-            name=""
-            id="studentAttendance"
-            className="studentCard__attendanceBlock-attendance"
-          >
-            <option value="1"></option>
-            <option value="2">Прогрул</option>
-            <option value="3">Болеет</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default StudentAttendanceCard;

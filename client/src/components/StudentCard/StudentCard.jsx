@@ -13,7 +13,7 @@ const StudentCard = (obj) => {
           <p className="studentCard__student-name">{obj.first_name}</p>
           {/*<p className="studentCard__student-name">{obj.middle_name}</p>*/}
           {/*<p className="studentCard__student-name">{obj.last_name}</p>*/}
-          <p className="studentCard__student-role">Роль: {obj.role_id}</p>
+          <p className="studentCard__student-role">Роль: {obj.role}</p>
         </div>
         <div className="studentCard__buttons">
         <img

@@ -7,7 +7,7 @@ import (
 
 type NotePostgresRepository interface {
 	CreateNote(note models.Note) error
-	GetNote(id int) (models.Note, error)
+	GetNote(id int) ([]models.Note, error)
 	GetNotes() (notes []models.Note, err error)
 	UpdateNote(id int, newNote map[string]interface{}) error
 	DeleteNote(id int) error

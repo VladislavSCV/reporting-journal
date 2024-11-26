@@ -57,7 +57,10 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch("/api/user/AdminPanel");
+        const userResponse = await fetch("/api/admin/AdminPanel", {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` }
+        });
         if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
         const database64 = await userResponse.json();
         const data = JSON.parse(atob(database64));

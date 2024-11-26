@@ -21,23 +21,9 @@ CREATE TABLE users (
                        group_id INT REFERENCES groups(id) ON DELETE SET NULL,  -- Для преподавателей group_id может быть NULL
                        login VARCHAR(100) NOT NULL UNIQUE,  -- Уникальность логина
                        password TEXT NOT NULL,  -- Пароль теперь может быть длиннее (например, после хеширования)
-                       salt TEXT NOT NULL,  -- Соль для хеширования пароля
-                       token TEXT NOT NULL -- Токен для авторизации
+                       salt TEXT NOT NULL  -- Соль для хеширования пароля
+                       -- token TEXT NOT NULL -- Токен для авторизации
 );
-
-----------------------------------------
--- Получение групп, которые ведет преподаватель
-SELECT g.name AS group_name
-FROM groups g
-         JOIN teacher_groups tg ON g.id = tg.group_id
-WHERE tg.teacher_id = 1;
-
--- Получение преподавателей группы
-SELECT u.first_name, u.last_name
-FROM users u
-         JOIN teacher_groups tg ON u.id = tg.teacher_id
-WHERE tg.group_id = 1;
-----------------------------------------
 
 -- Таблица для связи преподавателей и групп
 CREATE TABLE teacher_groups (
@@ -68,27 +54,17 @@ CREATE TABLE schedules (
                            id SERIAL PRIMARY KEY,
                            group_id INT NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
                            day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 1 AND 7),  -- Ограничение на дни недели (1-7)
-                           start_time TIME NOT NULL,
-                           end_time TIME NOT NULL CHECK (end_time > start_time),  -- Проверка, что время окончания больше времени начала
                            subject_id INT NOT NULL REFERENCES subjects(id) ON DELETE CASCADE,  -- Предмет связан с ID из таблицы subjects
                            teacher_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,  -- Преподаватель связан с таблицей пользователей
 --                         -- TODO лучше перевести в тип int
                            location VARCHAR(100)  -- Место проведения
 );
 
-
--- Добавление данных в таблицы
-INSERT INTO roles (value) VALUES ('student');
-INSERT INTO roles (value) VALUES ('teacher');
-INSERT INTO roles (value) VALUES ('admin');
-
-INSERT INTO groups (name) VALUES ('22ИС3-2');
-INSERT INTO groups (name) VALUES ('22ИС3-1');
--- Дополнительные группы можно добавить по мере необходимости
-
-INSERT INTO subjects (name) VALUES ('Математика');
-INSERT INTO subjects (name) VALUES ('Физика');
-INSERT INTO subjects (name) VALUES ('Программирование');
--- Добавление предметов по мере необходимости
-
-
+CREATE TABLE attendance (
+                            id SERIAL PRIMARY KEY,
+                            student_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                            date DATE NOT NULL,
+                            status VARCHAR(20) NOT NULL, -- Статус посещения
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

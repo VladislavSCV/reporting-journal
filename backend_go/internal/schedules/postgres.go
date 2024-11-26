@@ -15,14 +15,17 @@ type scheduleHandlerDB struct {
 
 func (s *scheduleHandlerDB) GetSchedulers() ([]models.Schedule, error) {
 	var schedules []models.Schedule
-	rows, err := s.dbAndTx.Query("SELECT * FROM schedules")
+	rows, err := s.dbAndTx.Query("SELECT s.id AS schedule_id, g.name AS group_name, s.day_of_week, sub.name AS subject_name, " +
+		"CONCAT(u.first_name, ' ', u.middle_name, ' ', COALESCE(u.last_name, '')) AS teacher_name, s.location FROM schedules s " +
+		"JOIN groups g ON s.group_id = g.id JOIN subjects sub ON s.subject_id = sub.id " +
+		"JOIN users u ON s.teacher_id = u.id ORDER BY s.day_of_week, s.id;")
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
 		var schedule models.Schedule
-		err := rows.Scan(&schedule.ID, &schedule.GroupID, &schedule.DayOfWeek, &schedule.StartTime, &schedule.EndTime, &schedule.SubjectID, &schedule.TeacherID, &schedule.Location)
+		err := rows.Scan(&schedule.ScheduleID, &schedule.GroupName, &schedule.DayOfWeek, &schedule.SubjectName, &schedule.TeacherName, &schedule.Location)
 		if err != nil {
 			return nil, err
 		}
@@ -31,20 +34,34 @@ func (s *scheduleHandlerDB) GetSchedulers() ([]models.Schedule, error) {
 	return schedules, nil
 }
 
-func (s *scheduleHandlerDB) GetScheduleById(id int) (models.Schedule, error) {
-	var schedule models.Schedule
-	err := s.dbAndTx.QueryRow("SELECT * FROM schedules WHERE id = $1", id).Scan(&schedule.ID, &schedule.GroupID, &schedule.DayOfWeek, &schedule.StartTime, &schedule.EndTime, &schedule.SubjectID, &schedule.TeacherID, &schedule.Location)
-	if errors.Is(err, sql.ErrNoRows) {
-		return models.Schedule{}, err
-	} else if err != nil {
-		return models.Schedule{}, err
+func (s *scheduleHandlerDB) GetScheduleForGroup(id int) ([]models.Schedule, error) {
+	var schedules []models.Schedule
+	rows, err := s.dbAndTx.Query("SELECT s.id AS schedule_id, g.name AS group_name, s.day_of_week, sub.name AS subject_name, "+
+		"CONCAT(u.first_name, ' ', u.middle_name, ' ', COALESCE(u.last_name, '')) AS teacher_name, s.location "+
+		"FROM schedules s JOIN groups g ON s.group_id = g.id JOIN subjects sub ON s.subject_id = sub.id "+
+		"JOIN users u ON s.teacher_id = u.id WHERE g.id = $1 ORDER BY s.day_of_week, s.id;", id)
+	if err != nil {
+		return nil, err
 	}
+	defer rows.Close()
 
-	return schedule, nil
+	for rows.Next() {
+		var schedule models.Schedule
+		err := rows.Scan(&schedule.ScheduleID, &schedule.GroupName, &schedule.DayOfWeek, &schedule.SubjectName, &schedule.TeacherName, &schedule.Location)
+		if err != nil {
+			return nil, err
+		}
+		schedules = append(schedules, schedule)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return schedules, nil
 }
 
 func (s *scheduleHandlerDB) CreateSchedule(schedule models.Schedule) error {
-	_, err := s.dbAndTx.Exec("INSERT INTO schedules (group_id, day_of_week, start_time, end_time, subject_id, teacher_id, location) VALUES ($1, $2, $3, $4, $5, $6, $7)", schedule.GroupID, schedule.DayOfWeek, schedule.StartTime, schedule.EndTime, schedule.SubjectID, schedule.TeacherID, schedule.Location)
+	var createSchedule models.CreateSchedule
+	_, err := s.dbAndTx.Exec("INSERT INTO schedules (group_id, day_of_week, subject_id, teacher_id, location) VALUES ($1, $2, $3, $4, $5, $6, $7)", createSchedule.GroupID, createSchedule.DayOfWeek, createSchedule.SubjectID, createSchedule.TeacherID, schedule.Location)
 	if err != nil {
 		return err
 	}
@@ -52,7 +69,7 @@ func (s *scheduleHandlerDB) CreateSchedule(schedule models.Schedule) error {
 }
 
 func (s *scheduleHandlerDB) UpdateSchedule(id int, updatedSchedule map[string]interface{}) error {
-	_, err := s.GetScheduleById(id)
+	_, err := s.GetScheduleForGroup(id)
 	if err != nil {
 		return err
 	}
@@ -107,8 +124,11 @@ func ConnToDB(connStr string) (*sql.DB, error) {
 //	@param db *sql.DB - соединение с базой данных
 //
 //	@return error - ошибка, если она возникла
-func checkConPostgres(dbConn *sql.DB) {
-	pkg.LogWriteFileReturnError(dbConn.Ping())
+func checkConPostgres(dbConn *sql.DB) error {
+	if err := dbConn.Ping(); err != nil {
+		return pkg.LogWriteFileReturnError(err)
+	}
+	return nil
 }
 
 // NewUserPostgresHandlerDB возвращает UserHandlerDB, готовый к работе с БД
@@ -119,8 +139,10 @@ func checkConPostgres(dbConn *sql.DB) {
 func NewSchedulePostgresHandlerDB(connStr string) SchedulePostgresRepository {
 	db, err := ConnToDB(connStr)
 	if err != nil {
-		pkg.LogWriteFileReturnError(err)
+		return nil
 	}
-	checkConPostgres(db)
+	if err := db.Ping(); err != nil {
+		return nil
+	}
 	return &scheduleHandlerDB{dbAndTx: db}
 }

@@ -55,6 +55,15 @@ type Group struct {
 }
 
 type Schedule struct {
+	ScheduleID  int
+	GroupName   string
+	DayOfWeek   int
+	SubjectName string
+	TeacherName string
+	Location    string
+}
+
+type CreateSchedule struct {
 	ID        int    `json:"id"`
 	GroupID   int    `json:"group_id"`
 	DayOfWeek int    `json:"day_of_week"`
@@ -79,4 +88,7 @@ type Execer interface {
 
 type Else interface {
 	GetAdminPanelData(c *gin.Context) error
+	GetCuratorGroupsStudentList(c *gin.Context) error
+	StudentsAttendance(c *gin.Context) error
+	UpdateAttendance(c *gin.Context) error
 }

@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./mainPage.scss";
 
+console.log(localStorage.getItem("token"))
+console.log(localStorage.getItem("user_id"))
+console.log(localStorage.getItem("group_id"))
+
 const Main = () => {
     return (
         <div className="main-page">

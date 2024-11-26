@@ -45,7 +45,7 @@ func (nh *noteHandler) GetNote(c *gin.Context) error {
 		return err
 	}
 
-	c.JSON(http.StatusOK, note)
+	c.JSON(http.StatusOK, gin.H{"notes": note})
 	return nil
 }
 

@@ -21,13 +21,22 @@ func (nh *noteHandlerDB) CreateNote(note models.Note) error {
 	return nil
 }
 
-func (nh *noteHandlerDB) GetNote(id int) (models.Note, error) {
-	var note models.Note
-	err := nh.dbAndTx.QueryRow("SELECT title, body FROM notes WHERE id = $1", id).Scan(&note.Title, &note.Body)
+func (nh *noteHandlerDB) GetNote(id int) ([]models.Note, error) {
+	var notes []models.Note
+	rows, err := nh.dbAndTx.Query("SELECT title, body FROM notes WHERE id = $1", id)
 	if err != nil {
-		return models.Note{}, err
+		return nil, err
 	}
-	return note, nil
+
+	for rows.Next() {
+		var note models.Note
+		if err := rows.Scan(&note.Title, &note.Body); err != nil {
+			return nil, err
+		}
+		notes = append(notes, note)
+	}
+
+	return notes, nil
 }
 
 func (nh *noteHandlerDB) GetNotes() ([]models.Note, error) {

@@ -19,7 +19,7 @@ const CuratorGroupsStudentsList = () => {
     };
 
     fetchGroups();
-  }, []);
+  }, [groups]);
   return (
     <div className="curatorGroups">
       <div className="curatorGroups__container">

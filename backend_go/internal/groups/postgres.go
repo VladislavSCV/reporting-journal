@@ -115,6 +115,23 @@ func (ghp *groupHandlerDB) FindGroupsByName(name string) ([]*models.Group, error
 	return groups, nil
 }
 
+func (ghp *groupHandlerDB) GetCuratorGroups(id int) ([]models.Group, error) {
+	var groupsList []models.Group
+	rows, err := ghp.dbAndTx.Query("SELECT g.id AS group_id, g.name AS group_name FROM teacher_groups tg INNER JOIN groups g ON tg.group_id = g.id WHERE tg.teacher_id = $1;", id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var groupOnce models.Group
+		err := rows.Scan(&groupOnce.Id, &groupOnce.Name)
+		if err != nil {
+			return nil, err
+		}
+		groupsList = append(groupsList, groupOnce)
+	}
+	return groupsList, nil
+}
+
 func ConnToDB(connStr string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {

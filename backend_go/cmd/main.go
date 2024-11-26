@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/VladislavSCV/api/middleware"
+	"github.com/VladislavSCV/internal/attendance"
 	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/note"
@@ -33,8 +35,9 @@ type ApiHandlers struct {
 }
 
 const (
-	AdminRoleID = 1 // Администратор
-	UserRoleID  = 2 // Обычный пользователь
+	StudentRoleID = 1
+	TeacherRoleID = 2
+	AdminRoleID   = 3
 )
 
 type NotFoundError struct {
@@ -56,7 +59,6 @@ func (e *ValidationError) Error() string {
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
-	//r.Use(middleware.TokenAuthMiddleware())
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
@@ -65,33 +67,6 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		log.Printf("Request headers: %v", c.Request.Header)
 		c.Next()
 	})
-
-	//// Администраторские маршруты
-	//adminRoutes := r.Group("/admin")
-	//adminRoutes.Use(middleware.RoleMiddleware([]int{middleware.AdminRoleID})) // Доступ только для администраторов
-	//{
-	//	adminRoutes.GET("/dashboard", func(c *gin.Context) {
-	//		c.JSON(200, gin.H{"message": "Welcome to the admin dashboard!"})
-	//	})
-	//}
-	//
-	//// Пользовательские маршруты
-	//userRoutes := r.Group("/user")
-	//userRoutes.Use(middleware.RoleMiddleware([]int{middleware.UserRoleID})) // Доступ только для пользователей
-	//{
-	//	userRoutes.GET("/profile", func(c *gin.Context) {
-	//		c.JSON(200, gin.H{"message": "Welcome to your user profile!"})
-	//	})
-	//}
-	//
-	//// Универсальные маршруты (доступные и админам, и пользователям)
-	//sharedRoutes := r.Group("/shared")
-	//sharedRoutes.Use(middleware.RoleMiddleware([]int{middleware.AdminRoleID, middleware.UserRoleID})) // Доступ для обеих ролей
-	//{
-	//	sharedRoutes.GET("/info", func(c *gin.Context) {
-	//		c.JSON(200, gin.H{"message": "Shared information for all users."})
-	//	})
-	//}
 
 	authRoutes := r.Group("/api/auth")
 	{
@@ -103,8 +78,6 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 
 	userRoutes := r.Group("/api/user")
 	{
-		userRoutes.GET("/AdminPanel", errorHandler(api.ElseApi.GetAdminPanelData))
-
 		userRoutes.GET("/", errorHandler(api.UserApi.GetUsers))
 		userRoutes.GET("/students", errorHandler(api.UserApi.GetStudents))
 		userRoutes.GET("/teachers", errorHandler(api.UserApi.GetTeachers))
@@ -141,6 +114,14 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		notesRoutes.DELETE("/:id", errorHandler(api.NoteApi.DeleteNote))
 	}
 
+	//{
+	//"id": 1,
+	//"groupId": 101,
+	//"dayOfWeek": "Monday",
+	//"subject": "Математика",
+	//"teacher": "Иванов И.И."
+	//}
+
 	scheduleRoutes := r.Group("/api/schedule")
 	{
 		scheduleRoutes.GET("/", errorHandler(api.ScheduleApi.GetSchedules))
@@ -157,6 +138,20 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		subjectRoutes.POST("/", errorHandler(api.SubjectApi.CreateSubject))
 		subjectRoutes.PUT("/:id", errorHandler(api.SubjectApi.UpdateSubject))
 		subjectRoutes.DELETE("/:id", errorHandler(api.SubjectApi.DeleteSubject))
+	}
+
+	teacherRoutes := r.Group("/api/teacher")
+	teacherRoutes.Use(middleware.AuthMiddleware(TeacherRoleID))
+	{
+		teacherRoutes.GET("/groups", errorHandler(api.ElseApi.GetCuratorGroupsStudentList))
+		teacherRoutes.GET("/studentAttendance/:id", errorHandler(api.ElseApi.StudentsAttendance))
+		teacherRoutes.POST("/studentAttendance", errorHandler(api.ElseApi.UpdateAttendance))
+	}
+
+	adminRoutes := r.Group("/api/admin")
+	adminRoutes.Use(middleware.AuthMiddleware(AdminRoleID))
+	{
+		adminRoutes.GET("/AdminPanel", errorHandler(api.ElseApi.GetAdminPanelData))
 	}
 
 	r.NoRoute(func(c *gin.Context) {
@@ -199,7 +194,9 @@ func main() {
 	dbpsu := subjects.NewSubjectPostgresHandlerDB(connToDb)
 	apiSubjects := handlers.NewSubjectHandler(dbpsu)
 
-	apiElse := handlers.NewElseHandler(dbpu, dbpg, dbpr)
+	dbpa := attendance.NewAttendancePostgresHandlerDB(connToDb)
+
+	apiElse := handlers.NewElseHandler(dbpu, dbpg, dbpr, dbpa)
 
 	api := ApiHandlers{UserApi: apiUsers, RoleApi: apiRoles,
 		GroupApi: apiGroups, NoteApi: apiNotes,

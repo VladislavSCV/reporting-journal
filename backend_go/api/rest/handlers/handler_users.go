@@ -3,8 +3,10 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/users"
@@ -43,24 +45,25 @@ func (sh *userHandler) Login(c *gin.Context) error {
 		return pkg.LogWriteFileReturnError(errors.New("failed to get user"))
 	}
 
+	// TODO раскомментировать код ниже
 	// Проверка пароля
-	isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
-	if err != nil {
-		sh.logger.Error("error verifying password",
-			zap.String("login", user.Login),
-			zap.Error(err),
-		)
-		c.Status(http.StatusInternalServerError)
-		return pkg.LogWriteFileReturnError(errors.New("error verifying password"))
-	}
-
-	if !isValid {
-		sh.logger.Info("invalid credentials",
-			zap.String("login", user.Login),
-		)
-		c.Status(http.StatusUnauthorized)
-		return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
-	}
+	//isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
+	//if err != nil {
+	//	sh.logger.Error("error verifying password",
+	//		zap.String("login", user.Login),
+	//		zap.Error(err),
+	//	)
+	//	c.Status(http.StatusInternalServerError)
+	//	return pkg.LogWriteFileReturnError(errors.New("error verifying password"))
+	//}
+	//
+	//if !isValid {
+	//	sh.logger.Info("invalid credentials",
+	//		zap.String("login", user.Login),
+	//	)
+	//	c.Status(http.StatusUnauthorized)
+	//	return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
+	//}
 
 	// Генерация токена
 	token, err := pkg.GenerateJWT(userDB.ID, userDB.RoleID)
@@ -73,10 +76,11 @@ func (sh *userHandler) Login(c *gin.Context) error {
 		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
-	sh.servicePostgresql.UpdateToken(userDB.ID, token)
+	//sh.servicePostgresql.UpdateToken(userDB.ID, token)
 
+	log.Println(userDB)
 	// Успешная аутентификация
-	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
+	c.JSON(http.StatusOK, gin.H{"user": userDB, "user_id": userDB.ID, "group_id": userDB.GroupID, "token": token})
 	return nil
 }
 
@@ -104,7 +108,7 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 	fmt.Println(user)
 
 	if user.RoleID == 1 {
-		token, err := sh.servicePostgresql.CreateStudent(&user)
+		id, token, err := sh.servicePostgresql.CreateStudent(&user)
 		if err != nil {
 			sh.logger.Error("failed to create user",
 				zap.Int("id", user.ID),
@@ -114,11 +118,11 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 			c.Status(http.StatusInternalServerError)
 			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
 		}
-
-		c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
+		log.Println(id, token)
+		c.JSON(http.StatusCreated, gin.H{"user": user, "user_id": id, "token": token})
 		return nil
 	} else {
-		token, err := sh.servicePostgresql.CreateTeacher(&user)
+		id, token, err := sh.servicePostgresql.CreateTeacher(&user)
 		if err != nil {
 			sh.logger.Error("failed to create user",
 				zap.Int("id", user.ID),
@@ -129,7 +133,9 @@ func (sh *userHandler) SignUp(c *gin.Context) error {
 			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
 		}
 
-		c.JSON(http.StatusCreated, gin.H{"user": user, "token": token})
+		log.Println()
+
+		c.JSON(http.StatusCreated, gin.H{"user": user, "user_id": id, "token": token})
 		return nil
 	}
 }
@@ -306,41 +312,49 @@ func (sh *userHandler) DeleteUser(c *gin.Context) error {
 }
 
 func (sh *userHandler) VerifyToken(c *gin.Context) error {
-	var request struct {
-		Token string `json:"token"` // Убедитесь, что тело запроса имеет нужную структуру
+	// Извлечение токена из заголовка Authorization
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		sh.logger.Error("missing Authorization header")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
+		return errors.New("missing Authorization header")
 	}
-	err := c.ShouldBindJSON(&request)
+
+	// Проверка формата заголовка, например: "Bearer <token>"
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+		sh.logger.Error("invalid Authorization header format")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
+		return errors.New("invalid Authorization header format")
+	}
+	token := parts[1]
+
+	// Парсинг JWT токена
+	userID, userRoleId, err := pkg.ParseJWT(token)
 	if err != nil {
-		sh.logger.Error("failed to bind request",
-			zap.String("token", request.Token),
+		sh.logger.Error("failed to parse JWT",
 			zap.Error(err),
 		)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return err
 	}
 
-	userId, userRoleId, err := pkg.ParseJWT(request.Token)
-	if err != nil {
-		sh.logger.Error("failed to parse JWT",
-			zap.String("token", request.Token),
-			zap.Error(err),
-		)
+	if userRoleId == 0 {
+		sh.logger.Error("empty user ID from JWT")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		return pkg.LogWriteFileReturnError(errors.New("invalid token"))
+		return errors.New("empty user ID from JWT")
 	}
 
-	if userId == 0 {
-		sh.logger.Error("empty user ID from JWT",
-			zap.String("token", request.Token),
-		)
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		return pkg.LogWriteFileReturnError(errors.New("invalid token"))
-	}
-
+	// Лог успешного выполнения
 	sh.logger.Info("successfully parsed JWT",
-		zap.Int("user_id", userId),
+		zap.Int("user_role_id", userRoleId),
 	)
-	c.JSON(http.StatusOK, gin.H{"id": userId, "role_id": userRoleId})
+
+	// Ответ пользователю
+	c.JSON(http.StatusOK, gin.H{
+		"id":      userID,
+		"role_id": userRoleId,
+	})
 	return nil
 }
 

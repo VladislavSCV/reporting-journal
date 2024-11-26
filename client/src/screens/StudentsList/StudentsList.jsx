@@ -15,7 +15,7 @@ const StudentsList = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        console.log(response.data);
+        console.log(response.data.students);
         setStudents(response.data.students || []);
       } catch (error) {
         console.error("Ошибка при запросе студентов:", error);
@@ -24,19 +24,17 @@ const StudentsList = () => {
     fetchStudents();
   }, []);
 
-
+console.log(students)
 
   return (
     <div className="studentsList">
       <div className="studentsList__container" id="studentList">
         {students
-            .filter(student => groupId ? student.group_id === groupId : true)
+            // .filter(student => groupId ? student.group_id === groupId : true)
             .map(student => (
                 <StudentCard
                     first_name={student.first_name + " " + student.middle_name + " " + student.last_name}
-                    // middle_name={student.middle_name}
-                    // last_name={student.last_name}
-                    role={student.role_id}
+                    role={student.role}
                     key={student.id}
                     id={student.id}
                 />
