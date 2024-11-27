@@ -7,8 +7,12 @@ const GroupsSchedule = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/groups");
-        setGroups(response.data);
+        const response = await axios.get("/api/group", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setGroups(response.data.groups);
       } catch (error) {
         console.error(error);
       }
@@ -16,21 +20,23 @@ const GroupsSchedule = () => {
 
     fetchGroups();
   }, []);
+
+  console.log(groups)
   return (
     <div className="groups">
       <div className="groups__container">
         <h1 className="groups__title">Расписание группы:</h1>
         <div className="groups__list">
-          {groups.map((obj) => {
-            return (
+
+          {Array.isArray(groups) && groups.map((obj) => (
               <GroupCardLinks
-                group={obj.name}
-                key={obj.id}
-                id={obj.id}
-                link={"/schedule?id=" + obj.id}
+                  group={obj.name}
+                  key={obj.id}
+                  id={obj.id}
+                  link={"/schedule/" + obj.id}
               />
-            );
-          })}
+          ))}
+
         </div>
       </div>
     </div>

@@ -97,6 +97,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 	groupRoutes := r.Group("/api/group")
 	{
 		groupRoutes.GET("/", errorHandler(api.GroupApi.GetGroups))
+		groupRoutes.GET("/schedule/:id", errorHandler(api.ScheduleApi.GetSchedule))
 		groupRoutes.GET("/:id", errorHandler(api.GroupApi.GetGroupByID))
 		// TODO настроить возврат id группы
 		groupRoutes.POST("/", errorHandler(api.GroupApi.CreateGroup))

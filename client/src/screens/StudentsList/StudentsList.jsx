@@ -3,16 +3,19 @@ import StudentCard from "../../components/StudentCard/StudentCard";
 import add from "./../../assets/StudentsList/Add.svg";
 import axios from "axios";
 import "./studentList.scss";
+import { useSearchParams } from "react-router-dom";
 
 const StudentsList = () => {
   const [students, setStudents] = useState([]);
-  let groupId = Number(window.location.search.substring(1).split("=")[1]);
+  const [searchParams] = useSearchParams(); // Используем хук для работы с параметрами строки запроса
+  const groupId = Number(searchParams.get("id")); // Извлекаем параметр id из строки
+
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await axios.get("/api/user/students", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         console.log(response.data.students);
@@ -21,36 +24,33 @@ const StudentsList = () => {
         console.error("Ошибка при запросе студентов:", error);
       }
     };
-    fetchStudents();
-  }, []);
 
-console.log(students)
+    fetchStudents();
+  }, []); // Запрос отправляется один раз при монтировании компонента
 
   return (
-    <div className="studentsList">
-      <div className="studentsList__container" id="studentList">
-        {students
-            // .filter(student => groupId ? student.group_id === groupId : true)
-            .map(student => (
-                <StudentCard
-                    first_name={student.first_name + " " + student.middle_name + " " + student.last_name}
-                    role={student.role}
-                    key={student.id}
-                    id={student.id}
-                />
-            ))}
+      <div className="studentsList">
+        <div className="studentsList__container" id="studentList">
+          {students
+              .filter((student) => (groupId ? student.group_id === groupId : true)) // Фильтрация по groupId, если он есть
+              .map((student) => (
+                  <StudentCard
+                      first_name={`${student.first_name} ${student.middle_name} ${student.last_name}`}
+                      role={student.role}
+                      key={student.id}
+                      id={student.id}
+                  />
+              ))}
 
-        {/*<div*/}
-        {/*  className="studentsList__add"*/}
-        {/*  data-modal="ModalStudentAdd"*/}
-        {/*  data-id={typeof groupId === "number" ? groupId.toString() : ""}*/}
-
-        {/*  // data-id={groupId}*/}
-        {/*>*/}
-        {/*  /!*<img src={add} alt="" className="studentsList__add-img" />*!/*/}
-        {/*</div>*/}
+          <div
+              className="studentsList__add"
+              data-modal="ModalStudentAdd"
+              data-id={groupId ? groupId.toString() : ""}
+          >
+            <img src={add} alt="Добавить" className="studentsList__add-img" />
+          </div>
+        </div>
       </div>
-    </div>
   );
 };
 

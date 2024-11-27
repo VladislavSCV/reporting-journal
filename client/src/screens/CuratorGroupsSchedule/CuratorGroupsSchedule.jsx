@@ -7,8 +7,12 @@ const CuratorGroupsSchedule = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/groups");
-        setGroups(response.data);
+        const response = await axios.get("/api/teacher/groups", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setGroups(response.data.groups);
       } catch (error) {
         console.error(error);
       }
@@ -27,7 +31,7 @@ const CuratorGroupsSchedule = () => {
                 group={obj.name}
                 key={obj.id}
                 id={obj.id}
-                link={"/schedule?id=" + obj.id}
+                link={"/schedule/" + obj.id}
               />
             );
           })}

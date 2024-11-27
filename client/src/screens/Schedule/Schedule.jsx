@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
 import "./schedule.scss";
 import LessonCard from "../../components/LessonCard/LessonCard";
-import add from "./../../assets/GroupCard/Add.svg";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const Schedule = () => {
   const [schedule, setSchedule] = useState([]);
+  const params = useParams(); // Получаем параметры из URL
 
   useEffect(() => {
-    const groupId = localStorage.getItem("group_id");
+    // Определяем, что использовать: id из URL или из localStorage
+    const groupId = params.id || localStorage.getItem("group_id");
+
     if (!groupId) {
-      console.error("Group ID is not found in localStorage");
+      console.error("Group ID is not found in URL or localStorage");
       return;
     }
 
+    // Если параметр id есть, обновляем localStorage
+    if (params.id) {
+      localStorage.setItem("group_id", params.id);
+    }
+
+    // Функция для получения расписания
     const fetchGroups = async () => {
       try {
-        const response = await axios.get(`/api/schedule/${groupId}`);
+        const response = await axios.get(`/api/schedule/${groupId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         setSchedule(response.data.schedule || []);
       } catch (error) {
         console.error("Error fetching schedule:", error);
@@ -24,10 +35,9 @@ const Schedule = () => {
     };
 
     fetchGroups();
-  }, []);
+  }, [params.id]); // Выполняем эффект при изменении id в URL
 
-  console.log(schedule);
-
+  // Дни недели
   const daysOfWeek = [
     { name: "Понедельник", key: 1 },
     { name: "Вторник", key: 2 },
@@ -60,13 +70,6 @@ const Schedule = () => {
                     ) : (
                         <p>Нет занятий на этот день</p>
                     )}
-                    {/*<div*/}
-                    {/*    className="schedule__add"*/}
-                    {/*    data-modal="ModalScheduleAdd"*/}
-                    {/*    data-day={day.key}*/}
-                    {/*>*/}
-                      {/*<img src={add} alt="Add" className="schedule__add-img" />*/}
-                    {/*</div>*/}
                   </div>
                 </div>
             );

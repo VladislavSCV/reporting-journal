@@ -8,8 +8,8 @@ const GroupsNotes = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/groups");
-        setGroups(response.data);
+        const response = await axios.get("/api/group");
+        setGroups(response.data.groups);
       } catch (error) {
         console.error(error);
       }
@@ -29,7 +29,7 @@ const GroupsNotes = () => {
                 group={obj.name}
                 key={obj.id}
                 id={obj.id}
-                link={"/notes?id=" + obj.id}
+                link={"/notes/" + obj.id}
               />
             );
           })}
