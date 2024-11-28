@@ -12,7 +12,7 @@ const CuratorGroupsSchedule = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setGroups(response.data.groups);
+        setGroups(response.data.groups || []);
       } catch (error) {
         console.error(error);
       }

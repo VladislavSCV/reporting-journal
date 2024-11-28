@@ -2,15 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./mainPage.scss";
 
-console.log(localStorage.getItem("token"))
-console.log(localStorage.getItem("user_id"))
-console.log(localStorage.getItem("group_id"))
-
 const Main = () => {
     return (
         <div className="main-page">
-            <h1 className="main-title">Добро пожаловать в Reporting Journal!</h1>
-            <p className="main-subtitle">Выберите раздел, чтобы перейти к нему:</p>
+            <header className="main-header">
+                <h1 className="main-title">Reporting Journal</h1>
+                <p className="main-subtitle">Выберите раздел для работы:</p>
+            </header>
             <div className="main-links">
                 <Link to="/groups" className="main-link">Группы</Link>
                 <Link to="/curatorgroups" className="main-link">Группы куратора</Link>
@@ -24,7 +22,7 @@ const Main = () => {
                 <Link to="/CuratorGroupsNotes" className="main-link">Заметки групп куратора</Link>
                 <Link to="/CuratorGroupsSchedule" className="main-link">Расписание групп куратора</Link>
                 <Link to="/CuratorGroupsStudentsList" className="main-link">Список студентов групп куратора</Link>
-                <Link to="/AdminPanel" className="main-link">Панель администратора</Link>
+                <Link to="/AdminPanel" className="main-link admin-link">Панель администратора</Link>
             </div>
         </div>
     );

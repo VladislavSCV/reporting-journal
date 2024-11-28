@@ -766,3 +766,12 @@ ERROR: 2024/11/26 18:40:05 error-handler.go:34: strconv.Atoi: parsing "undefined
 ERROR: 2024/11/26 18:41:57 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
 ERROR: 2024/11/26 18:43:18 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
 ERROR: 2024/11/26 20:53:00 error-handler.go:34: i/o timeout
+ERROR: 2024/11/28 14:48:51 error-handler.go:34: successfully generated hash with salt for user vladLo21gin1
+ERROR: 2024/11/28 14:48:52 error-handler.go:34: successfully checked if user vladLo21gin1 already exists
+ERROR: 2024/11/28 14:48:52 error-handler.go:34: user vladLo21gin1 does not exist, so creating new user
+ERROR: 2024/11/28 14:48:52 error-handler.go:34: successfully created user vladLo21gin1
+ERROR: 2024/11/28 14:49:08 error-handler.go:34: successfully retrieved user vladLo21gin1 from PostgreSQL
+ERROR: 2024/11/28 14:49:35 error-handler.go:34: pq: update or delete on table "roles" violates foreign key constraint "users_role_id_fkey" on table "users"
+ERROR: 2024/11/28 14:49:35 error-handler.go:34: pq: update or delete on table "roles" violates foreign key constraint "users_role_id_fkey" on table "users"
+ERROR: 2024/11/28 15:01:10 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/28 15:01:10 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax

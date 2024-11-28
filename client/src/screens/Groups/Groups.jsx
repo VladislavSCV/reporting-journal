@@ -21,7 +21,7 @@ const Groups = () => {
           <div className="groups__list">
             {error && <p>{error}</p>}
             {groups.map((obj) => (
-                <GroupCard name={obj.name} key={obj.id} id={obj.id} />
+                <GroupCard name={obj.name} key={obj.id} id={obj.id} link={"/studentsList?id=" + obj.id} />
             ))}
             <div className="groups__add" data-modal="modalGroupAdd">
               <img src={add} alt="" className="groups__add-img" />

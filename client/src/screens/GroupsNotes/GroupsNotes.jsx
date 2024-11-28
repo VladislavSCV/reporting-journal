@@ -8,7 +8,11 @@ const GroupsNotes = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("/api/group");
+        const response = await axios.get("/api/group", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         setGroups(response.data.groups);
       } catch (error) {
         console.error(error);

@@ -36,6 +36,7 @@ const CuratorGroups = () => {
                         name={obj.name}
                         curator={obj.curator}
                         students={obj.students}
+                        link={`/studentsList?id=${obj.id}`}
                     />
                 ))}
               </div>
