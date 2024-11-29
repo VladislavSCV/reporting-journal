@@ -28,6 +28,21 @@ const StudentsList = () => {
     fetchStudents();
   }, []); // Запрос отправляется один раз при монтировании компонента
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      // Убираем удаленного студента из состояния
+      setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+    } catch (error) {
+      console.error("Ошибка при удалении студента:", error);
+    }
+  };
+
+
   return (
       <div className="studentsList">
         <div className="studentsList__container" id="studentList">
@@ -39,7 +54,9 @@ const StudentsList = () => {
                       role={student.role}
                       key={student.id}
                       id={student.id}
+                      onDelete={handleDelete}
                   />
+
               ))}
 
           <div

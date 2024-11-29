@@ -43,10 +43,14 @@ export async function loginUser(login, password, navigate) {
 
     const data = await response.json();
 
-    if (data.token ) {
+    if (data.token) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user_id", data.user.id);
+      if (data.user.role_id) {
+        localStorage.setItem("group_id", null);
+      }
       localStorage.setItem("group_id", data.user.group_id);
+
       console.log("Login successful:", data);
       navigate("/mainPage");
     } else {

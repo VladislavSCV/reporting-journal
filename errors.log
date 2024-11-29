@@ -775,3 +775,24 @@ ERROR: 2024/11/28 14:49:35 error-handler.go:34: pq: update or delete on table "r
 ERROR: 2024/11/28 14:49:35 error-handler.go:34: pq: update or delete on table "roles" violates foreign key constraint "users_role_id_fkey" on table "users"
 ERROR: 2024/11/28 15:01:10 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
 ERROR: 2024/11/28 15:01:10 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/29 14:35:18 error-handler.go:34: successfully generated hash with salt for user log
+ERROR: 2024/11/29 14:35:19 error-handler.go:34: successfully checked if user log already exists
+ERROR: 2024/11/29 14:35:19 error-handler.go:34: user log does not exist, so creating new user
+ERROR: 2024/11/29 14:35:19 error-handler.go:34: successfully created user log
+ERROR: 2024/11/29 14:35:38 error-handler.go:34: successfully retrieved user log from PostgreSQL
+ERROR: 2024/11/29 14:53:39 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/29 14:53:39 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/29 14:54:42 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/29 14:54:42 error-handler.go:34: strconv.Atoi: parsing "null": invalid syntax
+ERROR: 2024/11/29 16:11:59 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/29 16:11:59 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/29 16:16:42 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/29 16:16:42 error-handler.go:34: invalid user ID format
+ERROR: 2024/11/29 17:00:20 error-handler.go:34: successfully retrieved user vladislavLogin from PostgreSQL
+ERROR: 2024/11/29 17:22:38 error-handler.go:34: successfully retrieved user vladislavLogin from PostgreSQL
+ERROR: 2024/11/29 17:23:23 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/29 17:24:05 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/29 17:24:47 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/29 17:25:43 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/29 17:27:56 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/29 17:38:42 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL

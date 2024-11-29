@@ -23,20 +23,20 @@ const GroupCard = (obj) => {
       </div>
       <div className="groupCard__container">
         <div className="groupCard__buttons">
-          <img
-            src={settings}
-            alt=""
-            className="groupCard__buttons-links"
-            data-modal="modalGroupSettings"
-            data-id={obj.id}
-          />
-          <img
-            src={del}
-            alt=""
-            className="groupCard__buttons-settings"
-            onClick={() => deleteGroup(obj.id)}
-            // data-modal="modalGroupDelete"
-          />
+          {/*<img*/}
+          {/*  src={settings}*/}
+          {/*  alt=""*/}
+          {/*  className="groupCard__buttons-links"*/}
+          {/*  data-modal="modalGroupSettings"*/}
+          {/*  data-id={obj.id}*/}
+          {/*/>*/}
+          {/*<img*/}
+          {/*  src={del}*/}
+          {/*  alt=""*/}
+          {/*  className="groupCard__buttons-settings"*/}
+          {/*  onClick={() => deleteGroup(obj.id)}*/}
+          {/*  // data-modal="modalGroupDelete"*/}
+          {/*/>*/}
         </div>
       </div>
     </div>

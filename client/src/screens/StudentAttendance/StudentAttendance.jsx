@@ -1,80 +1,97 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import StudentAttendanceCard from "../../components/StudentAttendanceCard/StudentAttendanceCard";
-import axios from "axios";
 import "./studentAttendance.scss";
 
 const StudentAttendance = () => {
+    const { groupId } = useParams();
     const [users, setUsers] = useState([]);
-    const [attendance, setAttendance] = useState({}); // Хранит выбранные значения
+    const [attendance, setAttendance] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        const groupId = localStorage.getItem("group_id");
         if (!groupId) {
-            console.error("Group ID is not found in localStorage");
+            setErrorMessage("Ошибка: groupId не найден.");
             return;
         }
 
-        const fetchGroups = async () => {
+        const fetchStudents = async () => {
             try {
-                const response = await axios.get(`/api/teacher/studentAttendance/${groupId}`, {
+                const response = await fetch(`/api/teacher/studentAttendance/${groupId}`, {
+                    method: "GET",
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 });
-                setUsers(response.data.users || []);
+
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+
+                const responseData = await response.json();
+
+                if (responseData.users) {
+                    const decodedData = JSON.parse(atob(responseData.users));
+                    setUsers(decodedData || []);
+                } else {
+                    setUsers([]);
+                    console.error("Поле 'users' отсутствует или некорректное в ответе");
+                }
             } catch (error) {
-                console.error("Error fetching schedule:", error);
+                console.error("Ошибка при загрузке студентов:", error);
+                setErrorMessage("Ошибка при загрузке студентов.");
             }
         };
 
-        fetchGroups();
-    }, []);
+        fetchStudents();
+    }, [groupId]);
 
-    const handleAttendanceChange = (index, value) => {
+    console.log(users);
+
+    const handleAttendanceChange = (studentId, value) => {
         setAttendance((prev) => ({
             ...prev,
-            [index]: value,
+            [studentId]: value,
         }));
 
-console.log(index)
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].id === index) {
-                logChange(users[i], value);
-                break;
+        // Обновление статуса посещаемости
+        updateAttendance(studentId, value);
+    };
+
+    const updateAttendance = async (studentId, status) => {
+        try {
+            const response = await fetch("/api/teacher/studentAttendance", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({ studentId, status }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка обновления: ${response.status}`);
             }
+
+            console.log("Статус успешно обновлен");
+        } catch (error) {
+            console.error("Ошибка при обновлении статуса", error);
         }
     };
-
-    const logChange = (student, newStatus) => {
-        console.log(`Изменение статуса для студента ${student.first_name} ${student.last_name}: ${newStatus}`);
-
-        // Правильная структура запроса
-        axios.post("/api/teacher/studentAttendance", {
-            studentId: student.id,
-            status: newStatus
-        }, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        })
-            .then(response => {
-                console.log("Статус успешно обновлен", response);
-            })
-            .catch(error => {
-                console.error("Ошибка при обновлении статуса", error);
-            });
-    };
-
 
     return (
         <div className="studentAttendance">
             <div className="studentAttendance__container" id="studentList">
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
+
                 {users.map((user) => (
                     <StudentAttendanceCard
-                        key={user.id} // Используем уникальный идентификатор
-                        id={user.id} // Передаем ID студента
+                        key={user.id}
+                        id={user.id}
                         surname={user.last_name}
                         name={user.first_name}
                         patronymic={user.middle_name}
                         role={user.role}
-                        selectedValue={attendance[user.id] || ""} // Привязываем состояние к ID
-                        onChange={(value) => handleAttendanceChange(user.id, value)} // Передаем обработчик
+                        selectedValue={attendance[user.id] || ""}
+                        onChange={(value) => handleAttendanceChange(user.id, value)}
                     />
                 ))}
             </div>

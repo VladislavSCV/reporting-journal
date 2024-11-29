@@ -9,10 +9,37 @@ const CuratorGroups = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("/api/teacher/groups", {
+        const response = await fetch("/api/teacher/groups", {
+          method: "GET",
           headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` }
         });
-        setGroups(response.data.groups || []);
+        if (!response.ok) {
+          throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        const database64 = await response.json().groups; // Получение JSON-ответа
+        console.log("Raw database64:", database64);
+
+        if (!database64) {
+          console.warn("С сервера получен null. Устанавливаем пустой массив.");
+          setGroups([]);
+          return;
+        }
+
+        // Проверяем, требуется ли декодирование Base64
+        let data;
+        if (typeof database64 === "string") {
+          try {
+            data = JSON.parse(atob(database64)); // Декодируем Base64, если это строка
+          } catch (error) {
+            console.error("Ошибка декодирования Base64. Возможно, данные уже JSON.");
+            setGroups([]);
+            return;
+          }
+        } else {
+          data = database64; // Если это объект, декодирование не требуется
+        }
+        setGroups(data.groups || []);
       } catch (error) {
         console.error(error);
         setGroups([]);

@@ -17,9 +17,12 @@ import CuratorGroupsStudentsList from "../screens/CuratorGroupsStudentsList/Cura
 import AdminPanel from "../screens/AdminPanel/AdminPanel";
 import MainPage from "../screens/MainPage/MainPage.jsx";
 import {useDispatch, useSelector} from "react-redux";
+import GroupList from "../components/GroupList/GroupList.jsx";
 
 const ScreenSwitchboard = () => {
   const isAuth = localStorage.getItem("token");
+  console.log(localStorage.getItem("user_id"))
+  console.log(localStorage.getItem("group_id"))
   console.log(isAuth)
   if (!isAuth) {
     console.log("isAuth is false");
@@ -37,6 +40,8 @@ const ScreenSwitchboard = () => {
               <Route path="*" element={<MainPage/>}/>
               <Route path="/mainPage" element={<MainPage/>}/>
               <Route path="/groups" element={<Groups/>}/>
+              <Route path="/studentAttendance/:groupId" element={<StudentAttendance />} />
+              <Route path="/groupsList" element={<GroupList />} />
               <Route path="/curatorgroups" element={<CuratorGroups/>}/>
               <Route path="/studentsList" element={<StudentsList/>}/>
               <Route path="/studentsList/:id" element={<StudentsList/>}/>

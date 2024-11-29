@@ -139,7 +139,15 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
 		return err
 	}
 
-	c.JSON(http.StatusOK, gin.H{"groups": groups})
+	// Сериализуем данные в JSON
+	data, err := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(groups)
+	if err != nil {
+		// handle the error
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize data"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"groups": data})
 
 	return nil
 }
@@ -157,7 +165,15 @@ func (h *elseHandler) StudentsAttendance(c *gin.Context) error {
 		return err
 	}
 
-	c.JSON(http.StatusOK, gin.H{"users": users})
+	// Сериализуем данные в JSON
+	data, err := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(users)
+	if err != nil {
+		// handle the error
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize data"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"users": data})
 	return nil
 }
 
@@ -181,7 +197,6 @@ func (h *elseHandler) UpdateAttendance(c *gin.Context) error {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update attendance"})
 			return err
 		}
-		log.Println("hello")
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Attendance updated successfully"})

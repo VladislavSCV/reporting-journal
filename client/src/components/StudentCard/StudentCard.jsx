@@ -5,6 +5,7 @@ import "./studentCard.scss";
 import {deleteUser} from "../../actions/api";
 
 const StudentCard = (obj) => {
+  const { onDelete, id } = obj
   return (
     <div className="studentCard" key={obj.id}>
       <div className="studentCard__color-block"></div>
@@ -28,7 +29,7 @@ const StudentCard = (obj) => {
             src={deleteUserSVG}
             alt=""
             // data-modal="ModalStudentDelete"
-            onClick={() => deleteUser(obj.id)}
+            onClick={() => onDelete(id)}
             className="studentCard__buttons-delete"
           />
         </div>

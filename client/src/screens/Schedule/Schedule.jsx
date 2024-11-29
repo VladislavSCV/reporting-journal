@@ -7,10 +7,16 @@ import axios from "axios";
 const Schedule = () => {
   const [schedule, setSchedule] = useState([]);
   const params = useParams(); // Получаем параметры из URL
+  let groupId = ""
 
   useEffect(() => {
     // Определяем, что использовать: id из URL или из localStorage
-    const groupId = params.id || localStorage.getItem("group_id");
+    if (params.id === null) {
+      groupId = localStorage.getItem("group_id");
+    }
+    else {
+      groupId = params.id;
+    }
 
     if (!groupId) {
       console.error("Group ID is not found in URL or localStorage");
@@ -28,7 +34,7 @@ const Schedule = () => {
         const response = await axios.get(`/api/schedule/${groupId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setSchedule(response.data.schedule || []);
+        setSchedule(response.data.users || []);
       } catch (error) {
         console.error("Error fetching schedule:", error);
       }
