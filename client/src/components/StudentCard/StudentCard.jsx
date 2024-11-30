@@ -6,6 +6,12 @@ import {deleteUser} from "../../actions/api";
 
 const StudentCard = (obj) => {
   const { onDelete, id } = obj
+  const role = localStorage.getItem("userRole")
+  let adminPrivileges = false
+
+  if (role === "Admin") {
+    adminPrivileges = true
+  }
   return (
     <div className="studentCard" key={obj.id}>
       <div className="studentCard__color-block"></div>
@@ -17,21 +23,25 @@ const StudentCard = (obj) => {
           <p className="studentCard__student-role">Роль: {obj.role}</p>
         </div>
         <div className="studentCard__buttons">
-        <img
-            src={settingsUser}
-            alt=""
-            className="studentCard__buttons-settings"
-            data-modal="ModalStudentSettings"
-            data-id={obj.id}
-          />
 
-          <img
+
+          {adminPrivileges && (
+              <img
+              src={settingsUser}
+              alt=""
+              className="studentCard__buttons-settings"
+              data-modal="ModalStudentSettings"
+              data-id={obj.id}
+          /> &&
+            <img
             src={deleteUserSVG}
-            alt=""
-            // data-modal="ModalStudentDelete"
-            onClick={() => onDelete(id)}
-            className="studentCard__buttons-delete"
-          />
+          alt=""
+          onClick={() => onDelete(id)}
+          className="studentCard__buttons-delete"
+        />
+          )}
+
+
         </div>
       </div>
     </div>

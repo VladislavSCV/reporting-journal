@@ -34,7 +34,7 @@ const Schedule = () => {
         const response = await axios.get(`/api/schedule/${groupId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setSchedule(response.data.users || []);
+        setSchedule(response.data.schedule || []);
       } catch (error) {
         console.error("Error fetching schedule:", error);
       }

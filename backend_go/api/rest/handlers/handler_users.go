@@ -84,14 +84,14 @@ func (sh *userHandler) Login(c *gin.Context) error {
 	return nil
 }
 
-func (sh *userHandler) GetUserRole(token string) (string, error) {
-	user, err := sh.servicePostgresql.GetUserByToken(token)
-	if err != nil {
-		return "", err
-	}
-
-	return user, nil
-}
+//func (sh *userHandler) GetUserRole(token string) (string, error) {
+//	user, err := sh.servicePostgresql.GetUserByToken(token)
+//	if err != nil {
+//		return "", err
+//	}
+//
+//	return user, nil
+//}
 
 // SignUp (Регистрация) создает нового студента
 func (sh *userHandler) SignUp(c *gin.Context) error {
@@ -195,28 +195,32 @@ func (sh *userHandler) GetTeachers(c *gin.Context) error {
 }
 
 func (sh *userHandler) GetUserByToken(c *gin.Context) error {
-	type BindToken struct {
-		Token string `json:"token"`
+	// Извлечение токена из заголовка Authorization
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		//sh.logger.Error("missing Authorization header")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
+		return errors.New("missing Authorization header")
 	}
-	var token BindToken
-	//var user models.User
-	err := c.ShouldBindJSON(&token)
+
+	// Проверка формата заголовка, например: "Bearer <token>"
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
+		//sh.logger.Error("invalid Authorization header format")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
+		return errors.New("invalid Authorization header format")
+	}
+	token := parts[1]
+
+	id, _, err := pkg.ParseJWT(token)
 	if err != nil {
-		sh.logger.Error("failed to bind token",
-			zap.String("token", token.Token),
-			zap.Error(err),
-		)
 		return err
 	}
 
-	// было бы идеально проверять,
-	// что токен действителен и потом проводить поиск по redis,
-	// если токен не действителен, то возвращать ошибку или идем в бд
-
-	userFromDB, err := sh.servicePostgresql.GetUserByToken(token.Token)
+	userFromDB, err := sh.servicePostgresql.GetUserById(id)
 	if err != nil {
 		sh.logger.Error("failed to retrieve user from PostgreSQL",
-			zap.String("token", token.Token),
+			zap.String("token", token),
 			zap.Error(err),
 		)
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
@@ -226,7 +230,7 @@ func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 
 	c.JSON(http.StatusOK, gin.H{"user": userFromDB})
 	sh.logger.Info("successfully retrieved user from the database",
-		zap.String("token", token.Token),
+		zap.String("token", token),
 	)
 
 	return nil

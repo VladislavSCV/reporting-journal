@@ -9,8 +9,14 @@ const StudentsList = () => {
   const [students, setStudents] = useState([]);
   const [searchParams] = useSearchParams(); // Используем хук для работы с параметрами строки запроса
   const groupId = Number(searchParams.get("id")); // Извлекаем параметр id из строки
+  const role = localStorage.getItem("userRole")
+  let adminPrivileges = false
 
   useEffect(() => {
+
+    if (role === "Admin") {
+      adminPrivileges = true
+    }
     const fetchStudents = async () => {
       try {
         const response = await axios.get("/api/user/students", {

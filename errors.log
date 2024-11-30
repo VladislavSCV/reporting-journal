@@ -796,3 +796,44 @@ ERROR: 2024/11/29 17:24:47 error-handler.go:34: successfully retrieved user dani
 ERROR: 2024/11/29 17:25:43 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
 ERROR: 2024/11/29 17:27:56 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
 ERROR: 2024/11/29 17:38:42 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/29 18:37:25 error-handler.go:34: successfully retrieved user daniel_williams from PostgreSQL
+ERROR: 2024/11/30 15:02:56 error-handler.go:34: dial tcp: lookup oregon-redis.render.com: i/o timeout
+ERROR: 2024/11/30 15:03:09 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/30 15:03:09 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 15:03:10 error-handler.go:34: pq: column u.token does not exist
+ERROR: 2024/11/30 15:03:10 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 15:13:55 error-handler.go:34: pq: column reference "id" is ambiguous
+ERROR: 2024/11/30 15:13:55 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 15:13:55 error-handler.go:34: pq: column reference "id" is ambiguous
+ERROR: 2024/11/30 15:13:55 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 15:15:22 error-handler.go:34: sql: Scan error on column index 3, name "value": converting driver.Value type string ("Student") to a int: invalid syntax
+ERROR: 2024/11/30 15:15:22 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 15:15:22 error-handler.go:34: sql: Scan error on column index 3, name "value": converting driver.Value type string ("Student") to a int: invalid syntax
+ERROR: 2024/11/30 15:15:22 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:46:25 error-handler.go:34: user testLogin not found
+ERROR: 2024/11/30 16:46:25 error-handler.go:34: failed to get user
+ERROR: 2024/11/30 16:52:55 error-handler.go:34: successfully retrieved user vladislavLogin from PostgreSQL
+ERROR: 2024/11/30 16:53:03 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:03 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:03 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:03 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:05 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:05 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:06 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:06 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:07 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:07 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:07 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:07 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:56 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:56 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:53:56 error-handler.go:34: sql: Scan error on column index 4, name "name": converting NULL to string is unsupported
+ERROR: 2024/11/30 16:53:56 error-handler.go:34: failed to retrieve user from PostgreSQL
+ERROR: 2024/11/30 16:55:16 error-handler.go:34: successfully retrieved user alex_brown from PostgreSQL
+ERROR: 2024/11/30 16:57:07 error-handler.go:34: successfully retrieved user vladislavLogin from PostgreSQL
+ERROR: 2024/11/30 17:06:37 error-handler.go:34: successfully retrieved user jane_doe from PostgreSQL
+ERROR: 2024/11/30 17:43:58 error-handler.go:34: successfully retrieved user alex_brown from PostgreSQL
+ERROR: 2024/11/30 17:44:28 error-handler.go:34: successfully generated hash with salt for user 321
+ERROR: 2024/11/30 17:44:28 error-handler.go:34: successfully checked if user 321 already exists
+ERROR: 2024/11/30 17:44:28 error-handler.go:34: user 321 does not exist, so creating new user
+ERROR: 2024/11/30 17:44:29 error-handler.go:34: successfully created user 321

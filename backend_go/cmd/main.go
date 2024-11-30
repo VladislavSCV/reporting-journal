@@ -70,7 +70,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 
 	authRoutes := r.Group("/api/auth")
 	{
-		authRoutes.POST("/", errorHandler(api.UserApi.GetUserByToken))
+		authRoutes.GET("/", errorHandler(api.UserApi.GetUserByToken))
 		authRoutes.POST("/registration", errorHandler(api.UserApi.SignUp))
 		authRoutes.POST("/login", errorHandler(api.UserApi.Login))
 		authRoutes.POST("/verify", errorHandler(api.UserApi.VerifyToken))

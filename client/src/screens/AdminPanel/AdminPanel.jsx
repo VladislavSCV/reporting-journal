@@ -18,41 +18,8 @@ const AdminPanel = () => {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Fetch users and roles
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const userResponse = await fetch("/api/user/AdminPanel");
-  //       if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
-  //       const Data = await userResponse.json();
-  //       setUsers(Data.users);
-  //       setGroups(Data.groups);
-  //       setRoles(Data.roles)
-  //       console.log('groups:', groups, 'roleList:', roleList, 'users:', users);
-  //       // const roleResponse = await fetch("/api/role");
-  //       // if (!roleResponse.ok) throw new Error(`Ошибка запроса: ${roleResponse.status}`);
-  //       // const roleData = await roleResponse.json();
-  //       // setRoleList(roleData.roles);
-  //       //
-  //       // const groupResponse = await fetch("/api/group", {});
-  //       // if (!groupResponse.ok) throw new Error(`Ошибка запроса: ${groupResponse.status}`);
-  //       // const groupData = await groupResponse.json();
-  //       // console.log('groupData:', groupData); // Добавьте лог для отладки
-  //       //
-  //       // if (groupData && Array.isArray(groupData.groups)) {
-  //       //   setGroups(groupData.groups);
-  //       // } else {
-  //       //   console.error("Invalid groups data structure:", groupData);
-  //       // }
-  //     } catch (error) {
-  //       console.error("Ошибка загрузки данных:", error);
-  //     }
-  //   };
-  //
-  //
-  //
-  //   fetchData();
-  // }, []);
+  const userRole = localStorage.getItem("userRole");
+  let adminPrivileges = userRole === "Admin";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,13 +43,12 @@ const AdminPanel = () => {
       }
     };
 
-
     fetchData();
   }, []);
+
   if (loading) {
     return <div>Загрузка...</div>;
   }
-
 
   // Add user
   const addUser = async (e) => {
@@ -148,153 +114,155 @@ const AdminPanel = () => {
     setGroup("");
     setLogin("");
     setPassword("");
-    setRole("");
+    // setRole("");
   };
 
-  function register()
-  {
+  function register() {
     clearForm()
     registerUser(firstName, middleName, lastName, login, password, role, group)
   }
 
   return (
       <div className="adminPanel">
-        <div className="adminPanel__container">
-          <h1 className="adminPanel__title">Панель управления</h1>
-          <div className="adminPanel__usersControl">
-            <form action="">
-              <div className="">
-                <label className="adminPanel__usersControl-label">*Фамилия:</label>
-                <input
-                    onChange={(e) => setFirstName(e.target.value)}
-                    value={firstName}
-                    type="text"
-                    className="adminPanel__usersControl-input"
-                />
-              </div>
-              <div className="">
-                <label className="adminPanel__usersControl-label">*Имя:</label>
-                <input
-                    onChange={(e) => setMiddleName(e.target.value)}
-                    value={middleName}
-                    type="text"
-                    className="adminPanel__usersControl-input"
-                />
-              </div>
-              <div className="">
-                <label className="adminPanel__usersControl-label">*Отчество:</label>
-                <input
-                    onChange={(e) => setLastName(e.target.value)}
-                    value={lastName}
-                    type="text"
-                    className="adminPanel__usersControl-input"
-                />
-              </div>
-              <div>
-                <label className="adminPanel__usersControl-label">Группа:</label>
-                <select
-                    className="adminPanel__usersControl-input"
-                    onChange={handleChange}
-                    value={group || ''}  // Если group null, то значение будет ''
-                >
-                  <option value="">Выберите группу</option>
-                  {groups.length > 0 ? (
-                      groups.map((group) => (
-                          <option value={group.id} key={group.id}>
-                            {group.name}
-                          </option>
-                      ))
-                  ) : (
-                      <option disabled>Нет доступных групп</option>
-                  )}
-                </select>
-
-              </div>
-              <div>
-                <label className="adminPanel__usersControl-label">*Логин пользователя:</label>
-                <input
-                    onChange={(e) => setLogin(e.target.value)}
-                    value={login}
-                    type="text"
-                    className="adminPanel__usersControl-input"
-                />
-              </div>
-              <div>
-                <label className="adminPanel__usersControl-label">*Пароль пользователя:</label>
-                <input
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                    type="password"
-                    className="adminPanel__usersControl-input"
-                />
-              </div>
-              <div>
-                <label className="adminPanel__usersControl-label">*Роль:</label>
-                <select
-                    className="adminPanel__usersControl-input"
-                    onChange={(e) => setRole(e.target.value)}
-                    value={role}
-                >
-                  <option value="">Выберите роль</option>
-                  {roleList.map((role) => (
-                      <option value={role.id} key={role.id}>
-                        {role.value}
-                      </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                  className="adminPanel__usersControl-button"
-                  onClick={() => register()
-
-                  }
-              >
-                Добавить
-              </button>
-            </form>
-            <div className="adminPanel__usersControl-users">
-              {users.map((user) => (
-                  <UserCard
-                      key={user.id}
-                      name={user.login}
-                      id={user.id}
-                      role={user.role}
-                      password={user.password}
-                  />
-              ))}
-            </div>
-          </div>
-
-          <div className="adminPanel__roleControl">
-            <form className="adminPanel__roleControl-form">
-              <label className="adminPanel__roleControl-label">Новая роль:</label>
-              <input
-                  type="text"
-                  onChange={(e) => setValue(e.target.value)}
-                  value={value}
-                  className="adminPanel__roleControl-input"
-              />
-              <button type="submit" className="adminPanel__roleControl-button"
-
-              onClick={() => createRole(value)}>
-                Добавить
-              </button>
-            </form>
-            <div className="adminPanel__roleControl-roles">
-              {roleList.map((role) => (
-                  <p key={role.id} className="adminPanel__roleControl-roles-title">
-                    {role.value}
-                    <img
-                        src={del}
-                        alt="delete"
-                        onClick={() => deleteRole(role.id)}
-                        className="adminPanel__roleControl-roles-title-delete"
+        {adminPrivileges ? (
+            <div className="adminPanel__container">
+              <h1 className="adminPanel__title">Панель управления</h1>
+              <div className="adminPanel__usersControl">
+                <form action="">
+                  <div className="">
+                    <label className="adminPanel__usersControl-label">*Фамилия:</label>
+                    <input
+                        onChange={(e) => setFirstName(e.target.value)}
+                        value={firstName}
+                        type="text"
+                        className="adminPanel__usersControl-input"
                     />
-                  </p>
-              ))}
+                  </div>
+                  <div className="">
+                    <label className="adminPanel__usersControl-label">*Имя:</label>
+                    <input
+                        onChange={(e) => setMiddleName(e.target.value)}
+                        value={middleName}
+                        type="text"
+                        className="adminPanel__usersControl-input"
+                    />
+                  </div>
+                  <div className="">
+                    <label className="adminPanel__usersControl-label">*Отчество:</label>
+                    <input
+                        onChange={(e) => setLastName(e.target.value)}
+                        value={lastName}
+                        type="text"
+                        className="adminPanel__usersControl-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="adminPanel__usersControl-label">Группа:</label>
+                    <select
+                        className="adminPanel__usersControl-input"
+                        onChange={handleChange}
+                        value={group || ''}  // Если group null, то значение будет ''
+                    >
+                      <option value="">Выберите группу</option>
+                      {groups.length > 0 ? (
+                          groups.map((group) => (
+                              <option value={group.id} key={group.id}>
+                                {group.name}
+                              </option>
+                          ))
+                      ) : (
+                          <option disabled>Нет доступных групп</option>
+                      )}
+                    </select>
+
+                  </div>
+                  <div>
+                    <label className="adminPanel__usersControl-label">*Логин пользователя:</label>
+                    <input
+                        onChange={(e) => setLogin(e.target.value)}
+                        value={login}
+                        type="text"
+                        className="adminPanel__usersControl-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="adminPanel__usersControl-label">*Пароль пользователя:</label>
+                    <input
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        type="password"
+                        className="adminPanel__usersControl-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="adminPanel__usersControl-label">*Роль:</label>
+                    <select
+                        className="adminPanel__usersControl-input"
+                        onChange={(e) => setRole(e.target.value)}
+                        value={role}
+                    >
+                      <option value="">Выберите роль</option>
+                      {roleList.map((role) => (
+                          <option value={role.id} key={role.id}>
+                            {role.value}
+                          </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                      className="adminPanel__usersControl-button"
+                      onClick={() => register()}
+                  >
+                    Добавить
+                  </button>
+                </form>
+                <div className="adminPanel__usersControl-users">
+                  {users.map((user) => (
+                      <UserCard
+                          key={user.id}
+                          name={user.login}
+                          id={user.id}
+                          role={user.role}
+                          password={user.password}
+                      />
+                  ))}
+                </div>
+              </div>
+
+              <div className="adminPanel__roleControl">
+                <form className="adminPanel__roleControl-form">
+                  <label className="adminPanel__roleControl-label">Новая роль:</label>
+                  <input
+                      type="text"
+                      onChange={(e) => setValue(e.target.value)}
+                      value={value}
+                      className="adminPanel__roleControl-input"
+                  />
+                  <button type="submit" className="adminPanel__roleControl-button"
+                          onClick={() => createRole(value)}>
+                    Добавить
+                  </button>
+                </form>
+                <div className="adminPanel__roleControl-roles">
+                  {roleList.map((role) => (
+                      <p key={role.id} className="adminPanel__roleControl-roles-title">
+                        {role.value}
+                        <img
+                            src={del}
+                            alt="delete"
+                            onClick={() => deleteRole(role.id)}
+                            className="adminPanel__roleControl-roles-title-delete"
+                        />
+                      </p>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+        ) : (
+            <div className="adminPanel__message">
+              <p>Доступ к этой панели есть только у администратора.</p>
+            </div>
+        )}
       </div>
   );
 };

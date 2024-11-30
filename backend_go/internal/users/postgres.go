@@ -96,7 +96,7 @@ func (uhp *userHandlerDB) GetStudents() ([]models.User, error) {
 		}
 
 		user.Role = roleName
-		user.Group = groupName
+		user.Group = &groupName
 
 		users = append(users, user)
 		log.Printf("%+v\n", user)
@@ -205,7 +205,7 @@ func (uhp *userHandlerDB) GetUsersByGroupID(groupID int) ([]models.User, error) 
 		}
 
 		user.Role = roleName
-		user.Group = groupName
+		user.Group = &groupName
 
 		users = append(users, user)
 		log.Printf("%+v\n", user)
@@ -232,17 +232,16 @@ func (uhp *userHandlerDB) GetUsersByRoleID(roleID int) ([]models.User, error) {
 	return users, nil
 }
 
-func (uhp *userHandlerDB) GetUserByToken(token string) (string, error) {
-	//var user models.User
-	var role models.Role
-	row := uhp.dbAndTx.QueryRow(`SELECT r.value as role FROM users as u JOIN roles as r ON u.role_id = r.id WHERE u.token = $1`, token)
-	err := row.Scan(&role.Value)
+func (uhp *userHandlerDB) GetUserByToken(token string) (models.User, error) {
+	var user models.User
+	row := uhp.dbAndTx.QueryRow(`SELECT u.first_name, u.middle_name, u.last_name, r.value as role FROM users as u JOIN roles as r ON u.role_id = r.id WHERE u.token = $1`, token)
+	err := row.Scan(&user.FirstName, &user.MiddleName, &user.LastName, &user.Role)
 	if err == sql.ErrNoRows {
-		return "", pkg.LogWriteFileReturnError(errors.New("User is not found"))
+		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
 	} else if err != nil {
-		return "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, pkg.LogWriteFileReturnError(err)
 	}
-	return role.Value, nil
+	return user, nil
 }
 
 // GetUserById возвращает пользователя по его ID
@@ -255,14 +254,15 @@ func (uhp *userHandlerDB) GetUserByToken(token string) (string, error) {
 // GetUserById возвращает пользователя по его ID
 func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT first_name, middle_name, last_name, role_id, group_id, login, password FROM users WHERE id = $1`, id)
-	err := row.Scan(&user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash)
+	row := uhp.dbAndTx.QueryRow(`SELECT u.first_name, u.middle_name, u.last_name, r.value, g.name, login, password FROM users as u LEFT JOIN roles as r ON u.role_id = r.id LEFT JOIN groups as g ON u.group_id = g.id WHERE u.id = $1`, id)
+	err := row.Scan(&user.FirstName, &user.MiddleName, &user.LastName, &user.Role, &user.Group, &user.Login, &user.Hash)
 	if err == sql.ErrNoRows {
 		return models.User{}, pkg.LogWriteFileReturnError(errors.New("User is not found"))
 	} else if err != nil {
 		return models.User{}, pkg.LogWriteFileReturnError(err)
 	}
 	user.ID = id
+	fmt.Println(user)
 	return user, nil
 }
 

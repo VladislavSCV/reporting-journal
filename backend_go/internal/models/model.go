@@ -32,8 +32,8 @@ type User struct {
 	Salt       string `json:"salt"`
 	Token      string `json:"token"`
 
-	Role  string `json:"role"`
-	Group string `json:"group"`
+	Role  string  `json:"role"`
+	Group *string `json:"group"`
 }
 
 type Role struct {

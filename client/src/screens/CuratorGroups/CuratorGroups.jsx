@@ -17,29 +17,32 @@ const CuratorGroups = () => {
           throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
-        const database64 = await response.json().groups; // Получение JSON-ответа
+        const database64 = await response.json(); // Получение JSON-ответа
         console.log("Raw database64:", database64);
 
-        if (!database64) {
-          console.warn("С сервера получен null. Устанавливаем пустой массив.");
-          setGroups([]);
-          return;
-        }
+        // if (!database64) {
+        //   console.warn("С сервера получен null. Устанавливаем пустой массив.");
+        //   setGroups([]);
+        //   return;
+        // }
+
+        console.log(typeof database64)
 
         // Проверяем, требуется ли декодирование Base64
         let data;
-        if (typeof database64 === "string") {
+        // if (typeof database64 === "string") {
           try {
-            data = JSON.parse(atob(database64)); // Декодируем Base64, если это строка
+            data = JSON.parse(atob(database64.groups)); // Декодируем Base64, если это строка
           } catch (error) {
             console.error("Ошибка декодирования Base64. Возможно, данные уже JSON.");
             setGroups([]);
             return;
           }
-        } else {
-          data = database64; // Если это объект, декодирование не требуется
-        }
-        setGroups(data.groups || []);
+        // } else {
+        //   data = database64; // Если это объект, декодирование не требуется
+        // }
+        console.log(data)
+        setGroups(data || []);
       } catch (error) {
         console.error(error);
         setGroups([]);
@@ -48,6 +51,8 @@ const CuratorGroups = () => {
 
     fetchGroups();
   }, []);
+
+
 
   return (
       <div className="curatorGroups">
