@@ -62,12 +62,14 @@ func (uhp *userHandlerDB) GetStudents() ([]models.User, error) {
             u.last_name, 
             u.role_id, 
             u.group_id, 
+            a.status,
             u.login, 
             COALESCE(r.value, 'Неизвестная роль') AS role_name, 
             COALESCE(g.name, 'Не указана группа') AS group_name
         FROM users u
         LEFT JOIN roles r ON u.role_id = r.id
         LEFT JOIN groups g ON u.group_id = g.id
+        LEFT JOIN attendance a ON u.id = a.student_id
         WHERE u.role_id = 1;`
 
 	rows, err := uhp.dbAndTx.Query(query)
@@ -87,6 +89,7 @@ func (uhp *userHandlerDB) GetStudents() ([]models.User, error) {
 			&user.LastName,
 			&user.RoleID,
 			&user.GroupID,
+			&user.Status,
 			&user.Login,
 			&roleName,
 			&groupName,

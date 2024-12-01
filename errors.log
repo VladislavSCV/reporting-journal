@@ -837,3 +837,5 @@ ERROR: 2024/11/30 17:44:28 error-handler.go:34: successfully generated hash with
 ERROR: 2024/11/30 17:44:28 error-handler.go:34: successfully checked if user 321 already exists
 ERROR: 2024/11/30 17:44:28 error-handler.go:34: user 321 does not exist, so creating new user
 ERROR: 2024/11/30 17:44:29 error-handler.go:34: successfully created user 321
+ERROR: 2024/12/01 11:21:26 error-handler.go:34: successfully retrieved user teacher_1 from PostgreSQL
+ERROR: 2024/12/01 11:48:43 error-handler.go:34: invalid user ID format

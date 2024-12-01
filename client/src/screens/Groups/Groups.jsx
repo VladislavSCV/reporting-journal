@@ -26,7 +26,7 @@ const Groups = () => {
                             name={obj.name}
                             id={obj.id}
                             link={`/studentsList?id=${obj.id}`}
-                            onClick={() => localStorage.setItem("group_id", obj.id)} // Сохранение group_id при клике
+                            // onClick={() => localStorage.setItem("group_id", obj.id)} // Сохранение group_id при клике
                         />
                     ))}
                 </div>

@@ -1,11 +1,14 @@
 .studentCard {
   display: flex;
   background: #ffffff;
-  width: 355px;
-  height: 100px;
+  width: 100%; // Адаптивная ширина
+  max-width: 355px; // Максимальная ширина
+  height: auto; // Динамическая высота
+  min-height: 100px; // Минимальная высота
   border-radius: 30px;
   align-items: center;
   border: var(--border-block);
+  margin-bottom: 10px; // Расстояние между карточками
 
   &__color-block {
     background-color: #5200ff;
@@ -15,19 +18,45 @@
   }
 
   &__container {
-    width: 270px;
-    margin: 0 auto;
-    height: 80px;
+    width: 100%;
+    height: 100%; // Заполняет всю высоту
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 15px;
   }
 
   &__student {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; // Контейнер для текста
+    overflow: hidden; // Скрывает лишнее
+
     &-name {
-      font-size: 20px;
+      font-size: 16px; // Размер шрифта для имен
       font-weight: 600;
+      margin: 2px 0; // Расстояние между именами
+      white-space: nowrap; // Предотвращает перенос текста на новую строку
+      overflow: hidden;
+      text-overflow: ellipsis; // Добавляет троеточие, если текст не вмещается
     }
+
     &-role {
       font-size: var(--font-size-small);
       margin-top: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-status {
+      font-size: var(--font-size-small);
+      margin-top: 5px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

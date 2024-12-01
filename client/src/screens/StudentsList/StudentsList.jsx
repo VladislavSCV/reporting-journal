@@ -9,14 +9,14 @@ const StudentsList = () => {
   const [students, setStudents] = useState([]);
   const [searchParams] = useSearchParams(); // Используем хук для работы с параметрами строки запроса
   const groupId = Number(searchParams.get("id")); // Извлекаем параметр id из строки
-  const role = localStorage.getItem("userRole")
-  let adminPrivileges = false
+  // const role = localStorage.getItem("userRole")
+  // let adminPrivileges = false
 
   useEffect(() => {
 
-    if (role === "Admin") {
-      adminPrivileges = true
-    }
+    // if (role === "Admin") {
+    //   adminPrivileges = true
+    // }
     const fetchStudents = async () => {
       try {
         const response = await axios.get("/api/user/students", {
@@ -48,7 +48,6 @@ const StudentsList = () => {
     }
   };
 
-
   return (
       <div className="studentsList">
         <div className="studentsList__container" id="studentList">
@@ -58,6 +57,7 @@ const StudentsList = () => {
                   <StudentCard
                       first_name={`${student.first_name} ${student.middle_name} ${student.last_name}`}
                       role={student.role}
+                      status={student.status}
                       key={student.id}
                       id={student.id}
                       onDelete={handleDelete}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./groupList.scss";
+import "../../screens/Groups/groups.scss";
+import GroupCard from "../GroupCard/GroupCard.jsx";
 
 const GroupList = () => {
     const navigate = useNavigate();
@@ -46,18 +47,24 @@ const GroupList = () => {
     };
 
     return (
-        <div className="container">
-            <h1 className="title">Список групп</h1>
-            <div className="cardContainer">
+        <div className="groups">
+            <h1 className="groups__title">Список групп</h1>
+            <div className="groups__list">
                 {groups.map((group) => (
-                    <div
+                    // <div
+                    //     key={group.id}
+                    //     className="groupCard"
+                    //     onClick={() => handleGroupClick(group.id)}
+                    // >
+                    //     <h3>{group.name}</h3>
+                    //     <button>Просмотр</button>
+                    // </div>
+                    <GroupCard
                         key={group.id}
-                        className="groupCard"
-                        onClick={() => handleGroupClick(group.id)}
-                    >
-                        <h3>{group.name}</h3>
-                        <button>Просмотр</button>
-                    </div>
+                        name={group.name}
+                        id={group.id}
+                        link={`/studentAttendance/${group.id}`}
+                    />
                 ))}
             </div>
         </div>
