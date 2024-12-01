@@ -47,25 +47,27 @@ func (sh *userHandler) Login(c *gin.Context) error {
 
 	// TODO раскомментировать код ниже
 	// Проверка пароля
-	//isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
-	//if err != nil {
-	//	sh.logger.Error("error verifying password",
-	//		zap.String("login", user.Login),
-	//		zap.Error(err),
-	//	)
-	//	c.Status(http.StatusInternalServerError)
-	//	return pkg.LogWriteFileReturnError(errors.New("error verifying password"))
-	//}
-	//
-	//if !isValid {
-	//	sh.logger.Info("invalid credentials",
-	//		zap.String("login", user.Login),
-	//	)
-	//	c.Status(http.StatusUnauthorized)
-	//	return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
-	//}
+	isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
+	if err != nil {
+		sh.logger.Error("error verifying password",
+			zap.String("login", user.Login),
+			zap.String("password", user.Salt),
+			zap.String("hash", userDB.Hash),
+			zap.Error(err),
+		)
+		c.Status(http.StatusInternalServerError)
+		return pkg.LogWriteFileReturnError(errors.New("error verifying password"))
+	}
 
-	// Генерация токена
+	if !isValid {
+		sh.logger.Info("invalid credentials",
+			zap.String("login", user.Login),
+		)
+		c.Status(http.StatusUnauthorized)
+		return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
+	}
+
+	//// Генерация токена
 	token, err := pkg.GenerateJWT(userDB.ID, userDB.RoleID)
 	if err != nil {
 		sh.logger.Error("failed to generate token",

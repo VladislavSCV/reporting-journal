@@ -18,6 +18,8 @@ import AdminPanel from "../screens/AdminPanel/AdminPanel";
 import MainPage from "../screens/MainPage/MainPage.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import GroupList from "../components/GroupList/GroupList.jsx";
+import NotesGroup from "../screens/NotesGroup/Notes.jsx";
+import CuratorGroupsNotes_notes from "../screens/NotesCuratorGroup/Notes.jsx";
 
 const ScreenSwitchboard = () => {
   const isAuth = localStorage.getItem("token");
@@ -51,6 +53,8 @@ const ScreenSwitchboard = () => {
               <Route path="/studentAttendance" element={<StudentAttendance/>}/>
               <Route path="/notes" element={<Notes/>}/>
               <Route path="/notes/:id" element={<Notes/>}/>
+              <Route path="/group/notes/:id" element={<NotesGroup/>}/>
+              <Route path="/CuratorGroup/notes/:id" element={<NotesGroup/>}/>
               <Route path="/GroupsNotes" element={<GroupsNote/>}/>
               <Route path="/GroupsSchedule" element={<GroupsSchedule/>}/>
               <Route path="/GroupsStudentsList" element={<GroupsStudentsList/>}/>

@@ -49,6 +49,40 @@ func (nh *noteHandler) GetNote(c *gin.Context) error {
 	return nil
 }
 
+func (nh *noteHandler) GetGroupNote(c *gin.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return err
+	}
+
+	note, err := nh.servicePostgres.GetGroupNote(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not fetch note"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"notes": note})
+	return nil
+}
+
+func (nh *noteHandler) GetCuratorGroupNote(c *gin.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return err
+	}
+
+	note, err := nh.servicePostgres.GetCuratorGroupNote(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not fetch note"})
+		return err
+	}
+
+	c.JSON(http.StatusOK, gin.H{"notes": note})
+	return nil
+}
+
 // GetNotes получает список всех заметок
 func (nh *noteHandler) GetNotes(c *gin.Context) error {
 	notes, err := nh.servicePostgres.GetNotes()

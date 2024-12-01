@@ -22,8 +22,8 @@ func (nh *noteHandlerDB) CreateNote(note models.Note) error {
 }
 
 func (nh *noteHandlerDB) GetNote(id int) ([]models.Note, error) {
-	var notes []models.Note
-	rows, err := nh.dbAndTx.Query("SELECT title, body FROM notes WHERE id = $1", id)
+	var notesList []models.Note
+	rows, err := nh.dbAndTx.Query("SELECT title, body FROM notes WHERE user_id = $1", id)
 	if err != nil {
 		return nil, err
 	}
@@ -33,10 +33,50 @@ func (nh *noteHandlerDB) GetNote(id int) ([]models.Note, error) {
 		if err := rows.Scan(&note.Title, &note.Body); err != nil {
 			return nil, err
 		}
-		notes = append(notes, note)
+		notesList = append(notesList, note)
 	}
 
-	return notes, nil
+	return notesList, nil
+}
+
+func (nh *noteHandlerDB) GetGroupNote(noteId int) ([]models.Note, error) {
+	var notesList []models.Note
+	rows, err := nh.dbAndTx.Query("SELECT id, title, body FROM notes WHERE group_id = $1", noteId)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var note models.Note
+		rows.Scan(&note.Id, &note.Title, &note.Body)
+		notesList = append(notesList, note)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return notesList, nil
+}
+
+func (nh *noteHandlerDB) GetCuratorGroupNote(teacherId int) ([]models.Note, error) {
+	var notesList []models.Note
+	rows, err := nh.dbAndTx.Query("SELECT n.title, n.body FROM notes n JOIN teacher_groups tg ON n.group_id = tg.group_id WHERE tg.teacher_id = $1", teacherId)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var note models.Note
+		rows.Scan(&note.Title, &note.Body)
+		notesList = append(notesList, note)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return notesList, nil
 }
 
 func (nh *noteHandlerDB) GetNotes() ([]models.Note, error) {

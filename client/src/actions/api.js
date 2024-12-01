@@ -158,14 +158,14 @@ async function deleteRole(roleId) {
   return response.ok;
 }
 
-export async function addGroup(name, body) {
-  const response = await fetch('http://localhost:8000/api/groups', {
+export async function addGroup(name) {
+  const response = await fetch('/api/group', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
-    body: JSON.stringify({ name, body })
+    body: JSON.stringify({ name })
   });
   return response.json();
 }

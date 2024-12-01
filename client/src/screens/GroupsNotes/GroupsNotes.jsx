@@ -33,7 +33,7 @@ const GroupsNotes = () => {
                 group={obj.name}
                 key={obj.id}
                 id={obj.id}
-                link={"/notes/" + obj.id}
+                link={"/group/notes/" + obj.id}
               />
             );
           })}

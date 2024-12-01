@@ -839,3 +839,40 @@ ERROR: 2024/11/30 17:44:28 error-handler.go:34: user 321 does not exist, so crea
 ERROR: 2024/11/30 17:44:29 error-handler.go:34: successfully created user 321
 ERROR: 2024/12/01 11:21:26 error-handler.go:34: successfully retrieved user teacher_1 from PostgreSQL
 ERROR: 2024/12/01 11:48:43 error-handler.go:34: invalid user ID format
+ERROR: 2024/12/01 14:54:49 error-handler.go:34: successfully retrieved user student_1_1 from PostgreSQL
+ERROR: 2024/12/01 14:59:51 error-handler.go:34: successfully retrieved user teacher_1 from PostgreSQL
+ERROR: 2024/12/01 15:25:46 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2024/12/01 15:27:28 error-handler.go:34: successfully generated hash with salt for user vladislavLogin
+ERROR: 2024/12/01 15:27:28 error-handler.go:34: successfully checked if user vladislavLogin already exists
+ERROR: 2024/12/01 15:27:28 error-handler.go:34: user vladislavLogin does not exist, so creating new user
+ERROR: 2024/12/01 15:27:29 error-handler.go:34: successfully created user vladislavLogin
+ERROR: 2024/12/01 15:28:43 error-handler.go:34: successfully retrieved user vladislavLogin from PostgreSQL
+ERROR: 2024/12/01 15:28:43 error-handler.go:34: invalid credentials
+ERROR: 2024/12/01 15:30:10 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2024/12/01 15:30:10 error-handler.go:34: invalid credentials
+ERROR: 2024/12/01 15:30:35 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2024/12/01 15:31:25 error-handler.go:34: successfully generated hash with salt for user vladlogin
+ERROR: 2024/12/01 15:31:26 error-handler.go:34: successfully checked if user vladlogin already exists
+ERROR: 2024/12/01 15:31:26 error-handler.go:34: user vladlogin does not exist, so creating new user
+ERROR: 2024/12/01 15:31:26 error-handler.go:34: successfully created user vladlogin
+ERROR: 2024/12/01 15:31:38 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:32:00 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:32:00 error-handler.go:34: invalid credentials
+ERROR: 2024/12/01 15:32:15 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:32:15 error-handler.go:34: invalid credentials
+ERROR: 2024/12/01 15:34:39 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:34:39 error-handler.go:34: error verifying password
+ERROR: 2024/12/01 15:34:58 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:35:15 error-handler.go:34: successfully generated hash with salt for user ewq
+ERROR: 2024/12/01 15:35:15 error-handler.go:34: successfully checked if user ewq already exists
+ERROR: 2024/12/01 15:35:15 error-handler.go:34: user ewq does not exist, so creating new user
+ERROR: 2024/12/01 15:35:16 error-handler.go:34: successfully created user ewq
+ERROR: 2024/12/01 15:42:49 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:42:49 error-handler.go:34: error verifying password
+ERROR: 2024/12/01 15:46:19 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:46:52 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/01 15:47:19 error-handler.go:34: successfully generated hash with salt for user qwe
+ERROR: 2024/12/01 15:47:20 error-handler.go:34: successfully checked if user qwe already exists
+ERROR: 2024/12/01 15:47:20 error-handler.go:34: user qwe does not exist, so creating new user
+ERROR: 2024/12/01 15:47:20 error-handler.go:34: successfully created user qwe
+ERROR: 2024/12/01 15:49:31 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL

@@ -14,26 +14,26 @@ const CuratorGroupsNotes = () => {
         },
       });
       if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`);
-      const database64 = await response.json().groups;
-      if (!database64) {
-        console.warn("С сервера получен null. Устанавливаем пустой массив.");
-        setGroups([]);
-        return;
-      }
+      const database64 = await response.json();
+      // if (!database64) {
+      //   console.warn("С сервера получен null. Устанавливаем пустой массив.");
+      //   setGroups([]);
+      //   return;
+      // }
       // Проверяем, требуется ли декодирование Base64
       let data;
-      if (typeof database64 === "string") {
+      // if (typeof database64 === "string") {
         try {
-          data = JSON.parse(atob(database64)); // Декодируем Base64, если это строка
+          data = JSON.parse(atob(database64.groups)); // Декодируем Base64, если это строка
         } catch (error) {
           console.error("Ошибка декодирования Base64. Возможно, данные уже JSON.");
           setGroups([]);
           return;
         }
-      } else {
-        data = database64; // Если это объект, декодирование не требуется
-      }
-      setGroups(data.groups || []);
+      // } else {
+      //   data = database64; // Если это объект, декодирование не требуется
+      // }
+      setGroups(data || []);
     } catch (error) {
       console.error(error);
     }
@@ -52,7 +52,7 @@ const CuratorGroupsNotes = () => {
                 group={obj.name}
                 key={obj.id}
                 id={obj.id}
-                link={"/notes?id=" + obj.id}
+                link={"/CuratorGroup/notes/" + obj.id}
               />
             ))
           ) : (

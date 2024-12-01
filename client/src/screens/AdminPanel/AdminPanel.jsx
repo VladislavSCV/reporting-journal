@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./adminPanel.scss";
 import UserCard from "../../components/UserCard/UserCard";
 import del from "../../assets/AdminPanel/delete.svg";
-import {registerUser, createRole} from "../../actions/api";
+import {registerUser, createRole, addGroup} from "../../actions/api";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
@@ -17,6 +17,8 @@ const AdminPanel = () => {
   const [roleList, setRoles] = useState([]);
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
+  const [newGroupName, setNewGroupName] = useState("");
+
 
   const userRole = localStorage.getItem("userRole");
   let adminPrivileges = userRole === "Admin";
@@ -30,7 +32,8 @@ const AdminPanel = () => {
         });
         if (!userResponse.ok) throw new Error(`Ошибка запроса: ${userResponse.status}`);
         const database64 = await userResponse.json();
-        const data = JSON.parse(atob(database64));
+        const data = JSON.parse(decodeURIComponent(escape(atob(database64))));
+
 
         console.log('Received data:', data); // Логируем полученные данные
         setUsers(data.users || []);
@@ -247,6 +250,40 @@ const AdminPanel = () => {
                   {roleList.map((role) => (
                       <p key={role.id} className="adminPanel__roleControl-roles-title">
                         {role.value}
+                        <img
+                            src={del}
+                            alt="delete"
+                            onClick={() => deleteRole(role.id)}
+                            className="adminPanel__roleControl-roles-title-delete"
+                        />
+                      </p>
+                  ))}
+                </div>
+              </div>
+
+
+              <div className="adminPanel__roleControl">
+                <form className="adminPanel__roleControl-form">
+                  <label className="adminPanel__roleControl-label">Новая Группа:</label>
+                  <input
+                      type="text"
+                      onChange={(e) => setNewGroupName(e.target.value)}
+                      value={newGroupName}
+                      className="adminPanel__roleControl-input"
+                  />
+                  <button
+                      type="submit"
+                      className="adminPanel__roleControl-button"
+                      onClick={() => addGroup(newGroupName)}
+                  >
+                    Добавить
+                  </button>
+
+                </form>
+                <div className="adminPanel__roleControl-roles">
+                  {groups.map((role) => (
+                      <p key={role.id} className="adminPanel__roleControl-roles-title">
+                        {role.name}
                         <img
                             src={del}
                             alt="delete"

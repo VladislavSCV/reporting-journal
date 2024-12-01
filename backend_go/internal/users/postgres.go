@@ -148,8 +148,8 @@ func (uhp *userHandlerDB) UpdateToken(id int, token string) error {
 //	@return error - ошибка, если она возникла
 func (uhp *userHandlerDB) GetUserByLogin(login string) (models.User, error) {
 	var user models.User
-	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login FROM users WHERE login = $1`, login)
-	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login)
+	row := uhp.dbAndTx.QueryRow(`SELECT id, first_name, middle_name, last_name, role_id, group_id, login, password, salt FROM users WHERE login = $1`, login)
+	err := row.Scan(&user.ID, &user.FirstName, &user.MiddleName, &user.LastName, &user.RoleID, &user.GroupID, &user.Login, &user.Hash, &user.Salt)
 	if errors.Is(err, sql.ErrNoRows) {
 		errMsg := fmt.Errorf("user %s not found", login)
 		pkg.LogWriteFileReturnError(errMsg)
