@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./curatorGroupsStudentsList.scss";
 import GroupCardLinks from "../../components/GroupCardLinks/GroupCardLinks";
-import axios from "axios";
 
 const CuratorGroupsStudentsList = () => {
   const [groups, setGroups] = useState([]);
@@ -67,7 +66,11 @@ const CuratorGroupsStudentsList = () => {
                     />
                 ))
             ) : (
-                <p>Нет данных о группах.</p>
+                <div className="adminPanel__message-container" style={{backgroundColor: "#f0f0ff"}}>
+                  <div className="adminPanel__message">
+                    <p>Доступ к этой панели есть только у куратора.</p>
+                  </div>
+                </div>
             )}
           </div>
         </div>

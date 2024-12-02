@@ -39,7 +39,7 @@ create table notes (
                        id serial primary key,
                        title varchar(100) not null,
                        body text not null,
-                       group_id int not null references groups(id) on delete cascade,
+                       group_id INT REFERENCES groups(id) ON DELETE SET NULL,
                        user_id int not null references users(id) on delete cascade
 );
 

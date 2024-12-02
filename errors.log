@@ -876,3 +876,19 @@ ERROR: 2024/12/01 15:47:20 error-handler.go:34: successfully checked if user qwe
 ERROR: 2024/12/01 15:47:20 error-handler.go:34: user qwe does not exist, so creating new user
 ERROR: 2024/12/01 15:47:20 error-handler.go:34: successfully created user qwe
 ERROR: 2024/12/01 15:49:31 error-handler.go:34: successfully retrieved user vladlogin from PostgreSQL
+ERROR: 2024/12/02 09:23:05 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6c73af3gm0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/12/02 09:23:05 error-handler.go:34: dial tcp: lookup oregon-redis.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/12/02 09:23:13 error-handler.go:34: dial tcp: lookup dpg-csm9o70gph6c73af3gm0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/12/02 09:23:13 error-handler.go:34: dial tcp: lookup oregon-redis.render.com on 127.0.0.53:53: server misbehaving
+ERROR: 2024/12/02 09:47:52 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/12/02 09:49:34 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/12/02 09:54:12 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/12/02 10:05:23 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/12/02 10:10:09 error-handler.go:34: pq: insert or update on table "notes" violates foreign key constraint "notes_group_id_fkey"
+ERROR: 2024/12/02 10:16:33 error-handler.go:34: pq: null value in column "group_id" of relation "notes" violates not-null constraint
+ERROR: 2024/12/02 11:18:59 error-handler.go:34: successfully retrieved user qwe from PostgreSQL
+ERROR: 2024/12/02 11:19:24 error-handler.go:34: successfully generated hash with salt for user qwerty
+ERROR: 2024/12/02 11:19:25 error-handler.go:34: successfully checked if user qwerty already exists
+ERROR: 2024/12/02 11:19:25 error-handler.go:34: user qwerty does not exist, so creating new user
+ERROR: 2024/12/02 11:19:25 error-handler.go:34: successfully created user qwerty
+ERROR: 2024/12/02 11:19:42 error-handler.go:34: successfully retrieved user qwerty from PostgreSQL

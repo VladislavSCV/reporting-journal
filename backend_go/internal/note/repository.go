@@ -6,7 +6,7 @@ import (
 )
 
 type NotePostgresRepository interface {
-	CreateNote(note models.Note) error
+	CreateNote(id int, note models.Note) error
 	GetNote(id int) ([]models.Note, error)
 	GetGroupNote(id int) ([]models.Note, error)
 	GetCuratorGroupNote(teacherId int) ([]models.Note, error)

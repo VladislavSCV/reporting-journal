@@ -8,10 +8,12 @@ import axios from "axios";
 const NotesGroup = () => {
   const [notes, setNotes] = useState([]);
   const params = useParams(); // Получаем параметры из URL
+  const userId = params.id || localStorage.getItem("user_id");
+  const groupId = params.id || localStorage.getItem("group_id");
+
 
   useEffect(() => {
     // Определяем id пользователя или группы
-    const userId = params.id || localStorage.getItem("user_id");
 
     if (!userId) {
       console.error("User ID is not found in URL or localStorage");
@@ -19,14 +21,14 @@ const NotesGroup = () => {
     }
 
     // Если параметр id есть, обновляем localStorage
-    if (params.id) {
-      localStorage.setItem("user_id", params.id);
-    }
+    // if (params.id) {
+    //   localStorage.setItem("user_id", params.id);
+    // }
 
     // Функция для получения заметок
     const fetchNotes = async () => {
       try {
-        const response = await axios.get(`/api/note/group/${userId}`, {
+        const response = await axios.get(`/api/note/group/${groupId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

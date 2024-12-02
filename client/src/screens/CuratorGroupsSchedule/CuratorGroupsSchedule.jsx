@@ -57,7 +57,11 @@ const CuratorGroupsSchedule = () => {
               />
                   ))
               ) : (
-              <p>Группы не найдены</p>
+              <div className="adminPanel__message-container" style={{backgroundColor: "#f0f0ff"}}>
+                <div className="adminPanel__message">
+                  <p>Доступ к этой панели есть только у куратора.</p>
+                </div>
+              </div>
           )}
         </div>
       </div>

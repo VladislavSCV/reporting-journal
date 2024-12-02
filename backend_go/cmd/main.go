@@ -112,7 +112,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		notesRoutes.GET("/:id", errorHandler(api.NoteApi.GetNote))
 		notesRoutes.GET("/group/:id", errorHandler(api.NoteApi.GetGroupNote))
 		notesRoutes.GET("/curator/groups/:id", errorHandler(api.NoteApi.GetCuratorGroupNote))
-		notesRoutes.POST("/", errorHandler(api.NoteApi.CreateNote))
+		notesRoutes.POST("/:id", errorHandler(api.NoteApi.CreateNote))
 		notesRoutes.PUT("/:id", errorHandler(api.NoteApi.UpdateNote))
 		notesRoutes.DELETE("/:id", errorHandler(api.NoteApi.DeleteNote))
 	}

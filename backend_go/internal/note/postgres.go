@@ -12,8 +12,9 @@ type noteHandlerDB struct {
 	dbAndTx models.Execer
 }
 
-func (nh *noteHandlerDB) CreateNote(note models.Note) error {
-	_, err := nh.dbAndTx.Exec("INSERT INTO notes (title, body, group_id, user_id) VALUES ($1, $2, $3, $4)", note.Title, note.Body, note.GroupId, note.UserId)
+func (nh *noteHandlerDB) CreateNote(id int, note models.Note) error {
+	log.Println(id, note)
+	_, err := nh.dbAndTx.Exec("INSERT INTO notes (title, body, group_id, user_id) VALUES ($1, $2, $3, $4)", note.Title, note.Body, note.GroupId, id)
 	if err != nil {
 		return pkg.LogWriteFileReturnError(err)
 	}
@@ -23,14 +24,14 @@ func (nh *noteHandlerDB) CreateNote(note models.Note) error {
 
 func (nh *noteHandlerDB) GetNote(id int) ([]models.Note, error) {
 	var notesList []models.Note
-	rows, err := nh.dbAndTx.Query("SELECT title, body FROM notes WHERE user_id = $1", id)
+	rows, err := nh.dbAndTx.Query("SELECT id, title, body FROM notes WHERE user_id = $1", id)
 	if err != nil {
 		return nil, err
 	}
 
 	for rows.Next() {
 		var note models.Note
-		if err := rows.Scan(&note.Title, &note.Body); err != nil {
+		if err := rows.Scan(&note.Id, &note.Title, &note.Body); err != nil {
 			return nil, err
 		}
 		notesList = append(notesList, note)

@@ -296,8 +296,10 @@ const AdminPanel = () => {
               </div>
             </div>
         ) : (
-            <div className="adminPanel__message">
-              <p>Доступ к этой панели есть только у администратора.</p>
+            <div className="adminPanel__message-container">
+              <div className="adminPanel__message">
+                <p>Доступ к этой панели есть только у администратора.</p>
+              </div>
             </div>
         )}
       </div>

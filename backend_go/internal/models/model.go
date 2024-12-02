@@ -46,7 +46,7 @@ type Note struct {
 	Id      int    `json:"id"`
 	Title   string `json:"title"`
 	Body    string `json:"body"`
-	GroupId int    `json:"group_id"`
+	GroupId *int   `json:"group_id"`
 	UserId  int    `json:"user_id"`
 }
 

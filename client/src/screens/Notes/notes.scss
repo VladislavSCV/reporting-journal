@@ -5,14 +5,6 @@
   overflow-y: visible;
   min-height: 100vh;
   padding-bottom: 20px;
-  // padding-bottom: 10px;
-  // margin-top: 20px;
-  // background-color: #e7e7ff;
-  // border-radius: 33px;
-  // width: 85vw;
-  // height: 95vh;
-  // overflow: hidden;
-  // overflow-y: visible;
 
   &__container {
     margin: 0 auto;
@@ -33,13 +25,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     cursor: pointer;
+
     &:hover {
       .notes__add-img {
         transform: scale(1.2);
       }
     }
+
     &-img {
       display: block;
       margin: 0 auto;
@@ -48,8 +41,64 @@
       transition: 0.5s;
     }
   }
-}
 
-.block {
-  display: none;
+  &__form {
+    width: 90%;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    &-input,
+    &-textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color, #007bff);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+      }
+    }
+
+    &-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    &-button {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+
+      &--save {
+        background-color: var(--primary-color, #007bff);
+        color: white;
+      }
+
+      &--cancel {
+        background-color: var(--danger-color, #dc3545);
+        color: white;
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
 }
