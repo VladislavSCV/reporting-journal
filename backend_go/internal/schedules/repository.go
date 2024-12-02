@@ -15,10 +15,10 @@ type SchedulePostgresRepository interface {
 }
 
 type ScheduleApiRepository interface {
-	CreateSchedule(c *gin.Context) error
-	GetSchedule(c *gin.Context) error
-	GetSchedules(c *gin.Context) error
-	UpdateSchedule(c *gin.Context) error
-	DeleteSchedule(c *gin.Context) error
+	CreateSchedule(c *gin.Context)
+	GetSchedule(c *gin.Context)
+	GetSchedules(c *gin.Context)
+	UpdateSchedule(c *gin.Context)
+	DeleteSchedule(c *gin.Context)
 	//GetScheduleForGroup(c *gin.Context) error
 }

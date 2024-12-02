@@ -16,11 +16,11 @@ type NotePostgresRepository interface {
 }
 
 type NoteApiRepository interface {
-	CreateNote(c *gin.Context) error
-	GetNote(c *gin.Context) error
-	GetGroupNote(c *gin.Context) error
-	GetCuratorGroupNote(c *gin.Context) error
-	GetNotes(c *gin.Context) error
-	UpdateNote(c *gin.Context) error
-	DeleteNote(c *gin.Context) error
+	CreateNote(c *gin.Context)
+	GetNote(c *gin.Context)
+	GetGroupNote(c *gin.Context)
+	GetCuratorGroupNote(c *gin.Context)
+	GetNotes(c *gin.Context)
+	UpdateNote(c *gin.Context)
+	DeleteNote(c *gin.Context)
 }

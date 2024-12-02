@@ -26,8 +26,8 @@ type UserPostgresRepository interface {
 	GetUserByToken(token string) (models.User, error)
 	GetUserByLogin(login string) (models.User, error)
 	GetUserById(id int) (models.User, error)
-	CreateStudent(user *models.User) (int, string, error)
-	CreateTeacher(user *models.User) (int, string, error)
+	CreateStudent(user *models.User) (models.User, string, error)
+	CreateTeacher(user *models.User) (models.User, string, error)
 	UpdateUser(id int, updates map[string]string) error
 	UpdateToken(id int, token string) error
 	DeleteUser(id int) error
@@ -41,15 +41,15 @@ type UserRedisRepository interface {
 }
 
 type UserAPIRepository interface {
-	Login(c *gin.Context) error
-	SignUp(c *gin.Context) error
-	VerifyToken(c *gin.Context) error
-	GetUser(c *gin.Context) error
-	GetUserByLogin(c *gin.Context) (models.User, error)
-	GetUserByToken(c *gin.Context) error
-	GetUsers(c *gin.Context) error
-	GetStudents(c *gin.Context) error
-	GetTeachers(c *gin.Context) error
-	UpdateUser(c *gin.Context) error
-	DeleteUser(c *gin.Context) error
+	Login(c *gin.Context)
+	SignUp(c *gin.Context)
+	VerifyToken(c *gin.Context)
+	GetUser(c *gin.Context)
+	GetUserByLogin(c *gin.Context)
+	GetUserByToken(c *gin.Context)
+	GetUsers(c *gin.Context)
+	GetStudents(c *gin.Context)
+	GetTeachers(c *gin.Context)
+	UpdateUser(c *gin.Context)
+	DeleteUser(c *gin.Context)
 }

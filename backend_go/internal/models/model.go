@@ -88,8 +88,8 @@ type Execer interface {
 }
 
 type Else interface {
-	GetAdminPanelData(c *gin.Context) error
-	GetCuratorGroupsStudentList(c *gin.Context) error
-	StudentsAttendance(c *gin.Context) error
-	UpdateAttendance(c *gin.Context) error
+	GetAdminPanelData(c *gin.Context)
+	GetCuratorGroupsStudentList(c *gin.Context)
+	StudentsAttendance(c *gin.Context)
+	UpdateAttendance(c *gin.Context)
 }

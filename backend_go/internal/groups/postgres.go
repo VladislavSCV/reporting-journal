@@ -18,10 +18,14 @@ func NewGroupRepository(dbAndTx models.Execer) GroupPostgresRepository {
 }
 
 // CreateGroup добавляет новую группу в БД
-func (ghp *groupHandlerDB) CreateGroup(group *models.Group) error {
-	_, err := ghp.dbAndTx.Exec("INSERT INTO groups (name) VALUES ($1)", &group.Name)
-
-	return pkg.LogWriteFileReturnError(err)
+func (ghp *groupHandlerDB) CreateGroup(group *models.Group) (int, error) {
+	// Используем QueryRow для получения значения возвращаемого id
+	err := ghp.dbAndTx.QueryRow("INSERT INTO groups (name) VALUES ($1) RETURNING id", group.Name).Scan(&group.Id)
+	if err != nil {
+		// Логируем ошибку и возвращаем её
+		return 0, pkg.LogWriteFileReturnError(err)
+	}
+	return group.Id, nil
 }
 
 // GetGroupByID получает группу по ID

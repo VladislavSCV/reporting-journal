@@ -892,3 +892,53 @@ ERROR: 2024/12/02 11:19:25 error-handler.go:34: successfully checked if user qwe
 ERROR: 2024/12/02 11:19:25 error-handler.go:34: user qwerty does not exist, so creating new user
 ERROR: 2024/12/02 11:19:25 error-handler.go:34: successfully created user qwerty
 ERROR: 2024/12/02 11:19:42 error-handler.go:34: successfully retrieved user qwerty from PostgreSQL
+ERROR: 2024/12/02 15:05:20 error-handler.go:34: successfully retrieved user qwe from PostgreSQL
+ERROR: 2024/12/02 15:07:56 error-handler.go:34: successfully generated hash with salt for user med32
+ERROR: 2024/12/02 15:07:57 error-handler.go:34: successfully checked if user med32 already exists
+ERROR: 2024/12/02 15:07:57 error-handler.go:34: user med32 does not exist, so creating new user
+ERROR: 2024/12/02 15:07:58 error-handler.go:34: successfully created user med32
+ERROR: 2024/12/02 15:08:30 error-handler.go:34: successfully retrieved user med32 from PostgreSQL
+ERROR: 2024/12/02 15:16:43 error-handler.go:34: successfully retrieved user qwe from PostgreSQL
+ERROR: 2024/12/02 15:18:40 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2024/12/02 15:20:04 error-handler.go:34: successfully retrieved user teacher_1 from PostgreSQL
+ERROR: 2024/12/02 19:24:17 error-handler.go:34: successfully generated hash with salt for user johndoe
+ERROR: 2024/12/02 19:24:19 error-handler.go:34: successfully checked if user johndoe already exists
+ERROR: 2024/12/02 19:24:19 error-handler.go:34: user johndoe does not exist, so creating new user
+ERROR: 2024/12/02 19:24:20 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/12/02 19:24:20 error-handler.go:34: failed to create user
+ERROR: 2024/12/02 19:34:21 error-handler.go:34: successfully generated hash with salt for user johndoe
+ERROR: 2024/12/02 19:34:21 error-handler.go:34: successfully checked if user johndoe already exists
+ERROR: 2024/12/02 19:34:21 error-handler.go:34: user johndoe does not exist, so creating new user
+ERROR: 2024/12/02 19:34:22 error-handler.go:34: pq: insert or update on table "users" violates foreign key constraint "users_group_id_fkey"
+ERROR: 2024/12/02 19:34:22 error-handler.go:34: failed to create user
+ERROR: 2024/12/02 19:34:37 error-handler.go:34: successfully generated hash with salt for user johndoe
+ERROR: 2024/12/02 19:34:37 error-handler.go:34: successfully checked if user johndoe already exists
+ERROR: 2024/12/02 19:34:37 error-handler.go:34: user johndoe does not exist, so creating new user
+ERROR: 2024/12/02 19:34:38 error-handler.go:34: sql: expected 9 destination arguments in Scan, not 7
+ERROR: 2024/12/02 19:34:38 error-handler.go:34: failed to create user
+ERROR: 2024/12/02 19:36:38 error-handler.go:34: successfully generated hash with salt for user johndoe
+ERROR: 2024/12/02 19:36:38 error-handler.go:34: successfully checked if user johndoe already exists
+ERROR: 2024/12/02 19:36:38 error-handler.go:34: failed to create user
+ERROR: 2024/12/02 19:36:55 error-handler.go:34: successfully generated hash with salt for user loginjohndoe
+ERROR: 2024/12/02 19:36:56 error-handler.go:34: successfully checked if user loginjohndoe already exists
+ERROR: 2024/12/02 19:36:56 error-handler.go:34: user loginjohndoe does not exist, so creating new user
+ERROR: 2024/12/02 19:36:56 error-handler.go:34: successfully created user loginjohndoe
+ERROR: 2024/12/02 19:40:13 error-handler.go:34: successfully generated hash with salt for user loewqginjohndoe
+ERROR: 2024/12/02 19:40:13 error-handler.go:34: successfully checked if user loewqginjohndoe already exists
+ERROR: 2024/12/02 19:40:13 error-handler.go:34: user loewqginjohndoe does not exist, so creating new user
+ERROR: 2024/12/02 19:40:14 error-handler.go:34: successfully created user loewqginjohndoe
+ERROR: 2024/12/02 19:50:08 error-handler.go:34: successfully retrieved user johndoe from PostgreSQL
+ERROR: 2024/12/02 19:51:47 error-handler.go:34: successfully retrieved user johndoe from PostgreSQL
+ERROR: 2024/12/02 19:51:49 error-handler.go:34: successfully retrieved user johndoe from PostgreSQL
+ERROR: 2024/12/02 19:51:51 error-handler.go:34: successfully retrieved user johndoe from PostgreSQL
+ERROR: 2024/12/02 19:52:40 error-handler.go:34: user johewdoe not found
+ERROR: 2024/12/02 19:52:40 error-handler.go:34: failed to get user
+ERROR: 2024/12/02 19:56:19 error-handler.go:34: user johewdoe not found
+ERROR: 2024/12/02 19:56:19 error-handler.go:34: failed to get user
+ERROR: 2024/12/02 19:57:26 error-handler.go:34: user johewdoe not found
+ERROR: 2024/12/02 19:57:31 error-handler.go:34: user johrwqewdoe not found
+ERROR: 2024/12/02 19:58:15 error-handler.go:34: user johrwqewdoe not found
+ERROR: 2024/12/02 19:58:20 error-handler.go:34: user johrwqewdoe not found
+ERROR: 2024/12/02 19:58:51 error-handler.go:34: user johrwqwqewqeewdoe not found
+ERROR: 2024/12/02 19:59:39 error-handler.go:34: user johrwqwqewqeewdoe not found
+ERROR: 2024/12/02 20:30:09 error-handler.go:34: pq: duplicate key value violates unique constraint "groups_name_key"

@@ -58,7 +58,11 @@ const CuratorGroups = () => {
       <div className="curatorGroups">
         <div className="curatorGroups__container">
           {groups.length === 0 ? (
-              <p>Куратор не курирует группы</p>
+              <div className="adminPanel__message-container" style={{backgroundColor: "#f0f0ff"}}>
+                <div className="adminPanel__message">
+                  <p>Доступ к этой панели есть только у куратора.</p>
+                </div>
+              </div>
           ) : (
               <div className="groups__list">
                 {groups.map((obj) => (

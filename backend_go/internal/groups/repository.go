@@ -6,7 +6,7 @@ import (
 )
 
 type GroupPostgresRepository interface {
-	CreateGroup(group *models.Group) error
+	CreateGroup(group *models.Group) (int, error)
 	GetGroupByID(id int) (*models.Group, error)
 	GetGroups() ([]models.Group, error)
 	UpdateGroup(group *models.Group) error
@@ -27,9 +27,9 @@ type GroupRedisRepository interface {
 }
 
 type GroupApiRepository interface {
-	CreateGroup(c *gin.Context) error
-	GetGroups(c *gin.Context) error
-	GetGroupByID(c *gin.Context) error
-	UpdateGroup(c *gin.Context) error
-	DeleteGroup(c *gin.Context) error
+	CreateGroup(c *gin.Context)
+	GetGroups(c *gin.Context)
+	GetGroupByID(c *gin.Context)
+	UpdateGroup(c *gin.Context)
+	DeleteGroup(c *gin.Context)
 }

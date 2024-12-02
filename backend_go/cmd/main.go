@@ -68,93 +68,92 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 		c.Next()
 	})
 
+	// Маршруты для авторизации
 	authRoutes := r.Group("/api/auth")
 	{
-		authRoutes.GET("/", errorHandler(api.UserApi.GetUserByToken))
-		authRoutes.POST("/registration", errorHandler(api.UserApi.SignUp))
-		authRoutes.POST("/login", errorHandler(api.UserApi.Login))
-		authRoutes.POST("/verify", errorHandler(api.UserApi.VerifyToken))
+		authRoutes.GET("/", api.UserApi.GetUserByToken)
+		authRoutes.POST("/registration", api.UserApi.SignUp)
+		authRoutes.POST("/login", api.UserApi.Login)
+		authRoutes.POST("/verify", api.UserApi.VerifyToken)
 	}
 
+	// Маршруты для пользователей
 	userRoutes := r.Group("/api/user")
 	{
-		userRoutes.GET("/", errorHandler(api.UserApi.GetUsers))
-		userRoutes.GET("/students", errorHandler(api.UserApi.GetStudents))
-		userRoutes.GET("/teachers", errorHandler(api.UserApi.GetTeachers))
-		userRoutes.GET("/:id", errorHandler(api.UserApi.GetUser))
-		userRoutes.PUT("/:id", errorHandler(api.UserApi.UpdateUser))
-		userRoutes.DELETE("/:id", errorHandler(api.UserApi.DeleteUser))
+		userRoutes.GET("/", api.UserApi.GetUsers)            // возвращает список всех пользователей
+		userRoutes.GET("/students", api.UserApi.GetStudents) // возвращает список всех студентов
+		userRoutes.GET("/teachers", api.UserApi.GetTeachers) // возвращает список всех преподавателей
+		userRoutes.GET("/:id", api.UserApi.GetUser)          // возвращает данные пользователя по ID
+		userRoutes.PUT("/:id", api.UserApi.UpdateUser)       // обновляет данные пользователя
+		userRoutes.DELETE("/:id", api.UserApi.DeleteUser)    // удаляет пользователя
 	}
 
+	// Маршруты для ролей
 	roleRoutes := r.Group("/api/role")
 	{
-		roleRoutes.GET("/", errorHandler(api.RoleApi.GetRoles))
-		roleRoutes.GET("/:id", errorHandler(api.RoleApi.GetRole))
-		roleRoutes.POST("/", errorHandler(api.RoleApi.CreateRole))
-		roleRoutes.DELETE("/:id", errorHandler(api.RoleApi.DeleteRole))
+		roleRoutes.GET("/", errorHandler(api.RoleApi.GetRoles))         // возвращает список всех ролей
+		roleRoutes.GET("/:id", errorHandler(api.RoleApi.GetRole))       // возвращает данные роли по ID
+		roleRoutes.POST("/", errorHandler(api.RoleApi.CreateRole))      // создает новую роль
+		roleRoutes.DELETE("/:id", errorHandler(api.RoleApi.DeleteRole)) // удаляет роль
 	}
 
+	// Маршруты для групп
 	groupRoutes := r.Group("/api/group")
 	{
-		groupRoutes.GET("/", errorHandler(api.GroupApi.GetGroups))
-		groupRoutes.GET("/schedule/:id", errorHandler(api.ScheduleApi.GetSchedule))
-		groupRoutes.GET("/:id", errorHandler(api.GroupApi.GetGroupByID))
-		// TODO настроить возврат id группы
-		groupRoutes.POST("/", errorHandler(api.GroupApi.CreateGroup))
-		// TODO настроить возврат id группы
-		groupRoutes.PUT("/:id", errorHandler(api.GroupApi.UpdateGroup))
-		groupRoutes.DELETE("/:id", errorHandler(api.GroupApi.DeleteGroup))
+		groupRoutes.GET("/", api.GroupApi.GetGroups)                  // возвращает список всех групп
+		groupRoutes.GET("/schedule/:id", api.ScheduleApi.GetSchedule) // возвращает расписание для группы
+		groupRoutes.GET("/:id", api.GroupApi.GetGroupByID)            // возвращает данные группы по ID
+		groupRoutes.POST("/", api.GroupApi.CreateGroup)               // создает новую группу
+		groupRoutes.PUT("/:id", api.GroupApi.UpdateGroup)             // обновляет данные группы
+		groupRoutes.DELETE("/:id", api.GroupApi.DeleteGroup)          // удаляет группу
 	}
 
+	// Маршруты для заметок
 	notesRoutes := r.Group("/api/note")
 	{
-		notesRoutes.GET("/", errorHandler(api.NoteApi.GetNotes))
-		notesRoutes.GET("/:id", errorHandler(api.NoteApi.GetNote))
-		notesRoutes.GET("/group/:id", errorHandler(api.NoteApi.GetGroupNote))
-		notesRoutes.GET("/curator/groups/:id", errorHandler(api.NoteApi.GetCuratorGroupNote))
-		notesRoutes.POST("/:id", errorHandler(api.NoteApi.CreateNote))
-		notesRoutes.PUT("/:id", errorHandler(api.NoteApi.UpdateNote))
-		notesRoutes.DELETE("/:id", errorHandler(api.NoteApi.DeleteNote))
+		notesRoutes.GET("/", api.NoteApi.GetNotes)                              // возвращает список всех заметок
+		notesRoutes.GET("/:id", api.NoteApi.GetNote)                            // возвращает данные заметки по ID
+		notesRoutes.GET("/group/:id", api.NoteApi.GetGroupNote)                 // возвращает заметки для группы
+		notesRoutes.GET("/curator/groups/:id", api.NoteApi.GetCuratorGroupNote) // возвращает заметки для группы для учителя
+		notesRoutes.POST("/:id", api.NoteApi.CreateNote)                        // создает новую заметку
+		notesRoutes.PUT("/:id", api.NoteApi.UpdateNote)                         // обновляет данные заметки
+		notesRoutes.DELETE("/:id", api.NoteApi.DeleteNote)                      // удаляет заметку
 	}
 
-	//{
-	//"id": 1,
-	//"groupId": 101,
-	//"dayOfWeek": "Monday",
-	//"subject": "Математика",
-	//"teacher": "Иванов И.И."
-	//}
-
+	// Маршруты для расписания
 	scheduleRoutes := r.Group("/api/schedule")
 	{
-		scheduleRoutes.GET("/", errorHandler(api.ScheduleApi.GetSchedules))
-		scheduleRoutes.GET("/:id", errorHandler(api.ScheduleApi.GetSchedule))
-		scheduleRoutes.POST("/", errorHandler(api.ScheduleApi.CreateSchedule))
-		scheduleRoutes.PUT("/:id", errorHandler(api.ScheduleApi.UpdateSchedule))
-		scheduleRoutes.DELETE("/:id", errorHandler(api.ScheduleApi.DeleteSchedule))
+		scheduleRoutes.GET("/", api.ScheduleApi.GetSchedules)         // возвращает список всех расписаний
+		scheduleRoutes.GET("/:id", api.ScheduleApi.GetSchedule)       // возвращает данные расписания по ID
+		scheduleRoutes.POST("/", api.ScheduleApi.CreateSchedule)      // создает новое расписание
+		scheduleRoutes.PUT("/:id", api.ScheduleApi.UpdateSchedule)    // обновляет данные расписания
+		scheduleRoutes.DELETE("/:id", api.ScheduleApi.DeleteSchedule) // удаляет расписание
 	}
 
+	// Маршруты для предметов
 	subjectRoutes := r.Group("/api/subject")
 	{
-		subjectRoutes.GET("/", errorHandler(api.SubjectApi.GetSubjects))
-		subjectRoutes.GET("/:id", errorHandler(api.SubjectApi.GetSubjectById))
-		subjectRoutes.POST("/", errorHandler(api.SubjectApi.CreateSubject))
-		subjectRoutes.PUT("/:id", errorHandler(api.SubjectApi.UpdateSubject))
-		subjectRoutes.DELETE("/:id", errorHandler(api.SubjectApi.DeleteSubject))
+		subjectRoutes.GET("/", api.SubjectApi.GetSubjects)         // возвращает список всех предметов
+		subjectRoutes.GET("/:id", api.SubjectApi.GetSubjectById)   // возвращает данные предмета по ID
+		subjectRoutes.POST("/", api.SubjectApi.CreateSubject)      // создает новый предмет
+		subjectRoutes.PUT("/:id", api.SubjectApi.UpdateSubject)    // обновляет данные предмета
+		subjectRoutes.DELETE("/:id", api.SubjectApi.DeleteSubject) // удаляет предмет
 	}
 
+	// Маршруты для учителей
 	teacherRoutes := r.Group("/api/teacher")
-	teacherRoutes.Use(middleware.AuthMiddleware(TeacherRoleID))
+	teacherRoutes.Use(middleware.AuthMiddleware(TeacherRoleID)) // middleware для аутентификации учителей
 	{
-		teacherRoutes.GET("/groups", errorHandler(api.ElseApi.GetCuratorGroupsStudentList))
-		teacherRoutes.GET("/studentAttendance/:id", errorHandler(api.ElseApi.StudentsAttendance))
-		teacherRoutes.POST("/studentAttendance", errorHandler(api.ElseApi.UpdateAttendance))
+		teacherRoutes.GET("/groups", api.ElseApi.GetCuratorGroupsStudentList)       // возвращает список групп, где учителю нужно поставить оценки
+		teacherRoutes.GET("/studentAttendance/:id", api.ElseApi.StudentsAttendance) // возвращает список студентов с оценками
+		teacherRoutes.POST("/studentAttendance", api.ElseApi.UpdateAttendance)      // обновляет оценки студентов
 	}
 
+	// Маршруты для администраторов
 	adminRoutes := r.Group("/api/admin")
-	adminRoutes.Use(middleware.AuthMiddleware(AdminRoleID))
+	adminRoutes.Use(middleware.AuthMiddleware(AdminRoleID)) // middleware для аутентификации администраторов
 	{
-		adminRoutes.GET("/AdminPanel", errorHandler(api.ElseApi.GetAdminPanelData))
+		adminRoutes.GET("/AdminPanel", api.ElseApi.GetAdminPanelData) // возвращает данные для администратора
 	}
 
 	r.NoRoute(func(c *gin.Context) {

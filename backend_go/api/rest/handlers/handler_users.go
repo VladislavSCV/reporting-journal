@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -26,12 +25,12 @@ type userHandler struct {
 //	Accepts:	JSON {login: string, password: string}
 //	Returns:	JSON {user: models.User}
 //	Returns error:	invalid input, failed to get user, invalid credentials
-func (sh *userHandler) Login(c *gin.Context) error {
+func (sh *userHandler) Login(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		sh.logger.Error("failed to bind user data", zap.Error(err))
 		c.Status(http.StatusBadRequest)
-		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
+		return
 	}
 
 	// Получаем пользователя из базы данных
@@ -41,8 +40,8 @@ func (sh *userHandler) Login(c *gin.Context) error {
 			zap.String("login", user.Login),
 			zap.Error(err),
 		)
-		c.Status(http.StatusNotFound)
-		return pkg.LogWriteFileReturnError(errors.New("failed to get user"))
+		c.Status(http.StatusUnauthorized)
+		return
 	}
 
 	// TODO раскомментировать код ниже
@@ -56,7 +55,7 @@ func (sh *userHandler) Login(c *gin.Context) error {
 			zap.Error(err),
 		)
 		c.Status(http.StatusInternalServerError)
-		return pkg.LogWriteFileReturnError(errors.New("error verifying password"))
+		return
 	}
 
 	if !isValid {
@@ -64,7 +63,7 @@ func (sh *userHandler) Login(c *gin.Context) error {
 			zap.String("login", user.Login),
 		)
 		c.Status(http.StatusUnauthorized)
-		return pkg.LogWriteFileReturnError(errors.New("invalid credentials"))
+		return
 	}
 
 	//// Генерация токена
@@ -75,15 +74,15 @@ func (sh *userHandler) Login(c *gin.Context) error {
 			zap.Error(err),
 		)
 		c.Status(http.StatusInternalServerError)
-		return pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+		return
 	}
 
 	//sh.servicePostgresql.UpdateToken(userDB.ID, token)
 
-	log.Println(userDB)
+	//log.Println(userDB)
 	// Успешная аутентификация
-	c.JSON(http.StatusOK, gin.H{"user": userDB, "user_id": userDB.ID, "group_id": userDB.GroupID, "token": token})
-	return nil
+	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
+	return
 }
 
 //func (sh *userHandler) GetUserRole(token string) (string, error) {
@@ -96,113 +95,117 @@ func (sh *userHandler) Login(c *gin.Context) error {
 //}
 
 // SignUp (Регистрация) создает нового студента
-func (sh *userHandler) SignUp(c *gin.Context) error {
+func (sh *userHandler) SignUp(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		sh.logger.Error("invalid input",
 			zap.Error(err),
 		)
-		fmt.Println(user)
 		c.Status(http.StatusBadRequest)
-		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
+		return
 	}
 
-	fmt.Println(user)
-
 	if user.RoleID == 1 {
-		id, token, err := sh.servicePostgresql.CreateStudent(&user)
-		if err != nil {
-			sh.logger.Error("failed to create user",
-				zap.Int("id", user.ID),
-				zap.String("login", user.Login),
-				zap.Error(err),
-			)
-			c.Status(http.StatusInternalServerError)
-			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
+		responseUser, token, err := sh.servicePostgresql.CreateStudent(&user)
+		if errors.Is(err, errors.New("пользователь с таким логином уже существует")) {
+			c.Status(http.StatusConflict)
+			return
 		}
-		log.Println(id, token)
-		c.JSON(http.StatusCreated, gin.H{"user": user, "user_id": id, "token": token})
-		return nil
-	} else {
-		id, token, err := sh.servicePostgresql.CreateTeacher(&user)
 		if err != nil {
 			sh.logger.Error("failed to create user",
-				zap.Int("id", user.ID),
-				zap.String("login", user.Login),
+				zap.Int("id", responseUser.ID),
+				zap.String("login", responseUser.Login),
 				zap.Error(err),
 			)
 			c.Status(http.StatusInternalServerError)
-			return pkg.LogWriteFileReturnError(errors.New("failed to create user"))
+			return
+		}
+		c.JSON(http.StatusCreated, gin.H{"user": responseUser, "token": token})
+		return
+	} else {
+		responseUser, token, err := sh.servicePostgresql.CreateTeacher(&user)
+		if errors.Is(err, errors.New("пользователь с таким логином уже существует")) {
+			c.Status(http.StatusConflict)
+			return
+		}
+		if err != nil {
+			sh.logger.Error("failed to create user",
+				zap.Int("id", responseUser.ID),
+				zap.String("login", responseUser.Login),
+				zap.Error(err),
+			)
+			c.Status(http.StatusInternalServerError)
+			return
 		}
 
 		log.Println()
 
-		c.JSON(http.StatusCreated, gin.H{"user": user, "user_id": id, "token": token})
-		return nil
+		c.JSON(http.StatusCreated, gin.H{"user": responseUser, "token": token})
+		return
 	}
 }
 
 // GetUsers возвращает список всех студентов
 //
 //	@return error - ошибка, если она возникла
-func (sh *userHandler) GetUsers(c *gin.Context) error {
+func (sh *userHandler) GetUsers(c *gin.Context) {
 	usersDB, err := sh.servicePostgresql.GetUsers()
 	if err != nil {
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
-		return err
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"users": usersDB})
-	return err
+	return
 }
 
 // GetStudent получает данные студента по ID
-func (sh *userHandler) GetUser(c *gin.Context) error {
+func (sh *userHandler) GetUser(c *gin.Context) {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(errors.New("invalid user ID format"))
+		return
 	}
 
 	user, err := sh.servicePostgresql.GetUserById(id)
 	if err != nil {
 		c.Status(http.StatusNotFound)
-		return pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": user})
-	return nil
+	return
 }
 
-func (sh *userHandler) GetStudents(c *gin.Context) error {
+func (sh *userHandler) GetStudents(c *gin.Context) {
 	students, err := sh.servicePostgresql.GetStudents()
 	if err != nil {
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
-		return err
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"students": students})
-	return err
+	return
 }
 
-func (sh *userHandler) GetTeachers(c *gin.Context) error {
+func (sh *userHandler) GetTeachers(c *gin.Context) {
 	teachers, err := sh.servicePostgresql.GetTeachers()
 	if err != nil {
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve users from the database"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
-		return err
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"teachers": teachers})
-	return err
+	return
 }
 
-func (sh *userHandler) GetUserByToken(c *gin.Context) error {
+func (sh *userHandler) GetUserByToken(c *gin.Context) {
 	// Извлечение токена из заголовка Authorization
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		//sh.logger.Error("missing Authorization header")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
-		return errors.New("missing Authorization header")
+		return
 	}
 
 	// Проверка формата заголовка, например: "Bearer <token>"
@@ -210,13 +213,13 @@ func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
 		//sh.logger.Error("invalid Authorization header format")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
-		return errors.New("invalid Authorization header format")
+		return
 	}
 	token := parts[1]
 
 	id, _, err := pkg.ParseJWT(token)
 	if err != nil {
-		return err
+		return
 	}
 
 	userFromDB, err := sh.servicePostgresql.GetUserById(id)
@@ -227,7 +230,7 @@ func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 		)
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
-		return err
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": userFromDB})
@@ -235,7 +238,7 @@ func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 		zap.String("token", token),
 	)
 
-	return nil
+	return
 }
 
 // GetUserByLogin возвращает данные студента по логину
@@ -243,53 +246,54 @@ func (sh *userHandler) GetUserByToken(c *gin.Context) error {
 //	Accepts:	JSON {login: string}
 //	Returns:	JSON {user: models.User}
 //	Returns error:	invalid input, failed to get user
-func (sh *userHandler) GetUserByLogin(c *gin.Context) (models.User, error) {
+func (sh *userHandler) GetUserByLogin(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		sh.logger.Error("failed to bind student data", zap.Error(err))
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return models.User{}, err
+		return
 	}
 
 	userFromDB, err := sh.servicePostgresql.GetUserByLogin(user.Login)
 	if err != nil {
 		pkg.LogWriteFileReturnError(errors.New("failed to retrieve user from PostgreSQL"))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find user"})
-		return models.User{}, err
+		return
 	}
 
 	err = sh.serviceRedis.SaveInCache(&user)
 	if err != nil {
-		return models.User{}, err
+		return
 	}
-	return userFromDB, nil
+	c.JSON(http.StatusOK, gin.H{"user": userFromDB})
+	return
 }
 
 // UpdateStudent обновляет данные студента
-func (sh *userHandler) UpdateUser(c *gin.Context) error {
+func (sh *userHandler) UpdateUser(c *gin.Context) {
 	strID := c.Param("id")
 	id, err := strconv.Atoi(strID)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(errors.New("invalid id"))
+		return
 	}
 	var updates map[string]string
 
 	if err := c.ShouldBindJSON(&updates); err != nil {
-		return pkg.LogWriteFileReturnError(errors.New("invalid input"))
+		return
 	}
 
 	if err := sh.servicePostgresql.UpdateUser(id, updates); err != nil {
-		return pkg.LogWriteFileReturnError(errors.New("failed to update user"))
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": "updated"})
-	return nil
+	return
 }
 
 // DeleteUser удаляет студента по ID
-func (sh *userHandler) DeleteUser(c *gin.Context) error {
+func (sh *userHandler) DeleteUser(c *gin.Context) {
 	if sh.logger == nil {
-		return errors.New("logger is nil")
+		return
 	}
 
 	strID := c.Param("id")
@@ -297,33 +301,33 @@ func (sh *userHandler) DeleteUser(c *gin.Context) error {
 
 	if err != nil {
 		sh.logger.Error("invalid user ID format", zap.Error(err))
-		return pkg.LogWriteFileReturnError(errors.New("invalid id"))
+		return
 	}
 
 	if sh.servicePostgresql == nil {
 		sh.logger.Error("nil servicePostgresql")
-		return pkg.LogWriteFileReturnError(errors.New("nil servicePostgresql"))
+		return
 	}
 
 	sh.logger.Info("deleting user", zap.Int("user_id", id))
 
 	if err := sh.servicePostgresql.DeleteUser(id); err != nil {
 		sh.logger.Error("failed to delete user", zap.Int("user_id", id), zap.Error(err))
-		return pkg.LogWriteFileReturnError(errors.New("failed to delete user"))
+		return
 	}
 
 	sh.logger.Info("successfully deleted user", zap.Int("user_id", id))
 	c.JSON(http.StatusOK, gin.H{"status": "deleted"})
-	return nil
+	return
 }
 
-func (sh *userHandler) VerifyToken(c *gin.Context) error {
+func (sh *userHandler) VerifyToken(c *gin.Context) {
 	// Извлечение токена из заголовка Authorization
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		sh.logger.Error("missing Authorization header")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
-		return errors.New("missing Authorization header")
+		return
 	}
 
 	// Проверка формата заголовка, например: "Bearer <token>"
@@ -331,7 +335,7 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
 		sh.logger.Error("invalid Authorization header format")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
-		return errors.New("invalid Authorization header format")
+		return
 	}
 	token := parts[1]
 
@@ -342,13 +346,13 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 			zap.Error(err),
 		)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		return err
+		return
 	}
 
 	if userRoleId == 0 {
 		sh.logger.Error("empty user ID from JWT")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		return errors.New("empty user ID from JWT")
+		return
 	}
 
 	// Лог успешного выполнения
@@ -361,7 +365,7 @@ func (sh *userHandler) VerifyToken(c *gin.Context) error {
 		"id":      userID,
 		"role_id": userRoleId,
 	})
-	return nil
+	return
 }
 
 // NewStudentHandler создает новый обработчик студентов

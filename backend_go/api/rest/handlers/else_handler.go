@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"errors"
 	"github.com/VladislavSCV/internal/attendance"
 	"github.com/VladislavSCV/internal/groups"
 	"github.com/VladislavSCV/internal/models"
@@ -30,7 +29,7 @@ type AdminPanelData struct {
 	Groups []models.Group `json:"groups"`
 }
 
-func (h *elseHandler) GetAdminPanelData(c *gin.Context) error {
+func (h *elseHandler) GetAdminPanelData(c *gin.Context) {
 	var wg sync.WaitGroup
 	var users []models.User
 	var roles []models.Role
@@ -73,7 +72,7 @@ func (h *elseHandler) GetAdminPanelData(c *gin.Context) error {
 	// Если произошла ошибка, возвращаем её клиенту
 	if len(errors) > 0 {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get data"})
-		return nil
+		return
 	}
 
 	// Формируем данные для админ панели
@@ -91,21 +90,21 @@ func (h *elseHandler) GetAdminPanelData(c *gin.Context) error {
 	if err != nil {
 		// handle the error
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize data"})
-		return err
+		return
 	}
 
 	// Отправляем сжатые данные
 	c.JSON(http.StatusOK, data)
-	return nil
+	return
 }
 
-func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
+func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) {
 	// Извлечение токена из заголовка Authorization
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		//sh.logger.Error("missing Authorization header")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing Authorization header"})
-		return errors.New("missing Authorization header")
+		return
 	}
 
 	// Проверка формата заголовка, например: "Bearer <token>"
@@ -113,19 +112,19 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
 	if len(parts) != 2 || strings.ToLower(parts[0]) != "bearer" {
 		//sh.logger.Error("invalid Authorization header format")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Authorization header format"})
-		return errors.New("invalid Authorization header format")
+		return
 	}
 	token := parts[1]
 
 	id, roleId, err := pkg.ParseJWT(token)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		return err
+		return
 	}
 
 	if roleId != 2 && roleId != 3 {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied"})
-		return errors.New("access denied")
+		return
 	}
 
 	//groups, err := h.groupPostgres.GetGroups()
@@ -136,7 +135,7 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
 
 	groups, err := h.groupPostgres.GetCuratorGroups(id)
 	if err != nil {
-		return err
+		return
 	}
 
 	// Сериализуем данные в JSON
@@ -144,25 +143,25 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) error {
 	if err != nil {
 		// handle the error
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize data"})
-		return err
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"groups": data})
 
-	return nil
+	return
 }
-func (h *elseHandler) StudentsAttendance(c *gin.Context) error {
+func (h *elseHandler) StudentsAttendance(c *gin.Context) {
 	strId := c.Param("id")
 	id, err := strconv.Atoi(strId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid group ID"})
-		return err
+		return
 	}
 
 	users, err := h.usersPostgres.GetUsersByGroupID(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get users"})
-		return err
+		return
 	}
 
 	// Сериализуем данные в JSON
@@ -170,11 +169,11 @@ func (h *elseHandler) StudentsAttendance(c *gin.Context) error {
 	if err != nil {
 		// handle the error
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize data"})
-		return err
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"users": data})
-	return nil
+	return
 }
 
 type UpdateAttendanceRequest struct {
@@ -182,12 +181,12 @@ type UpdateAttendanceRequest struct {
 	Status    string `json:"status"`
 }
 
-func (h *elseHandler) UpdateAttendance(c *gin.Context) error {
+func (h *elseHandler) UpdateAttendance(c *gin.Context) {
 	var updateAttendanceRequest UpdateAttendanceRequest
 	err := c.ShouldBindJSON(&updateAttendanceRequest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
-		return err
+		return
 	}
 
 	err = h.attendancePostgres.UpdateAttendance(updateAttendanceRequest.StudentId, updateAttendanceRequest.Status)
@@ -195,12 +194,12 @@ func (h *elseHandler) UpdateAttendance(c *gin.Context) error {
 		err = h.attendancePostgres.AddAttendance(updateAttendanceRequest.StudentId, updateAttendanceRequest.Status)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update attendance"})
-			return err
+			return
 		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Attendance updated successfully"})
-	return nil
+	return
 
 }
 

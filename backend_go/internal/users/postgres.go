@@ -274,12 +274,13 @@ func (uhp *userHandlerDB) GetUserById(id int) (models.User, error) {
 //	@param user *models.User - пользователь, который будет создан
 //
 //	@return error - ошибка, если она возникла
-func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) {
+func (uhp *userHandlerDB) CreateStudent(user *models.User) (models.User, string, error) {
 	log.Println("STUDENT")
+	var responseUser models.User
 	// Генерация соли и хеш пароля
 	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -289,7 +290,7 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) 
 	var count int
 	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -297,7 +298,7 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) 
 
 	if count > 0 {
 		// Если такой логин уже существует, возвращаем ошибку
-		return 0, "", fmt.Errorf("пользователь с таким логином уже существует")
+		return models.User{}, "", errors.New("пользователь с таким логином уже существует")
 	}
 
 	// Logging
@@ -306,11 +307,11 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) 
 	// Сохранение пользователя с солью и хешем пароля
 	var insertId int
 	err = uhp.dbAndTx.QueryRow(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt) 
-                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, first_name, middle_name, last_name, role_id, group_id, login`,
 		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.GroupID, user.Login, hashResult.Hash, hashResult.Salt).
-		Scan(&insertId)
+		Scan(&responseUser.ID, &responseUser.FirstName, &responseUser.MiddleName, &responseUser.LastName, &responseUser.RoleID, &responseUser.GroupID, &responseUser.Login)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Генерация токена
@@ -320,21 +321,22 @@ func (uhp *userHandlerDB) CreateStudent(user *models.User) (int, string, error) 
 			zap.Int("id", insertId),
 			zap.Error(err),
 		)
-		return 0, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+		return models.User{}, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
-	return insertId, token, nil
+	return responseUser, token, nil
 }
 
-func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) {
+func (uhp *userHandlerDB) CreateTeacher(user *models.User) (models.User, string, error) {
 	log.Println("TEACHER")
+	var responseUser models.User
 	// Генерация соли и хеш пароля
 	hashResult, err := pkg.CreateHashWithSalt(user.Hash)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -344,7 +346,7 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) 
 	var count int
 	err = uhp.dbAndTx.QueryRow(`SELECT COUNT(*) FROM users WHERE login = $1`, user.Login).Scan(&count)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Logging
@@ -352,7 +354,7 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) 
 
 	if count > 0 {
 		// Если такой логин уже существует, возвращаем ошибку
-		return 0, "", fmt.Errorf("пользователь с таким логином уже существует")
+		return models.User{}, "", errors.New("пользователь с таким логином уже существует")
 	}
 
 	// Logging
@@ -361,10 +363,11 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) 
 	// Сохранение пользователя с солью и хешем пароля
 	var insertId int
 	err = uhp.dbAndTx.QueryRow(`INSERT INTO users (first_name, middle_name, last_name, role_id, group_id, login, password, salt) 
-                               VALUES ($1, $2, $3, $4, NULL, $5, $6, $7) RETURNING id`,
-		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt).Scan(&insertId)
+                               VALUES ($1, $2, $3, $4, NULL, $5, $6, $7) RETURNING id, first_name, middle_name, last_name, role_id, group_id, login`,
+		user.FirstName, user.MiddleName, user.LastName, user.RoleID, user.Login, hashResult.Hash, hashResult.Salt).
+		Scan(&responseUser.ID, &responseUser.FirstName, &responseUser.MiddleName, &responseUser.LastName, &responseUser.RoleID, &responseUser.GroupID, &responseUser.Login)
 	if err != nil {
-		return 0, "", pkg.LogWriteFileReturnError(err)
+		return models.User{}, "", pkg.LogWriteFileReturnError(err)
 	}
 
 	// Генерация токена
@@ -374,13 +377,13 @@ func (uhp *userHandlerDB) CreateTeacher(user *models.User) (int, string, error) 
 			zap.Int("id", insertId),
 			zap.Error(err),
 		)
-		return 0, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
+		return models.User{}, "", pkg.LogWriteFileReturnError(errors.New("failed to generate token"))
 	}
 
 	// Logging
 	pkg.LogWriteFileReturnError(fmt.Errorf("successfully created user %s", user.Login))
 
-	return insertId, token, nil
+	return responseUser, token, nil
 }
 
 func (uhp *userHandlerDB) GetCuratorGroups(id int) (models.User, error) {

@@ -14,9 +14,9 @@ type SubjectPostgresRepository interface {
 }
 
 type SubjectApiRepository interface {
-	CreateSubject(c *gin.Context) error
-	GetSubjects(c *gin.Context) error
-	GetSubjectById(c *gin.Context) error
-	UpdateSubject(c *gin.Context) error
-	DeleteSubject(c *gin.Context) error
+	CreateSubject(c *gin.Context)
+	GetSubjects(c *gin.Context)
+	GetSubjectById(c *gin.Context)
+	UpdateSubject(c *gin.Context)
+	DeleteSubject(c *gin.Context)
 }
