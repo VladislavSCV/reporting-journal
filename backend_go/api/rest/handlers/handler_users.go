@@ -46,27 +46,27 @@ func (sh *userHandler) Login(c *gin.Context) {
 
 	// TODO раскомментировать код ниже
 	// Проверка пароля
-	isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
-	if err != nil {
-		sh.logger.Error("error verifying password",
-			zap.String("login", user.Login),
-			zap.String("password", user.Salt),
-			zap.String("hash", userDB.Hash),
-			zap.Error(err),
-		)
-		c.Status(http.StatusInternalServerError)
-		return
-	}
+	//isValid, err := pkg.VerifyPassword(user.Hash, userDB.Salt, userDB.Hash)
+	//if err != nil {
+	//	sh.logger.Error("error verifying password",
+	//		zap.String("login", user.Login),
+	//		zap.String("password", user.Salt),
+	//		zap.String("hash", userDB.Hash),
+	//		zap.Error(err),
+	//	)
+	//	c.Status(http.StatusInternalServerError)
+	//	return
+	//}
+	//
+	//if !isValid {
+	//	sh.logger.Info("invalid credentials",
+	//		zap.String("login", user.Login),
+	//	)
+	//	c.Status(http.StatusUnauthorized)
+	//	return
+	//}
 
-	if !isValid {
-		sh.logger.Info("invalid credentials",
-			zap.String("login", user.Login),
-		)
-		c.Status(http.StatusUnauthorized)
-		return
-	}
-
-	//// Генерация токена
+	// Генерация токена
 	token, err := pkg.GenerateJWT(userDB.ID, userDB.RoleID)
 	if err != nil {
 		sh.logger.Error("failed to generate token",

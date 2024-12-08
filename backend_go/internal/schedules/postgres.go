@@ -59,9 +59,10 @@ func (s *scheduleHandlerDB) GetScheduleForGroup(id int) ([]models.Schedule, erro
 	return schedules, nil
 }
 
-func (s *scheduleHandlerDB) CreateSchedule(schedule models.Schedule) error {
-	var createSchedule models.CreateSchedule
-	_, err := s.dbAndTx.Exec("INSERT INTO schedules (group_id, day_of_week, subject_id, teacher_id, location) VALUES ($1, $2, $3, $4, $5, $6, $7)", createSchedule.GroupID, createSchedule.DayOfWeek, createSchedule.SubjectID, createSchedule.TeacherID, schedule.Location)
+func (s *scheduleHandlerDB) CreateSchedule(schedule models.CreateSchedule) error {
+	//var createSchedule models.CreateSchedule
+	log.Println(schedule)
+	_, err := s.dbAndTx.Exec("INSERT INTO schedules (group_id, day_of_week, subject_id, teacher_id, location) VALUES ($1, $2, $3, $4, $5)", schedule.GroupID, schedule.DayOfWeek, schedule.SubjectID, schedule.TeacherID, schedule.Location)
 	if err != nil {
 		return err
 	}

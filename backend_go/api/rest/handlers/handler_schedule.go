@@ -20,7 +20,7 @@ func NewScheduleHandler(repo schedules.SchedulePostgresRepository) *scheduleHand
 
 // CreateSchedule создает новое расписание
 func (sh *scheduleHandler) CreateSchedule(c *gin.Context) {
-	var schedule models.Schedule
+	var schedule models.CreateSchedule
 	if err := c.ShouldBindJSON(&schedule); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input: " + err.Error()})
 		return

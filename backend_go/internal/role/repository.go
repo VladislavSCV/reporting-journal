@@ -6,7 +6,7 @@ import (
 )
 
 type RolePostgresRepository interface {
-	CreateRole(*models.Role) error
+	CreateRole(*models.Role) (*models.Role, error)
 	GetRoles() ([]models.Role, error)
 	GetRole(id int) (*models.Role, error)
 	UpdateRole(*models.Role) error

@@ -23,12 +23,12 @@ func (rh *roleHandler) CreateRole(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	err = rh.servicePostgresql.CreateRole(&modelRole)
+	respRole, err := rh.servicePostgresql.CreateRole(&modelRole)
 	if err != nil {
 		c.Status(http.StatusInternalServerError)
 		return pkg.LogWriteFileReturnError(err)
 	}
-	c.JSON(http.StatusCreated, modelRole)
+	c.JSON(http.StatusCreated, gin.H{"role": &respRole})
 	return nil
 }
 

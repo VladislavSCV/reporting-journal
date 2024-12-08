@@ -56,20 +56,18 @@ type Group struct {
 }
 
 type Schedule struct {
-	ScheduleID  int
-	GroupName   string
-	DayOfWeek   int
-	SubjectName string
-	TeacherName string
-	Location    string
+	ScheduleID  int    `json:"scheduleID"`
+	GroupName   string `json:"groupName"`
+	DayOfWeek   int    `json:"dayOfWeek"`
+	SubjectName string `json:"subjectName"`
+	TeacherName string `json:"teacherName"`
+	Location    string `json:"location"`
 }
 
 type CreateSchedule struct {
 	ID        int    `json:"id"`
 	GroupID   int    `json:"group_id"`
 	DayOfWeek int    `json:"day_of_week"`
-	StartTime string `json:"start_time"`
-	EndTime   string `json:"end_time"`
 	SubjectID int    `json:"subject_id"`
 	TeacherID int    `json:"teacher_id"`
 	Location  string `json:"location"`

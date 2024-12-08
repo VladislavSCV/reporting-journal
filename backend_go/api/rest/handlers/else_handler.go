@@ -177,7 +177,7 @@ func (h *elseHandler) StudentsAttendance(c *gin.Context) {
 }
 
 type UpdateAttendanceRequest struct {
-	StudentId int    `json:"studentId"`
+	StudentId int    `json:"student_id"`
 	Status    string `json:"status"`
 }
 

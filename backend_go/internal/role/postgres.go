@@ -3,6 +3,7 @@ package role
 import (
 	"database/sql"
 	"errors"
+	"log"
 
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/pkg"
@@ -42,17 +43,14 @@ func (rh roleHandlerDB) GetRole(id int) (*models.Role, error) {
 
 }
 
-func (rh roleHandlerDB) CreateRole(role *models.Role) error {
-	q, err := rh.dbAndTx.Exec("INSERT INTO roles (value) VALUES ($1)", role.Value)
+func (rh roleHandlerDB) CreateRole(role *models.Role) (*models.Role, error) {
+	var respRole models.Role
+	err := rh.dbAndTx.QueryRow("INSERT INTO roles (value) VALUES ($1) RETURNING id, value", role.Value).Scan(&respRole.ID, &respRole.Value)
 	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
+		return &models.Role{}, pkg.LogWriteFileReturnError(err)
 	}
-
-	_, err = q.RowsAffected()
-	if err != nil {
-		return pkg.LogWriteFileReturnError(err)
-	}
-	return nil
+	log.Println(respRole)
+	return &respRole, nil
 }
 
 func (rh roleHandlerDB) UpdateRole(role *models.Role) error {

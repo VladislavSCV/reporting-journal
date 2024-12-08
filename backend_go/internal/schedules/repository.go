@@ -8,7 +8,7 @@ import (
 type SchedulePostgresRepository interface {
 	GetSchedulers() ([]models.Schedule, error)
 	//GetScheduleById(id int) (models.Schedule, error)
-	CreateSchedule(schedule models.Schedule) error
+	CreateSchedule(schedule models.CreateSchedule) error
 	UpdateSchedule(id int, updatedSchedule map[string]interface{}) error
 	DeleteSchedule(id int) error
 	GetScheduleForGroup(id int) ([]models.Schedule, error)

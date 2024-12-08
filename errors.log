@@ -942,3 +942,31 @@ ERROR: 2024/12/02 19:58:20 error-handler.go:34: user johrwqewdoe not found
 ERROR: 2024/12/02 19:58:51 error-handler.go:34: user johrwqwqewqeewdoe not found
 ERROR: 2024/12/02 19:59:39 error-handler.go:34: user johrwqwqewqeewdoe not found
 ERROR: 2024/12/02 20:30:09 error-handler.go:34: pq: duplicate key value violates unique constraint "groups_name_key"
+ERROR: 2024/12/08 12:46:06 error-handler.go:34: EOF
+ERROR: 2024/12/08 12:46:22 error-handler.go:34: EOF
+ERROR: 2024/12/08 12:56:10 error-handler.go:34: dial tcp: lookup oregon-redis.render.com: i/o timeout
+ERROR: 2024/12/08 12:57:43 error-handler.go:34: pq: relation "groups" does not exist
+ERROR: 2024/12/08 12:57:53 error-handler.go:34: pq: relation "groups" does not exist
+ERROR: 2024/12/08 12:57:53 error-handler.go:34: pq: relation "groups" does not exist
+ERROR: 2024/12/08 12:57:57 error-handler.go:34: pq: relation "groups" does not exist
+ERROR: 2024/12/08 17:55:02 error-handler.go:34: successfully retrieved user teacher1 from PostgreSQL
+ERROR: 2024/12/08 17:55:51 error-handler.go:34: successfully retrieved user teacher1 from PostgreSQL
+ERROR: 2024/12/08 18:22:43 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:22:43 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:24:08 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:24:08 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:30:03 error-handler.go:34: pq: column "vaule" does not exist
+ERROR: 2024/12/08 18:30:03 error-handler.go:34: pq: column "vaule" does not exist
+ERROR: 2024/12/08 18:30:44 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:30:44 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:30:50 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:30:50 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:22 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:22 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:26 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:26 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:38 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:35:38 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:40:21 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 18:40:21 error-handler.go:34: pq: duplicate key value violates unique constraint "roles_value_key"
+ERROR: 2024/12/08 19:20:00 error-handler.go:34: dial tcp: lookup dpg-ctamnu2j1k6c738nhcs0-a.oregon-postgres.render.com on 127.0.0.53:53: server misbehaving
