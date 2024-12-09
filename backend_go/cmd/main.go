@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/VladislavSCV/api/middleware"
 	"github.com/VladislavSCV/internal/attendance"
-	"github.com/VladislavSCV/internal/config"
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/note"
 	"github.com/VladislavSCV/internal/subjects"
@@ -164,7 +163,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 }
 
 func main() {
-	config.LoadEnv()
+	//config.LoadEnv()
 	connToDb := os.Getenv("CONN_TO_DB_PQ")
 	if connToDb == "" {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")
