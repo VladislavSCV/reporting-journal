@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // Адрес вашего бэкенда на Go
+        target: 'https://reporting-journal-1.onrender.com', // Адрес вашего бэкенда на Go
         changeOrigin: true,
         secure: false,
       },
