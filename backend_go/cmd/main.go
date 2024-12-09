@@ -206,7 +206,7 @@ func main() {
 
 	router := SetupRouter(api)
 	srv := &http.Server{
-		Addr:    "localhost:8000",
+		Addr:    ":8000",
 		Handler: router,
 	}
 
