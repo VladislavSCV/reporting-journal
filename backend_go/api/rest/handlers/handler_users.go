@@ -6,18 +6,21 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"fmt"
+
+	"go.uber.org/zap"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/VladislavSCV/pkg"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type userHandler struct {
 	logger            *zap.Logger
 	servicePostgresql users.UserPostgresRepository // Сервис для работы с данными пользователей
-	serviceRedis      users.UserRedisRepository
+	// serviceRedis      users.UserRedisRepository
 }
 
 // Login аутентифицирует пользователя
@@ -77,12 +80,13 @@ func (sh *userHandler) Login(c *gin.Context) {
 		return
 	}
 
+	_ = token
 	//sh.servicePostgresql.UpdateToken(userDB.ID, token)
 
 	//log.Println(userDB)
 	// Успешная аутентификация
+	fmt.Println("-----------------------------------------------------------", userDB)
 	c.JSON(http.StatusOK, gin.H{"user": userDB, "token": token})
-	return
 }
 
 //func (sh *userHandler) GetUserRole(token string) (string, error) {
@@ -261,7 +265,7 @@ func (sh *userHandler) GetUserByLogin(c *gin.Context) {
 		return
 	}
 
-	err = sh.serviceRedis.SaveInCache(&user)
+	// err = sh.serviceRedis.SaveInCache(&user)
 	if err != nil {
 		return
 	}
@@ -369,7 +373,7 @@ func (sh *userHandler) VerifyToken(c *gin.Context) {
 }
 
 // NewStudentHandler создает новый обработчик студентов
-func NewUserHandler(servicePostgresql users.UserPostgresRepository, serviceRedis users.UserRedisRepository) users.UserAPIRepository {
+func NewUserHandler(servicePostgresql users.UserPostgresRepository) users.UserAPIRepository {
 	logger, err := zap.NewProduction()
 	if err != nil {
 		pkg.LogWriteFileReturnError(err)
@@ -377,6 +381,6 @@ func NewUserHandler(servicePostgresql users.UserPostgresRepository, serviceRedis
 	return &userHandler{
 		logger:            logger,
 		servicePostgresql: servicePostgresql,
-		serviceRedis:      serviceRedis,
+		// serviceRedis:      serviceRedis,
 	}
 }

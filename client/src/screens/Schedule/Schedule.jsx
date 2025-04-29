@@ -11,21 +11,11 @@ const Schedule = () => {
 
   useEffect(() => {
     // Определяем, что использовать: id из URL или из localStorage
-    if (params.id === null) {
       groupId = localStorage.getItem("group_id");
-    }
-    else {
-      groupId = params.id;
-    }
-
+    console.log(groupId);
     if (!groupId) {
       console.error("Group ID is not found in URL or localStorage");
       return;
-    }
-
-    // Если параметр id есть, обновляем localStorage
-    if (params.id) {
-      localStorage.setItem("group_id", params.id);
     }
 
     // Функция для получения расписания
@@ -35,6 +25,7 @@ const Schedule = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setSchedule(response.data.schedule || []);
+        console.log("Received schedule:", response.data.schedule);
       } catch (error) {
         console.error("Error fetching schedule:", error);
       }
@@ -57,7 +48,7 @@ const Schedule = () => {
         <div className="schedule__container">
           {daysOfWeek.map((day) => {
             const daySchedule = schedule.filter(
-                (lesson) => lesson.DayOfWeek === day.key
+                (lesson) => lesson.dayOfWeek === day.key
             );
 
             return (
@@ -66,12 +57,13 @@ const Schedule = () => {
                   <div className="schedule__day-container">
                     {daySchedule.length > 0 ? (
                         daySchedule.map((obj) => (
-                            <LessonCard
-                                key={obj.ScheduleID}
-                                id={obj.ScheduleID}
-                                lesson={obj.SubjectName}
-                                teacher={obj.TeacherName}
-                            />
+                          <LessonCard
+                          key={obj.scheduleID}
+                          id={obj.scheduleID}
+                          lesson={obj.subjectName}
+                          teacher={obj.teacherName}
+                        />
+                        
                         ))
                     ) : (
                         <p>Нет занятий на этот день</p>

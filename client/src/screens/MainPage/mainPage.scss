@@ -1,151 +1,91 @@
 .main-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #f8f9fa;
-  font-family: "Arial", sans-serif;
-  color: #333;
+  min-height: 100vh;
+  background: linear-gradient(to right, #dbeafe, #f0fdfa);
+  padding: 2rem;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .main-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
 
   .main-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: 10px;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1d4ed8;
   }
 
   .main-subtitle {
-    font-size: 1.2rem;
-    color: #6c757d;
+      font-size: 1.25rem;
+      color: #334155;
+  }
+
+  .user-info {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      .user-role {
+          background-color: #1d4ed8;
+          color: white;
+          padding: 0.4rem 0.8rem;
+          border-radius: 9999px;
+          text-transform: capitalize;
+      }
+
+      .logout-btn {
+          background-color: #ef4444;
+          color: white;
+          border: none;
+          padding: 0.4rem 0.8rem;
+          border-radius: 9999px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+
+          &:hover {
+              background-color: #dc2626;
+          }
+      }
   }
 }
 
-/* Перемещаем блок user-info в левый верхний угол */
-.user-info {
-    position: absolute;
-    top: 10px; /* 10px от верхнего края */
-    right: 10px; /* 10px от правого края */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Выравнивание по правому краю */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
 }
 
+.nav-card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: #1e293b;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
 
-.user-details {
-  display: flex;
-  flex-direction: column;
-}
+  .icon {
+      margin-bottom: 0.5rem;
+      svg {
+          width: 32px;
+          height: 32px;
+          color: #3b82f6;
+      }
+  }
 
-.user-name {
-  font-weight: bold;
-}
-
-.logout-button {
-  margin-top: 10px;
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
+  .label {
+      font-weight: 600;
+  }
 
   &:hover {
-    background-color: #c82333;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
   }
 }
 
-.main-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  max-width: 100%;
-  padding: 0 10px;
-
-  .main-link {
-    display: inline-block;
-    padding: 10px 20px;
-    text-align: center;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 5px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-
-    &:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-    }
-  }
-
-  .admin-link {
-    background-color: #495057;
-
-    &:hover {
-      background-color: #343a40;
-    }
-  }
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .main-page {
-    padding: 10px;
-
-    .main-header {
-      .main-title {
-        font-size: 1.8rem;
-      }
-
-      .main-subtitle {
-        font-size: 1rem;
-      }
-    }
-
-    .main-links {
-      gap: 10px;
-
-      .main-link {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .main-header {
-    .main-title {
-      font-size: 1.5rem;
-    }
-
-    .main-subtitle {
-      font-size: 0.9rem;
-    }
-  }
-
-  .main-links {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-
-    .main-link {
-      width: 100%;
-      max-width: 300px;
-      padding: 10px;
-      font-size: 0.85rem;
-    }
-  }
-}

@@ -36,19 +36,34 @@ export async function loginUser(login, password, navigate) {
       body: JSON.stringify({ login, password }),
     });
 
+    // Проверка, есть ли тело ответа
+    const contentType = response.headers.get("content-type");
+    let data;
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Login failed');
+      // Безопасная попытка распарсить JSON, если есть тело
+      if (contentType && contentType.includes("application/json")) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      } else {
+        throw new Error('Login failed (no JSON response from server)');
+      }
     }
 
-    const data = await response.json();
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();
+    } else {
+      throw new Error('Expected JSON response but got something else');
+    }
 
     if (data.token) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user_id", data.user.id);
+
       if (data.user.role_id) {
-        localStorage.setItem("group_id", null);
+        localStorage.setItem("role_id", data.user.role_id);
       }
+
       localStorage.setItem("group_id", data.user.group_id);
 
       console.log("Login successful:", data);
@@ -59,10 +74,10 @@ export async function loginUser(login, password, navigate) {
   } catch (error) {
     console.error('Error during login:', error);
     alert(error.message || 'Login failed. Please try again.');
-    throw error; // Если требуется переброс ошибки выше
+    throw error;
   }
-
 }
+
 
 
 export function Decode(Response) {

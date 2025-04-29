@@ -31,12 +31,12 @@ const ScreenSwitchboard = () => {
   }
   return (
       <>
-        {isAuth === null ? (
+        {/* {isAuth === null ? (
             <Routes>
               <Route path="/main" element={<Main/>}/>
               <Route path="/" element={<Navigate to="/main"/>}/>
             </Routes>
-        ) : (
+        ) : ( */}
             <Routes>
               <Route path="/main" element={<Main/>}/>
               <Route path="*" element={<MainPage/>}/>
@@ -72,7 +72,7 @@ const ScreenSwitchboard = () => {
                   element={<AdminPanel/>}
               />
             </Routes>
-        )}
+        {/* )} */}
       </>
   );
 };

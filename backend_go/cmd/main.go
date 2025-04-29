@@ -2,25 +2,25 @@ package main
 
 import (
 	"context"
-	"github.com/VladislavSCV/api/middleware"
-	"github.com/VladislavSCV/internal/attendance"
-	"github.com/VladislavSCV/internal/models"
-	"github.com/VladislavSCV/internal/note"
-	"github.com/VladislavSCV/internal/subjects"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/gzip"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+
+	"github.com/VladislavSCV/api/middleware"
 	"github.com/VladislavSCV/api/rest/handlers"
+	"github.com/VladislavSCV/internal/attendance"
 	"github.com/VladislavSCV/internal/groups"
+	"github.com/VladislavSCV/internal/models"
+	"github.com/VladislavSCV/internal/note"
 	"github.com/VladislavSCV/internal/role"
 	"github.com/VladislavSCV/internal/schedules"
+	"github.com/VladislavSCV/internal/subjects"
 	"github.com/VladislavSCV/internal/users"
-	"github.com/gin-gonic/gin"
-	_ "net/http/pprof"
 )
 
 type ApiHandlers struct {
@@ -58,9 +58,10 @@ func (e *ValidationError) Error() string {
 func SetupRouter(api ApiHandlers) *gin.Engine {
 	r := gin.Default()
 	r.Use(cors.Default())
-	r.Use(gzip.Gzip(gzip.DefaultCompression))
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	// r.Use(gzip.Gzip(gzip.DefaultCompression))
+	// r.Use(gin.Logger())
+	// r.Use(gin.Recovery())
+	
 
 	r.Use(func(c *gin.Context) {
 		log.Printf("Request headers: %v", c.Request.Header)
@@ -164,7 +165,7 @@ func SetupRouter(api ApiHandlers) *gin.Engine {
 
 func main() {
 	//config.LoadEnv()
-	connToDb := os.Getenv("CONN_TO_DB_PQ")
+	connToDb := "postgresql://reporting_journal_pg_user:FSPcCpWg916TTtvNXuCJdN9lmBI93mmN@dpg-cvtp34i4d50c73al7s80-a.oregon-postgres.render.com/reporting_journal_pg"
 	if connToDb == "" {
 		log.Fatal("CONN_TO_DB_PQ environment variable is not set")
 	}
@@ -177,8 +178,8 @@ func main() {
 	//defer dbPool.Close()
 
 	dbpu := users.NewUserPostgresHandlerDB(connToDb)
-	dbru := users.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
-	apiUsers := handlers.NewUserHandler(dbpu, dbru)
+	// dbru := users.NewUserHandlerRedis(os.Getenv("CONN_TO_REDIS"))
+	apiUsers := handlers.NewUserHandler(dbpu)
 
 	dbpr := role.NewRolePostgresHandler(connToDb)
 	apiRoles := handlers.NewRoleHandler(dbpr)

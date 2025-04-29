@@ -38,6 +38,7 @@ const GroupList = () => {
                 console.error("Ошибка получения данных:", error);
             }
         };
+        console.log(groups)
 
         fetchGroups();
     }, []);

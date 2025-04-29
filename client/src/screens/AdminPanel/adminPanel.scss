@@ -212,3 +212,29 @@
   }
 }
 
+.adminPanel__scheduleControl {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.adminPanel__scheduleControl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adminPanel__scheduleControl-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.adminPanel__scheduleControl-button {
+  padding: 0.5rem 1rem;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}

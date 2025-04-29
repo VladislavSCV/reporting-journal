@@ -1,19 +1,21 @@
 package handlers
 
 import (
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
+	"sync"
+
+	"github.com/gin-gonic/gin"
+	jsoniter "github.com/json-iterator/go"
+
 	"github.com/VladislavSCV/internal/attendance"
 	"github.com/VladislavSCV/internal/groups"
 	"github.com/VladislavSCV/internal/models"
 	"github.com/VladislavSCV/internal/role"
 	"github.com/VladislavSCV/internal/users"
 	"github.com/VladislavSCV/pkg"
-	"github.com/gin-gonic/gin"
-	jsoniter "github.com/json-iterator/go"
-	"log"
-	"net/http"
-	"strconv"
-	"strings"
-	"sync"
 )
 
 type elseHandler struct {
@@ -126,6 +128,7 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Access denied"})
 		return
 	}
+	_ = id
 
 	//groups, err := h.groupPostgres.GetGroups()
 	//if err != nil {
@@ -133,7 +136,7 @@ func (h *elseHandler) GetCuratorGroupsStudentList(c *gin.Context) {
 	//	return err
 	//}
 
-	groups, err := h.groupPostgres.GetCuratorGroups(id)
+	groups, err := h.groupPostgres.GetGroups()
 	if err != nil {
 		return
 	}

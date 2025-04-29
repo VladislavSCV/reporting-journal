@@ -1,6 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LogOut, User, Shield, BookOpen, Calendar } from "lucide-react";
 import "./mainPage.scss";
+
+const roleLinks = {
+    admin: [
+        { path: "/groups", label: "Группы", icon: <Shield /> },
+        { path: "/studentsList", label: "Список студентов", icon: <User /> },
+        { path: "/schedule", label: "Расписание", icon: <Calendar /> },
+        { path: "/groupsList", label: "Посещаемость студентов", icon: <BookOpen /> },
+        { path: "/notes", label: "Заметки", icon: <BookOpen /> },
+        { path: "/GroupsNotes", label: "Заметки групп", icon: <BookOpen /> },
+        { path: "/AdminPanel", label: "Панель администратора", icon: <Shield /> }
+    ],
+    teacher: [
+        { path: "/CuratorGroupsSchedule", label: "Расписание групп куратора", icon: <Calendar /> },
+        { path: "/CuratorGroupsStudentsList", label: "Список студентов групп куратора", icon: <User /> }
+    ],
+    student: [
+        { path: "/groups", label: "Группы", icon: <Shield /> },
+        { path: "/studentsList", label: "Список студентов", icon: <User /> },
+        { path: "/notes", label: "Заметки", icon: <BookOpen /> },
+        { path: "/schedule", label: "Расписание", icon: <Calendar /> }
+    ]
+};
 
 const Main = () => {
     const navigate = useNavigate();
@@ -8,9 +31,9 @@ const Main = () => {
     const [userRole, setUserRole] = useState('');
 
     const handleLogout = () => {
-        localStorage.clear()
-        navigate("/main")
-    }
+        localStorage.clear();
+        navigate("/main");
+    };
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
@@ -33,46 +56,37 @@ const Main = () => {
                     const fullName = `${data.user.first_name} ${data.user.last_name} ${data.user.middle_name}`;
                     setUsername(fullName);
                     setUserRole(data.user.role);
-
-                    // Сохранение данных в localStorage
                     localStorage.setItem("username", fullName);
                     localStorage.setItem("userRole", data.user.role);
+                    console.log(fullName);
                 } catch (error) {
-                    console.error('Error fetching user:', error);
+                    console.error('Ошибка при получении пользователя:', error);
                 }
-            }
+            };
             fetchUser();
         }
     }, []);
 
+    const links = roleLinks[userRole] || [];
+
     return (
         <div className="main-page">
             <header className="main-header">
-                <h1 className="main-title">Reporting Journal</h1>
-                <p className="main-subtitle">Выберите раздел для работы:</p>
+                <h1 className="main-title">📘 Reporting Journal</h1>
+                <p className="main-subtitle">Привет, <strong>{username}</strong>!</p>
                 <div className="user-info">
-                    <div className="user-details">
-                        <h2 className="user-name">{username}</h2>
-                        <p className="user-role">{userRole}</p>
-                    </div>
-                    <button className="logout-button" onClick={handleLogout}>Выйти</button>
+                    <span className="user-role">{userRole}</span>
+                    <button className="logout-btn" onClick={handleLogout}><LogOut size={18} /> Выйти</button>
                 </div>
             </header>
 
-            <div className="main-links">
-                <Link to="/groups" className="main-link">Группы</Link>
-                <Link to="/curatorgroups" className="main-link">Группы куратора</Link>
-                <Link to="/studentsList" className="main-link">Список студентов</Link>
-                <Link to="/schedule" className="main-link">Расписание</Link>
-                <Link to="/groupsList" className="main-link">Посещаемость студентов</Link>
-                <Link to="/notes" className="main-link">Заметки</Link>
-                <Link to="/GroupsNotes" className="main-link">Заметки групп</Link>
-                <Link to="/GroupsSchedule" className="main-link">Расписание групп</Link>
-                <Link to="/GroupsStudentsList" className="main-link">Список студентов групп</Link>
-                <Link to="/CuratorGroupsNotes" className="main-link">Заметки групп куратора</Link>
-                <Link to="/CuratorGroupsSchedule" className="main-link">Расписание групп куратора</Link>
-                <Link to="/CuratorGroupsStudentsList" className="main-link">Список студентов групп куратора</Link>
-                <Link to="/AdminPanel" className="main-link admin-link">Панель администратора</Link>
+            <div className="card-grid">
+                {links.map(({ path, label, icon }) => (
+                    <Link key={path} to={path} className="nav-card">
+                        <div className="icon">{icon}</div>
+                        <span className="label">{label}</span>
+                    </Link>
+                ))}
             </div>
         </div>
     );

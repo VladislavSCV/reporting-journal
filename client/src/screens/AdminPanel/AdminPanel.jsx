@@ -18,10 +18,18 @@ const AdminPanel = () => {
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(true);
   const [newGroupName, setNewGroupName] = useState("");
+  const [subject, setSubject] = useState("");
+  const [dayOfWeek , setScheduleDay] = useState("");
+  const [startTime , setScheduleStartTime] = useState("");
+  const [endTime , setScheduleEndTime] = useState("");
+  const [teacher, setScheduleTeacherId] = useState("");
+  const [location, setScheduleLocation] = useState("");
+  const [scheduleGroupId, setScheduleGroupId] = useState("");
+  const [scheduleRecurrence, setScheduleRecurrence] = useState("");
 
 
-  const userRole = localStorage.getItem("userRole");
-  let adminPrivileges = userRole === "Admin";
+  const userRole = localStorage.getItem("role_id");
+  let adminPrivileges = userRole === "3";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +111,59 @@ const AdminPanel = () => {
       console.error("Ошибка при удалении роли:", error);
     }
   };
+
+  const handleScheduleSubmit = async () => {
+    if (
+      !scheduleGroupId ||
+      !scheduleSubject ||
+      !scheduleTeacherId ||
+      !scheduleLocation ||
+      !scheduleDay ||
+      !scheduleStartTime ||
+      !scheduleEndTime
+    ) {
+      alert("Пожалуйста, заполните все поля для расписания.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("/api/schedule", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          group_id: scheduleGroupId,
+          subject: scheduleSubject,
+          teacher_id: scheduleTeacherId,
+          location: scheduleLocation,
+          day_of_week: scheduleDay,
+          start_time: scheduleStartTime,
+          end_time: scheduleEndTime,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Ошибка при создании расписания");
+      }
+  
+      alert("Расписание успешно добавлено!");
+  
+      // Очистка формы
+      setScheduleGroupId("");
+      setScheduleSubject("");
+      setScheduleTeacherId("");
+      setScheduleLocation("");
+      setScheduleDay("");
+      setScheduleStartTime("");
+      setScheduleEndTime("");
+    } catch (error) {
+      console.error("Ошибка при отправке расписания:", error);
+    }
+  };
+  
+  
 
   const handleChange = (e) => {
     // Преобразуем значение в число и сохраняем в состоянии
@@ -294,6 +355,88 @@ const AdminPanel = () => {
                   ))}
                 </div>
               </div>
+              <div className="adminPanel__scheduleControl">
+              <h2 className="adminPanel__title">Создать расписание</h2>
+              <form className="adminPanel__scheduleControl-form">
+                <label className="adminPanel__scheduleControl-label">Группа:</label>
+                <select
+                  className="adminPanel__scheduleControl-input"
+                  onChange={(e) => setScheduleGroupId(e.target.value)}
+                  value={scheduleGroupId}
+                >
+                  <option value="">Выберите группу</option>
+                  {groups.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
+                    </option>
+                  ))}
+                </select>
+
+                <label className="adminPanel__scheduleControl-label">Предмет:</label>
+                <input
+                  type="text"
+                  className="adminPanel__scheduleControl-input"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+
+                <label className="adminPanel__scheduleControl-label">Преподаватель:</label>
+                <input
+                  type="text"
+                  className="adminPanel__scheduleControl-input"
+                  value={teacher}
+                  onChange={(e) => setTeacher(e.target.value)}
+                />
+
+                <label className="adminPanel__scheduleControl-label">Аудитория:</label>
+                <input
+                  type="text"
+                  className="adminPanel__scheduleControl-input"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+
+                <label className="adminPanel__scheduleControl-label">День недели:</label>
+                <select
+                  className="adminPanel__scheduleControl-input"
+                  value={dayOfWeek}
+                  onChange={(e) => setDayOfWeek(e.target.value)}
+                >
+                  <option value="">Выберите день</option>
+                  <option value="Понедельник">Понедельник</option>
+                  <option value="Вторник">Вторник</option>
+                  <option value="Среда">Среда</option>
+                  <option value="Четверг">Четверг</option>
+                  <option value="Пятница">Пятница</option>
+                  <option value="Суббота">Суббота</option>
+                </select>
+
+                <label className="adminPanel__scheduleControl-label">Начало:</label>
+                <input
+                  type="time"
+                  className="adminPanel__scheduleControl-input"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+
+                <label className="adminPanel__scheduleControl-label">Конец:</label>
+                <input
+                  type="time"
+                  className="adminPanel__scheduleControl-input"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                />
+
+                <button
+                  type="button"
+                  className="adminPanel__scheduleControl-button"
+                  onClick={handleScheduleSubmit}
+                >
+                  Создать расписание
+                </button>
+              </form>
+            </div>
+
             </div>
         ) : (
             <div className="adminPanel__message-container">

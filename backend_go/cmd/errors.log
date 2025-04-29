@@ -1,0 +1,25 @@
+ERROR: 2025/04/13 13:59:11 error-handler.go:34: redis: invalid URL scheme: 
+ERROR: 2025/04/13 14:27:03 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:16:55 error-handler.go:34: successfully retrieved user student2 from PostgreSQL
+ERROR: 2025/04/13 15:17:07 error-handler.go:34: successfully retrieved user teacher2 from PostgreSQL
+ERROR: 2025/04/13 15:17:18 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:22:45 error-handler.go:34: successfully retrieved user student1 from PostgreSQL
+ERROR: 2025/04/13 15:23:00 error-handler.go:34: failed to get user student1 from PostgreSQL: read tcp 10.102.37.150:55386->35.227.164.209:5432: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+ERROR: 2025/04/13 15:35:24 error-handler.go:34: successfully retrieved user student1 from PostgreSQL
+ERROR: 2025/04/13 15:37:39 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:40:35 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:42:49 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:48:40 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:53:28 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 15:56:50 error-handler.go:34: successfully retrieved user admin from PostgreSQL
+ERROR: 2025/04/13 16:22:50 error-handler.go:34: user admin not found
+ERROR: 2025/04/13 16:23:27 error-handler.go:34: user admin not found
+ERROR: 2025/04/13 16:24:09 error-handler.go:34: successfully retrieved user admin1 from PostgreSQL
+ERROR: 2025/04/13 16:26:52 error-handler.go:34: successfully retrieved user admin1 from PostgreSQL
+ERROR: 2025/04/13 16:27:20 error-handler.go:34: successfully retrieved user student3 from PostgreSQL
+ERROR: 2025/04/13 16:28:29 error-handler.go:34: successfully retrieved user admin1 from PostgreSQL
+ERROR: 2025/04/13 16:33:21 error-handler.go:34: successfully retrieved user student3 from PostgreSQL
+ERROR: 2025/04/13 17:07:23 error-handler.go:34: successfully retrieved user student1 from PostgreSQL
+ERROR: 2025/04/13 17:09:58 error-handler.go:34: successfully retrieved user student1 from PostgreSQL
+ERROR: 2025/04/13 17:12:02 error-handler.go:34: successfully retrieved user student1 from PostgreSQL
+ERROR: 2025/04/13 17:13:55 error-handler.go:34: successfully retrieved user student2 from PostgreSQL
